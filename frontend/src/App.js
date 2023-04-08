@@ -1,22 +1,25 @@
-
 import './App.css';
+
+import { Authenticator } from '@aws-amplify/ui-react';
+import '@aws-amplify/ui-react/styles.css';
+import {Amplify} from 'aws-amplify'
+import awsconfig from "./aws-exports";
+
+Amplify.configure(awsconfig);
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <Authenticator>
+      {({ signOut }) => (
+        <div className="App">
+          <p>
+            Hey Enris
+          </p>
+          <button onClick={signOut}>Sign out</button>
+        </div>
+      )}
+    </Authenticator>
     </div>
   );
 }
