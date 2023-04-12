@@ -11,7 +11,9 @@ export const authReducer = (state, action) => {
     case 'AUTH_IS_READY':
       return { user: action.payload, authIsReady: true}
     case 'CONFIRM_SIGNUP':
-        return {confirmSignUp: action.payload}    
+        return {...state,confirmSignUp: action.payload} 
+    case 'FORGOT_PASS':  
+        return {...state,forgotPass:action.payload}     
     default:
       return state
   }
@@ -22,6 +24,7 @@ export const AuthContextProvider = ({ children }) => {
     user: null,
     authIsReady: false,
     confirmSignUp: {username:null,confirm:false},
+    forgotPass:false
   })
 
   const checkUser= async () => {

@@ -10,6 +10,7 @@ import Login from "./pages/login.js"
 import SignUp from './pages/signUp';
 import MainPage from './pages/mainPage'
 import ConfirmSignUp from './pages/confirmSignUp'
+import ForgotPassword from './pages/forgotPassword'
 
 
 Amplify.configure(awsconfig);
@@ -59,6 +60,11 @@ function App() {
         <Route
           path="/confirmSignup"
           element={!confirm ? <ConfirmSignUp/> : <Navigate to={"/login"} />}
+        />
+
+        <Route
+          path="/forgotPassword"
+          element={<ForgotPassword/>}
         />
       </Routes>
     </BrowserRouter>

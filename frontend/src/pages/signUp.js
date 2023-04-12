@@ -34,12 +34,17 @@ export default function SignUp() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        signup(username,email,password);
-        navigate('/confirmSignup');
-        
+
+        if(password==confirmPassword){
+          signup(username,email,password);
+          if(error==null){
+            navigate('/confirmSignup');
+          }
+        }
+        console.log('Passwords do not match')
     };
 
-        
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -104,9 +109,11 @@ export default function SignUp() {
                   fullWidth
                   name="ConfirmPassword"
                   label="Confirm Password"
-                  type="ConfirmPassword"
+                  type="password"
                   id="ConfirmPassword"
                   autoComplete="ConfirmPassword"
+                  onChange={(e) => setConfirmPassword(e.target.value)} 
+                  value={confirmPassword} 
                 />
               </Grid>
               <Grid item xs={12}>

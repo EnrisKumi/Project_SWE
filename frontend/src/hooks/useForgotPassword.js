@@ -2,23 +2,26 @@ import { useState, useEffect } from 'react'
 import { useAuthContext } from './useAuthContext'
 import { Auth} from "aws-amplify";
 
+import React from 'react'
 
-export const useSignup = () => {
+export const useForgotPassword = () => {
   const [isCancelled, setIsCancelled] = useState(false)
   const [error, setError] = useState(null)
   const [isPending, setIsPending] = useState(false)
   const { dispatch } = useAuthContext()
 
-  const signup = async (username,email, password) => {
+  const forgorPassword = async (username,authCode,newPassword) => {
     setError(null)
     setIsPending(true)
   
     try {
       
-      await Auth.signUp({ username, password, attributes: { email } });
+        await Auth.forgotPassword(username);
 
-      //dispatch confirmSignUp action
-      dispatch({ type: 'CONFIRM_SIGNUP', payload:{username:username,confirm:false} })
+      // dispatch forgotPassword action
+       dispatch({ type: 'FORGOT_PASS', payload: true })
+
+       Auth.forgotPasswordSubmit(username, authCode, newPassword);
 
       if (!isCancelled) {
         setIsPending(false)
@@ -32,10 +35,9 @@ export const useSignup = () => {
       }
     }
   }
-
   useEffect(() => {
     return () => setIsCancelled(true)
   }, [])
 
-  return { signup, error, isPending }
+  return { forgorPassword, error, isPending }
 }

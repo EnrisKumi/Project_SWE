@@ -10,24 +10,30 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useConfirmSignUp } from '../hooks/useConfirmSignUp';
+import { useAuthContext } from '../hooks/useAuthContext'
+
 
 
 
 const theme = createTheme();
 
-export default function ConfirmSignUp() {
+export default function ForgotPassword() {
+
+    const [username, setUsername] = useState('')
     const [authCode, setAuthCode] = useState('')
-    const {confirmSignup,isPending,error}= useConfirmSignUp();
+    const [newPassword, setNewPassword] = useState('')
+
+    const {forgotPass}=useAuthContext();
   
     const handleSubmit = (event) => {
         event.preventDefault();
-        confirmSignup(authCode);
+        
     };
 
         
   return (
     <ThemeProvider theme={theme}>
+        {!forgotPass && (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box
@@ -42,25 +48,21 @@ export default function ConfirmSignUp() {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-            Confirm SignUp
+            Enter Username
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-
-          <Grid item xs={12}>
-                    <TextField
-                      margin="normal"
-                      fullWidth
-                      required
-                      label="Authentication Code"
-                      name="authCode"
-                      autoFocus
-                      placeholder="Confirmation Code"
-                      onChange={(e) => setAuthCode(e.target.value)} 
-                      value={authCode}
-                    />
-            </Grid>
-          
+          <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="Username"
+              name="username"
+              placeholder="username"
+              autoFocus
+              onChange={(e) =>setUsername(e.target.value)} 
+              value={username} 
+            />
           </Grid>
           <Button
             type="submit"
@@ -68,12 +70,16 @@ export default function ConfirmSignUp() {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Confirm SignUp
+            Get authentication code
           </Button>
           
         </Box>
       </Box>
-    </Container>
+    </Container>)
+    
+    
+    }
+
   </ThemeProvider>
     
     );

@@ -54,10 +54,9 @@ export default function Login() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              label="Username"
+              name="username"
+              placeholder="username"
               autoFocus
               onChange={(e) =>setUsername(e.target.value)} 
               value={username} 
@@ -69,7 +68,7 @@ export default function Login() {
               name="password"
               label="Password"
               type="password"
-              id="password"
+              placeholder="password"
               autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)} 
               value={password} 
@@ -88,7 +87,7 @@ export default function Login() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="/forgotPassword" variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
