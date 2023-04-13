@@ -1,16 +1,16 @@
 import './App.css';
 import { BrowserRouter, Route, Routes,Navigate} from 'react-router-dom'
-import { useAuthContext } from './hooks/useAuthContext'
+import { useAuthContext } from './hooks/auth/useAuthContext'
 
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import {Amplify} from 'aws-amplify'
 import awsconfig from './aws-exports'
-import Login from "./pages/login.js"
-import SignUp from './pages/signUp';
-import MainPage from './pages/mainPage'
-import ConfirmSignUp from './pages/confirmSignUp'
-import ForgotPassword from './pages/forgotPassword'
+import Login from "./pages/auth/login.js"
+import SignUp from './pages/auth/signUp';
+import MainPage from './pages/home/mainPage'
+import ConfirmSignUp from './pages/auth/confirmSignUp'
+import ForgotPassword from './pages/auth/forgotPassword'
 
 
 Amplify.configure(awsconfig);
