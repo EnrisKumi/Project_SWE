@@ -58,27 +58,27 @@ export class CognitoStack extends Stack{
 
         const userPoolArn = userPool.userPoolArn
         
-        const lambdaPreSignUpTrigger = new NodejsFunction(this, 'Cognito-PreSignUpTrigger',{
-            ...lambdaProps,
-            functionName: 'Cognito-PreSignUpTrigger',
-            entry: path.join(__dirname, '../../src/lambdas/cognitoTriggers/preSingUpHandler.ts')
-        })
+        // const lambdaPreSignUpTrigger = new NodejsFunction(this, 'Cognito-PreSignUpTrigger',{
+        //     ...lambdaProps,
+        //     functionName: 'Cognito-PreSignUpTrigger',
+        //     entry: path.join(__dirname, '../../src/lambdas/cognitoTriggers/preSingUpHandler.ts')
+        // })
 
-        lambdaPreSignUpTrigger.role?.attachInlinePolicy(new Policy(this, 'userPoolPolicy', {
-            document: PolicyDocument.fromJson({
-              Version: '2012-10-17',
-              Statement: [
-                {
-                  Sid: 'VisualEditor0',
-                  Effect: 'Allow',
-                  Action: 'cognito-idp:*',
-                  Resource: userPoolArn
-                }
-              ]
-            })
-          }))
+        // lambdaPreSignUpTrigger.role?.attachInlinePolicy(new Policy(this, 'userPoolPolicy', {
+        //     document: PolicyDocument.fromJson({
+        //       Version: '2012-10-17',
+        //       Statement: [
+        //         {
+        //           Sid: 'VisualEditor0',
+        //           Effect: 'Allow',
+        //           Action: 'cognito-idp:*',
+        //           Resource: userPoolArn
+        //         }
+        //       ]
+        //     })
+        //   }))
 
-          userPool.addTrigger(UserPoolOperation.PRE_SIGN_UP, lambdaPreSignUpTrigger)
+        //   userPool.addTrigger(UserPoolOperation.PRE_SIGN_UP, lambdaPreSignUpTrigger)
 
           const lambdaPostConfirmTrigger = new NodejsFunction(this, 'Cognito-PostConfirmTrigger', {
             ...lambdaProps,
@@ -90,20 +90,6 @@ export class CognitoStack extends Stack{
           })
 
           props.mainTable.grantReadWriteData(lambdaPostConfirmTrigger)
-
-          lambdaPostConfirmTrigger.role?.attachInlinePolicy(new Policy(this, 'quicksightPostConfirmPolicy', {
-            document: PolicyDocument.fromJson({
-              Version: '2012-10-17',
-              Statement: [
-                {
-                  Sid: 'VisualEditor0',
-                  Effect: 'Allow',
-                  Action: 'quicksight:*',
-                  Resource: '*'
-                }
-              ]
-            })
-          }))
 
           userPool.addTrigger(UserPoolOperation.POST_CONFIRMATION, lambdaPostConfirmTrigger)
 
