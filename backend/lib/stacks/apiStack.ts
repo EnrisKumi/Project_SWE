@@ -26,8 +26,11 @@ export class ApiStack extends Stack {
             }
         })
 
+        /**
+         * /editUser,
+         * desc => an endpoint to edit user
+         */
         const editUser = api.root.addResource('editUser');
-
         const editUserLambda = new NodejsFunction(this, 'Edit-User',{
             ...lambdaProps,
             functionName: 'Edit-User',
@@ -36,9 +39,13 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-
+        props.mainTable.grantReadWriteData(editUserLambda)
         editUser.addMethod('POST', new LambdaIntegration(editUserLambda));
 
+        /**
+         * /editPost,
+         * desc => an endpoint to edit post
+         */
         const editPost = api.root.addResource('editPost');
 
         const editPostLambda = new NodejsFunction(this, 'Edit-Post',{
@@ -51,10 +58,26 @@ export class ApiStack extends Stack {
         })
 
         editPost.addMethod('POST', new LambdaIntegration(editPostLambda));
-        
-
         props.mainTable.grantReadWriteData(editPostLambda)
-        props.mainTable.grantReadWriteData(editUserLambda)
+
+        /**
+         * /getUser
+         * desc => an endpoint to get User
+         */
+        const getUser = api.root.addResource('getUser')
+
+        const getUserLambda = new NodejsFunction(this, 'Get-User',{
+            ...lambdaProps,
+            functionName: 'Get-User',
+            entry: path.join(__dirname, '../../src/lambdas/api/getUserById.ts'),
+            environment: {
+                ...env
+            }
+        })
+
+        getUser.addMethod('GET', new LambdaIntegration(getUserLambda))
+        props.mainTable.grantReadData(getUserLambda)
+
         
 
         this.apiUrl = api.url
