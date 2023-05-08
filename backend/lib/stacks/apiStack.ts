@@ -39,6 +39,21 @@ export class ApiStack extends Stack {
 
         editUser.addMethod('POST', new LambdaIntegration(editUserLambda));
 
+        const editPost = api.root.addResource('editPost');
+
+        const editPostLambda = new NodejsFunction(this, 'Edit-Post',{
+            ...lambdaProps,
+            functionName: 'Edit-Post',
+            entry: path.join(__dirname, '../../src/lambdas/api/editPostHandler.ts'), 
+            environment: {
+                ...env
+            }
+        })
+
+        editPost.addMethod('POST', new LambdaIntegration(editPostLambda));
+        
+
+        props.mainTable.grantReadWriteData(editPostLambda)
         props.mainTable.grantReadWriteData(editUserLambda)
         
 

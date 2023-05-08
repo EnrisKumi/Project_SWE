@@ -13,6 +13,9 @@ export const handler:APIGatewayProxyHandler =async (event, context, callback) =>
 
 
     try {
+
+        const tagName : string = body.tagName;
+
         return gwResponse(body)
     } catch (error) {
         return gwError(error)
