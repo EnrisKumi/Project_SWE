@@ -14,6 +14,7 @@
     "@types/aws-lambda": "^8.10.114",
     "@types/jest": "^29.4.0",
     "@types/node": "18.14.6",
+    "@types/uuid": "^9.0.1",
     "aws-cdk": "2.70.0",
     "aws-sdk": "^2.1353.0",
     "esbuild": "^0.17.18",
@@ -25,10 +26,12 @@
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.328.0",
     "@aws-sdk/client-dynamodb": "^3.328.0",
+    "@aws-sdk/lib-dynamodb": "^3.329.0",
     "aws-cdk-lib": "2.70.0",
     "constructs": "^10.0.0",
     "dotenv": "^16.0.3",
     "path": "^0.12.7",
-    "source-map-support": "^0.5.21"
+    "source-map-support": "^0.5.21",
+    "uuid": "^9.0.0"
   }
 }

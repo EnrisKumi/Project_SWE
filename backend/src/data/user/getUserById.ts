@@ -18,7 +18,7 @@ export const getUserById =async (input: GetUserByIdInput) => {
             }
         }
         const userData = await dynamoDBClient.send(new GetItemCommand(getUserParams))
-        return userData.Item
+        return userData
     } catch (error) {
         console.log(error)
         return error

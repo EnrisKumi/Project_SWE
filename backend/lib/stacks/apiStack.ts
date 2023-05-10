@@ -78,6 +78,25 @@ export class ApiStack extends Stack {
         getUser.addMethod('GET', new LambdaIntegration(getUserLambda))
         props.mainTable.grantReadData(getUserLambda)
 
+
+         /**
+         * /createPost
+         * desc => an endpoint to create post
+         */
+
+         const createPost = api.root.addResource('createPost')
+
+         const createPostLambda = new NodejsFunction(this, 'Create-Post',{
+            ...lambdaProps,
+            functionName: 'Create-Post',
+            entry: path.join(__dirname, '../../src/lambdas/api/createPostHandler.ts'),
+            environment: {
+                ...env
+            }
+         })
+
+         createPost.addMethod('POST', new LambdaIntegration(createPostLambda))
+         props.mainTable.grantWriteData(createPostLambda)
         
 
         this.apiUrl = api.url
