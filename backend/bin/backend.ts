@@ -26,5 +26,6 @@ const cognitoStack = new CognitoStack(app, 'CognitoStack',{
 
 const apiStack = new ApiStack(app, 'ApiStack',{
     env,
-    mainTable: dynamodbStack.mainTable
+    mainTable: dynamodbStack.mainTable,
+    userPool: cognitoStack.userPool
 })

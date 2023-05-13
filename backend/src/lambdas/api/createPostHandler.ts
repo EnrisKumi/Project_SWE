@@ -10,42 +10,44 @@ import { getUserById } from "../../data/user/getUserById";
 
 export const handler:APIGatewayProxyHandler =async (event, context, callback) => {
     //const {body, identity} = parseGwEvent(event)
-    const {body, identity} = parseGwEvent(event)
+    const {body, claims} = parseGwEvent(event)
 
     try {
 
-        const user: any = await getUserById({id: identity?.claims?.sub})
-        if(!user) { throw new Error('User not found') }
-
-        const username = user?.Item?.Username?.S
-
         const generatedId = uuidv4()
         const date = new Date()
-        const startTime = new Date(body?.startTime)
+        const startTime: string = body?.startTime
+        const startTimeISo = new Date(startTime)
+        const tags: string[] = body?.tags
+        const limit: number = body?.limit
+        const description: string = body?.text
+        const location: string = body?.location
+
+        const username = claims['cognito:username']
         
         let status
 
-        if((date.getTime() - startTime.getTime()) > 0){
+        if((date.getTime() - startTimeISo.getTime()) > 0){
             status = 'Not Started'
         } else {
             status = 'Completed'
         }
 
+        console.log(username, description, status, tags, startTime, limit )
+
         const createPostParams: PutCommandInput = {
             TableName: process.env.DYNAMO_DB_TABLE_NAME,
             Item: {
-                PK: `Post#${generatedId}`,
-                SK: `Post#${identity?.claims?.sub}`,
+                PK: `Post#${claims?.sub}`,
+                SK: `Post#${generatedId}`,
                 Username: username,
-                Text: body?.text,
+                Description: description,
                 Status: status,
-                Tags: [],
-                Date: date,
-                StartTime: body?.startTime,
-                Limit: body?.limit,
-                Likes: [],
-                Joined: [],
-                Comment: []
+                Tags: tags,
+                Date: date.toISOString(),
+                StartTime: startTime,
+                Limit: limit,
+                Location: location
             }
         }
 

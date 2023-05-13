@@ -1,14 +1,16 @@
 import { Stack, StackProps } from "aws-cdk-lib"
-import { Cors, LambdaIntegration, RestApi } from "aws-cdk-lib/aws-apigateway"
+import { AuthorizationType, CognitoUserPoolsAuthorizer, Cors, LambdaIntegration, RequestValidator, RestApi } from "aws-cdk-lib/aws-apigateway"
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs"
 import { Construct } from "constructs"
 import { lambdaProps } from "../utils/lambdaProps"
 import { getContext } from "../utils/context"
 import path = require("path")
 import { Table } from "aws-cdk-lib/aws-dynamodb"
+import { UserPool } from "aws-cdk-lib/aws-cognito"
 
 export interface ApiStackProps extends StackProps {
     mainTable: Table
+    userPool: UserPool
 }
 
 export class ApiStack extends Stack {
@@ -26,6 +28,18 @@ export class ApiStack extends Stack {
             }
         })
 
+        // const auth = new CognitoUserPoolsAuthorizer(this, 'CogntioAuth', {
+        //     authorizerName: 'CognitoAuth',
+        //     cognitoUserPools: [props.userPool]
+        // })
+
+        const baseRequestValidator = new RequestValidator(this, 'RequestBodyAndParamsValidator',{
+            restApi: api,
+            requestValidatorName: 'RequestBodyAndParamsValidator',
+            validateRequestBody: true,
+            validateRequestParameters: true
+        })
+
         /**
          * /editUser,
          * desc => an endpoint to edit user
@@ -40,7 +54,8 @@ export class ApiStack extends Stack {
             }
         })
         props.mainTable.grantReadWriteData(editUserLambda)
-        editUser.addMethod('POST', new LambdaIntegration(editUserLambda));
+        editUser.addMethod('POST', new LambdaIntegration(editUserLambda),{
+        });
 
         /**
          * /editPost,
@@ -57,7 +72,8 @@ export class ApiStack extends Stack {
             }
         })
 
-        editPost.addMethod('POST', new LambdaIntegration(editPostLambda));
+        editPost.addMethod('POST', new LambdaIntegration(editPostLambda),{
+        });
         props.mainTable.grantReadWriteData(editPostLambda)
 
         /**
@@ -75,7 +91,8 @@ export class ApiStack extends Stack {
             }
         })
 
-        getUser.addMethod('GET', new LambdaIntegration(getUserLambda))
+        getUser.addMethod('GET', new LambdaIntegration(getUserLambda),{
+        })
         props.mainTable.grantReadData(getUserLambda)
 
 
@@ -95,8 +112,9 @@ export class ApiStack extends Stack {
             }
          })
 
-         createPost.addMethod('POST', new LambdaIntegration(createPostLambda))
-         props.mainTable.grantWriteData(createPostLambda)
+         createPost.addMethod('POST', new LambdaIntegration(createPostLambda), {
+         })
+         props.mainTable.grantReadWriteData(createPostLambda)
         
 
         this.apiUrl = api.url
