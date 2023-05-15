@@ -4,7 +4,6 @@ import { Auth} from "aws-amplify";
 
 
 export const useConfirmSignUp = () => {
-  const [isCancelled, setIsCancelled] = useState(false)
   const [error, setError] = useState(null)
   const [isPending, setIsPending] = useState(false)
   const { dispatch } = useAuthContext()
@@ -23,21 +22,18 @@ export const useConfirmSignUp = () => {
       // dispatch confirmSignUp action
        dispatch({ type: 'CONFIRM_SIGNUP', payload:{username:null,confirm:true} })
 
-      if (!isCancelled) {
         setIsPending(false)
         setError(null)
-      }
+
     } 
     catch(err) {
-      if (!isCancelled) {
+  
         setError(err.message)
         setIsPending(false)
-      }
+
     }
   }
-  useEffect(() => {
-    return () => setIsCancelled(true)
-  }, [])
+
 
   return { confirmSignup, error, isPending }
 }

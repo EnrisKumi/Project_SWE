@@ -3,7 +3,7 @@ import { createTheme } from "@mui/material/styles";
 export const myTheme = createTheme({
   palette: {
     navbarColor: {
-      main: "#3C3A3B",
+      main: "#2b1c50",
       light: "#666666",
       dark: "#222222",
     },

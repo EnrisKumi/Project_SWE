@@ -3,7 +3,7 @@ import { useAuthContext } from './useAuthContext'
 import { Auth} from "aws-amplify";
 
 export const useLogin = () => {
-  const [isCancelled, setIsCancelled] = useState(false)
+  
   const [error, setError] = useState(null)
   const [isPending, setIsPending] = useState(false)
   const { dispatch } = useAuthContext()
@@ -19,22 +19,17 @@ export const useLogin = () => {
       // dispatch login action
       dispatch({ type: 'LOGIN', payload: user })
 
-      if (!isCancelled) {
         setIsPending(false)
         setError(null)
-      }
+
     } 
     catch(err) {
-      if (!isCancelled) {
         setError(err.message)
         setIsPending(false)
-      }
+
     }
   }
 
-  useEffect(() => {
-    return () => setIsCancelled(true)
-  }, [])
 
   return { login, isPending, error }
 }
