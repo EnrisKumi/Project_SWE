@@ -44,65 +44,73 @@ export class ApiStack extends Stack {
          * /editUser,
          * desc => an endpoint to edit user
          */
-        const editUser = api.root.addResource('editUser');
-        const editUserLambda = new NodejsFunction(this, 'Edit-User',{
-            ...lambdaProps,
-            functionName: 'Edit-User',
-            entry: path.join(__dirname, '../../src/lambdas/api/editUserHandler.ts'), 
-            environment: {
-                ...env
-            }
-        })
-        props.mainTable.grantReadWriteData(editUserLambda)
-        editUser.addMethod('POST', new LambdaIntegration(editUserLambda),{
-        });
+        // const editUser = api.root.addResource('editUser');
+        // const editUserLambda = new NodejsFunction(this, 'Edit-User',{
+        //     ...lambdaProps,
+        //     functionName: 'Edit-User',
+        //     entry: path.join(__dirname, '../../src/lambdas/api/editUserHandler.ts'), 
+        //     environment: {
+        //         ...env
+        //     }
+        // })
+        // editUser.addMethod('POST', new LambdaIntegration(editUserLambda));
+        // props.mainTable.grantReadWriteData(editUserLambda)
+
 
         /**
          * /editPost,
          * desc => an endpoint to edit post
          */
-        const editPost = api.root.addResource('editPost');
+        // const editPost = api.root.addResource('editPost');
+        // const editPostLambda = new NodejsFunction(this, 'Edit-Post',{
+        //     ...lambdaProps,
+        //     functionName: 'Edit-Post',
+        //     entry: path.join(__dirname, '../../src/lambdas/api/editPostHandler.ts'), 
+        //     environment: {
+        //         ...env
+        //     }
+        // })
+        // editPost.addMethod('POST', new LambdaIntegration(editPostLambda));
+        // props.mainTable.grantReadWriteData(editPostLambda)
 
-        const editPostLambda = new NodejsFunction(this, 'Edit-Post',{
-            ...lambdaProps,
-            functionName: 'Edit-Post',
-            entry: path.join(__dirname, '../../src/lambdas/api/editPostHandler.ts'), 
-            environment: {
-                ...env
-            }
-        })
-
-        editPost.addMethod('POST', new LambdaIntegration(editPostLambda),{
-        });
-        props.mainTable.grantReadWriteData(editPostLambda)
 
         /**
          * /getUser
          * desc => an endpoint to get User
          */
         const getUser = api.root.addResource('getUser')
-
-        const getUserLambda = new NodejsFunction(this, 'Get-User',{
+        const getUserLambda = new NodejsFunction(this, 'Get-OneUser',{
             ...lambdaProps,
-            functionName: 'Get-User',
+            functionName: 'Get-OneUser',
             entry: path.join(__dirname, '../../src/lambdas/api/getUserById.ts'),
             environment: {
                 ...env
             }
         })
-
-        getUser.addMethod('GET', new LambdaIntegration(getUserLambda),{
-        })
+        getUser.addMethod('GET', new LambdaIntegration(getUserLambda))
         props.mainTable.grantReadData(getUserLambda)
+
+        /**
+         * /editUser
+         * desc => an endpoint to edit user
+         */
+        const editUser = api.root.addResource('editUser')
+        const editUserLambda = new NodejsFunction(this, 'Edit-User',{
+            ...lambdaProps,
+            functionName: 'Edit-User',
+            entry: path.join(__dirname, '../../src/lambdas/api/editUserHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        editUser.addMethod('POST', new LambdaIntegration(editUserLambda))
 
 
          /**
          * /createPost
          * desc => an endpoint to create post
          */
-
          const createPost = api.root.addResource('createPost')
-
          const createPostLambda = new NodejsFunction(this, 'Create-Post',{
             ...lambdaProps,
             functionName: 'Create-Post',
@@ -111,10 +119,25 @@ export class ApiStack extends Stack {
                 ...env
             }
          })
-
-         createPost.addMethod('POST', new LambdaIntegration(createPostLambda), {
-         })
+         createPost.addMethod('POST', new LambdaIntegration(createPostLambda))
          props.mainTable.grantReadWriteData(createPostLambda)
+
+
+         /**
+          * /getPosts
+          * desc => an endpoint to get all posts
+          */
+         const getPosts = api.root.addResource('getPosts')
+         const getPostsLambda = new NodejsFunction(this, 'Get-Posts',{
+            ...lambdaProps,
+            functionName: 'Get-Posts',
+            entry: path.join(__dirname, '../../src/lambdas/api/getPostsHandler.ts'),
+            environment: {
+                ...env
+            }
+         })
+         getPosts.addMethod('GET' ,new LambdaIntegration(getPostsLambda))
+         props.mainTable.grantReadData(getPostsLambda)
         
 
         this.apiUrl = api.url
