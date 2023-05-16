@@ -22,10 +22,10 @@ export const handler: PostConfirmationTriggerHandler = async (event, context, ca
                 Item: {
                     PK: {S: `User#${event.request.userAttributes.sub}`},
                     SK: {S: `User#${event.request.userAttributes.sub}`},
-                    Username: {S: userName},
-                    SignUpTime: {S: signUpTime},
-                    Type: {S: `User#${event.request.userAttributes.sub}`},
-                    ProfilePicture: {S: "https://s3.eu-central-1.amazonaws.com/user.images.bucket/defaultPicture.png"}
+                    username: {S: userName},
+                    signUpTime: {S: signUpTime},
+                    type: {S: `User#${event.request.userAttributes.sub}`},
+                    profilePicture: {S: "https://s3.eu-central-1.amazonaws.com/user.images.bucket/defaultPicture.png"}
                 }
             }
         

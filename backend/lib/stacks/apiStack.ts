@@ -41,40 +41,6 @@ export class ApiStack extends Stack {
         })
 
         /**
-         * /editUser,
-         * desc => an endpoint to edit user
-         */
-        // const editUser = api.root.addResource('editUser');
-        // const editUserLambda = new NodejsFunction(this, 'Edit-User',{
-        //     ...lambdaProps,
-        //     functionName: 'Edit-User',
-        //     entry: path.join(__dirname, '../../src/lambdas/api/editUserHandler.ts'), 
-        //     environment: {
-        //         ...env
-        //     }
-        // })
-        // editUser.addMethod('POST', new LambdaIntegration(editUserLambda));
-        // props.mainTable.grantReadWriteData(editUserLambda)
-
-
-        /**
-         * /editPost,
-         * desc => an endpoint to edit post
-         */
-        // const editPost = api.root.addResource('editPost');
-        // const editPostLambda = new NodejsFunction(this, 'Edit-Post',{
-        //     ...lambdaProps,
-        //     functionName: 'Edit-Post',
-        //     entry: path.join(__dirname, '../../src/lambdas/api/editPostHandler.ts'), 
-        //     environment: {
-        //         ...env
-        //     }
-        // })
-        // editPost.addMethod('POST', new LambdaIntegration(editPostLambda));
-        // props.mainTable.grantReadWriteData(editPostLambda)
-
-
-        /**
          * /getUser
          * desc => an endpoint to get User
          */
@@ -143,8 +109,8 @@ export class ApiStack extends Stack {
          const getPosts = api.root.addResource('getPosts')
          const getPostsLambda = new NodejsFunction(this, 'Get-Posts',{
             ...lambdaProps,
-            functionName: 'Get-Posts',
-            entry: path.join(__dirname, '../../src/lambdas/api/post/getPostsHandler.ts'),
+            functionName: 'Get-UserPosts',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/getAllPostsHandler.ts'),
             environment: {
                 ...env
             }
@@ -155,6 +121,47 @@ export class ApiStack extends Stack {
             // requestValidator: baseRequestValidator
          })
          props.mainTable.grantReadData(getPostsLambda)
+
+
+          /**
+          * /getUserPosts
+          * desc => an endpoint to get user posts
+          */
+         const getUserPosts = api.root.addResource('getPostsUser')
+         const getUserPostsLambda = new NodejsFunction(this, 'Get-PostsUser', {
+            ...lambdaProps,
+            functionName: 'Get-PostsUser',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/getUserPostsHandler.ts'),
+            environment: {
+                ...env
+            }
+         })
+         getUserPosts.addMethod('GET', new LambdaIntegration(getUserPostsLambda),{
+            authorizationType: AuthorizationType.COGNITO,
+            authorizer: auth
+         })
+         props.mainTable.grantReadData(getUserPostsLambda)
+         
+
+
+          /**
+          * /deletePost
+          * desc => an endpoint to get delete post
+          */
+         const deletePost = api.root.addResource('deletePost')
+         const deletePostLambda = new NodejsFunction(this, 'Delete-Post', {
+            ...lambdaProps,
+            functionName: 'Delete-Post',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/deletePostHandler.ts'),
+            environment: {
+                ...env
+            }
+         })
+         deletePost.addMethod('DELETE', new LambdaIntegration(deletePostLambda),{
+            authorizationType: AuthorizationType.COGNITO,
+            authorizer: auth
+         })
+         props.mainTable.grantReadWriteData(deletePostLambda)
         
         this.apiUrl = api.url
     }

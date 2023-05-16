@@ -14,7 +14,8 @@ export interface PostItem extends EntityData {
 }
 
 export interface PostData extends EntityInputData {
-  sub: string
+  sub?: string
+  username?: string
 }
 
 export class Post extends Entity {
@@ -26,7 +27,7 @@ export class Post extends Entity {
   }
 
   private key (): void {
-    this.keys.PK = `User#${this.data.sub}`
-    this.keys.SK = `Post#${this.id}`
+    this.keys.PK = 'Post'
+    this.keys.SK = `Post#${this.data.username}`
   }
 }

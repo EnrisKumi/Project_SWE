@@ -27,6 +27,14 @@ export class DynamoDBStack extends Stack {
             timeToLiveAttribute: 'ttl'
         })
 
+        // mainTable.addGlobalSecondaryIndex({
+        //     partitionKey: {
+        //         name: 'PK',
+        //         type: AttributeType.STRING
+        //     },
+        //     indexName: 'Post'
+        // })
+
         this.mainTable = mainTable
     }
 }

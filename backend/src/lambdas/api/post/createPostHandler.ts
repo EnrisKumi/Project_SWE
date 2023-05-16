@@ -36,14 +36,14 @@ export const handler:APIGatewayProxyHandler =async (event, context, callback) =>
 
         const postInstance = new Post({
             sub: claims?.sub,
-            Username: username,
-            Description: description,
-            Status: status,
-            Tags: tags,
-            Date: date.toISOString(),
-            StartTime: startTime,
-            Limit: limit,
-            Location: location,
+            username: username,
+            description: description,
+            status: status,
+            tags: tags,
+            date: date.toISOString(),
+            startTime: startTime,
+            limit: limit,
+            location: location,
         })
 
         await postInstance.save()

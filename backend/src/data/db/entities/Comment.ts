@@ -4,6 +4,7 @@ import { EntityData, EntityInputData } from "../../../packages/entityInterfaces"
 export interface CommentItem extends EntityData {
     text: string
     username: string
+    profilePicture: string
 }
 
 export interface CommentData extends EntityInputData {
