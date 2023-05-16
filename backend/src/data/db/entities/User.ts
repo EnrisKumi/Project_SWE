@@ -1,5 +1,10 @@
 import { Entity } from "../../../packages";
-import { EntityInputData } from "../../../packages/entityInterfaces";
+import { EntityData, EntityInputData } from "../../../packages/entityInterfaces";
+
+export interface UserItem extends EntityData { 
+    location: string,
+    bio: string
+}
 
 export interface UserData extends EntityInputData  {
     id: string

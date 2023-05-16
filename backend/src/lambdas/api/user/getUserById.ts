@@ -1,8 +1,9 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
-import { gwError } from "../../../lib/utils/gwError";
-import { getUserById } from "../../data/user/getUserById";
-import { parseGwEvent } from "../../../lib/utils/parseGwEvent";
-import { gwResponse } from "../../../lib/utils/gwResponse";
+import { parseGwEvent } from "../../../../lib/utils/parseGwEvent";
+import { getUserById } from "../../../data/user/getUserById";
+import { gwResponse } from "../../../../lib/utils/gwResponse";
+import { gwError } from "../../../../lib/utils/gwError";
+
 
 export const handler: APIGatewayProxyHandler = async (event) => {
     const { claims } = parseGwEvent(event)

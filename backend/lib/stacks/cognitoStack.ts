@@ -1,4 +1,4 @@
-import { Duration, RemovalPolicy, Stack, StackProps } from "aws-cdk-lib";
+import { CfnOutput, Duration, RemovalPolicy, Stack, StackProps } from "aws-cdk-lib";
 import { AccountRecovery, UserPool, UserPoolOperation, VerificationEmailStyle } from "aws-cdk-lib/aws-cognito";
 import { Table } from "aws-cdk-lib/aws-dynamodb";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
@@ -13,7 +13,7 @@ export interface CognitoStackProps extends StackProps{
 }
 
 export class CognitoStack extends Stack{
-    userPool: UserPool;
+    public readonly userPool: UserPool;
     constructor(scope: Construct, id: string, props: CognitoStackProps){
         super(scope, id, props)
 

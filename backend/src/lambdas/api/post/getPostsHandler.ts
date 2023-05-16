@@ -1,10 +1,8 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
-import { gwError } from "../../../lib/utils/gwError";
-import { parseGwEvent } from "../../../lib/utils/parseGwEvent";
-import { dynamoDBClient } from "../../clients/AWS";
-import { QueryCommand, QueryCommandInput } from "@aws-sdk/lib-dynamodb";
-import { gwResponse } from "../../../lib/utils/gwResponse";
-import { Post } from "../../data/db/entities/Post";
+import { parseGwEvent } from "../../../../lib/utils/parseGwEvent";
+import { Post } from "../../../data/db/entities/Post";
+import { gwResponse } from "../../../../lib/utils/gwResponse";
+import { gwError } from "../../../../lib/utils/gwError";
 
 
 export const handler: APIGatewayProxyHandler = async (event) => {

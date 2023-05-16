@@ -1,4 +1,4 @@
-import { Stack, StackProps } from "aws-cdk-lib"
+import { CfnOutput, Stack, StackProps } from "aws-cdk-lib"
 import { AuthorizationType, CognitoUserPoolsAuthorizer, Cors, LambdaIntegration, RequestValidator, RestApi } from "aws-cdk-lib/aws-apigateway"
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs"
 import { Construct } from "constructs"
@@ -28,10 +28,10 @@ export class ApiStack extends Stack {
             }
         })
 
-        // const auth = new CognitoUserPoolsAuthorizer(this, 'CogntioAuth', {
-        //     authorizerName: 'CognitoAuth',
-        //     cognitoUserPools: [props.userPool]
-        // })
+        const auth = new CognitoUserPoolsAuthorizer(this, 'CogntioAuth', {
+            authorizerName: 'CognitoAuth',
+            cognitoUserPools: [props.userPool]
+        })
 
         const baseRequestValidator = new RequestValidator(this, 'RequestBodyAndParamsValidator',{
             restApi: api,
@@ -82,12 +82,16 @@ export class ApiStack extends Stack {
         const getUserLambda = new NodejsFunction(this, 'Get-OneUser',{
             ...lambdaProps,
             functionName: 'Get-OneUser',
-            entry: path.join(__dirname, '../../src/lambdas/api/getUserById.ts'),
+            entry: path.join(__dirname, '../../src/lambdas/api/user/getUserById.ts'),
             environment: {
                 ...env
             }
         })
-        getUser.addMethod('GET', new LambdaIntegration(getUserLambda))
+        getUser.addMethod('GET', new LambdaIntegration(getUserLambda),{
+            authorizationType: AuthorizationType.COGNITO,
+            authorizer: auth,
+            // requestValidator: baseRequestValidator
+        })
         props.mainTable.grantReadData(getUserLambda)
 
         /**
@@ -98,12 +102,17 @@ export class ApiStack extends Stack {
         const editUserLambda = new NodejsFunction(this, 'Edit-User',{
             ...lambdaProps,
             functionName: 'Edit-User',
-            entry: path.join(__dirname, '../../src/lambdas/api/editUserHandler.ts'),
+            entry: path.join(__dirname, '../../src/lambdas/api/user/editUserHandler.ts'),
             environment: {
                 ...env
             }
         })
-        editUser.addMethod('POST', new LambdaIntegration(editUserLambda))
+        editUser.addMethod('POST', new LambdaIntegration(editUserLambda),{
+            authorizationType: AuthorizationType.COGNITO,
+            authorizer: auth,
+            // requestValidator: baseRequestValidator
+        })
+        props.mainTable.grantReadWriteData(editUserLambda)
 
 
          /**
@@ -114,12 +123,16 @@ export class ApiStack extends Stack {
          const createPostLambda = new NodejsFunction(this, 'Create-Post',{
             ...lambdaProps,
             functionName: 'Create-Post',
-            entry: path.join(__dirname, '../../src/lambdas/api/createPostHandler.ts'),
+            entry: path.join(__dirname, '../../src/lambdas/api/post/createPostHandler.ts'),
             environment: {
                 ...env
             }
          })
-         createPost.addMethod('POST', new LambdaIntegration(createPostLambda))
+         createPost.addMethod('POST', new LambdaIntegration(createPostLambda),{
+            authorizationType: AuthorizationType.COGNITO,
+            authorizer: auth,
+            // requestValidator: baseRequestValidator
+         })
          props.mainTable.grantReadWriteData(createPostLambda)
 
 
@@ -131,15 +144,18 @@ export class ApiStack extends Stack {
          const getPostsLambda = new NodejsFunction(this, 'Get-Posts',{
             ...lambdaProps,
             functionName: 'Get-Posts',
-            entry: path.join(__dirname, '../../src/lambdas/api/getPostsHandler.ts'),
+            entry: path.join(__dirname, '../../src/lambdas/api/post/getPostsHandler.ts'),
             environment: {
                 ...env
             }
          })
-         getPosts.addMethod('GET' ,new LambdaIntegration(getPostsLambda))
+         getPosts.addMethod('GET' ,new LambdaIntegration(getPostsLambda),{
+            authorizationType: AuthorizationType.COGNITO,
+            authorizer: auth,
+            // requestValidator: baseRequestValidator
+         })
          props.mainTable.grantReadData(getPostsLambda)
         
-
         this.apiUrl = api.url
     }
 }
