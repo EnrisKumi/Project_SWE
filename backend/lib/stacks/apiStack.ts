@@ -162,6 +162,22 @@ export class ApiStack extends Stack {
             authorizer: auth
          })
          props.mainTable.grantReadWriteData(deletePostLambda)
+
+
+
+         const join = api.root.addResource('join')
+         const joinLambda = new NodejsFunction(this, 'join-Post', {
+            ...lambdaProps,
+            functionName: 'join-Post',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/joinEventHandler.ts'),
+            environment: {
+                ...env
+            }
+         })
+         join.addMethod('GET', new LambdaIntegration(joinLambda),{
+            authorizationType: AuthorizationType.COGNITO,
+            authorizer: auth
+         })
         
         this.apiUrl = api.url
     }
