@@ -7,11 +7,16 @@ import { CognitoStack } from '../lib/stacks/cognitoStack';
 import { S3Stack } from '../lib/stacks/s3Stack';
 import { DynamoDBStack } from '../lib/stacks/dynamodbStack';
 import { ApiStack } from '../lib/stacks/apiStack';
+import { CICDStack } from '../lib/stacks/cicdStack';
 
 
 const app = new App();
 
 const s3Stack = new S3Stack(app, 'S3Stack', {
+    env
+})
+
+const cicdStack = new CICDStack(app, 'CICDStack', {
     env
 })
 
