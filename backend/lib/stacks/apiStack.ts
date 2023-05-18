@@ -40,144 +40,110 @@ export class ApiStack extends Stack {
             validateRequestParameters: true
         })
 
+        const user = api.root.addResource('user')
+
         /**
-         * /getUser
-         * desc => an endpoint to get User
+         * get all users
          */
-        const getUser = api.root.addResource('getUser')
-        const getUserLambda = new NodejsFunction(this, 'Get-OneUser',{
+        const getAllUsers = user.addResource('getAllUsers')
+        const getAllUsersLambda = new NodejsFunction(this, 'Get-All-Users',{
             ...lambdaProps,
-            functionName: 'Get-OneUser',
-            entry: path.join(__dirname, '../../src/lambdas/api/user/getUserById.ts'),
+            functionName: 'Get-All-Users',
+            entry: path.join(__dirname, '../../src/lambdas/api/user/getUsersHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        getAllUsers.addMethod('GET', new LambdaIntegration(getAllUsersLambda), {
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
+
+        /**
+         * get one user
+         */
+        const getUser = user.addResource('getUser')
+        const getUserLambda = new NodejsFunction(this, 'Get-User',{
+            ...lambdaProps,
+            functionName: 'Get-User',
+            entry: path.join(__dirname, '../../src/lambdas/api/user/getOneUserHandler.ts'),
             environment: {
                 ...env
             }
         })
         getUser.addMethod('GET', new LambdaIntegration(getUserLambda),{
-            authorizationType: AuthorizationType.COGNITO,
             authorizer: auth,
-            // requestValidator: baseRequestValidator
+            authorizationType: AuthorizationType.COGNITO
         })
-        props.mainTable.grantReadData(getUserLambda)
 
         /**
-         * /editUser
-         * desc => an endpoint to edit user
+         * check user exists
          */
-        const editUser = api.root.addResource('editUser')
-        const editUserLambda = new NodejsFunction(this, 'Edit-User',{
+        const checkUserExists = user.addResource('checkUserExists')
+        const checkUserExistsLambda = new NodejsFunction(this, 'Check-User-Exists',{
             ...lambdaProps,
-            functionName: 'Edit-User',
-            entry: path.join(__dirname, '../../src/lambdas/api/user/editUserHandler.ts'),
+            functionName: 'Check-User-Exists',
+            entry: path.join(__dirname, '../../src/lambdas/api/user/checkIfUserExistsHandler.ts'),
             environment: {
                 ...env
             }
         })
-        editUser.addMethod('POST', new LambdaIntegration(editUserLambda),{
-            authorizationType: AuthorizationType.COGNITO,
+        checkUserExists.addMethod('POST', new LambdaIntegration(checkUserExistsLambda),{
             authorizer: auth,
-            // requestValidator: baseRequestValidator
+            authorizationType: AuthorizationType.COGNITO
         })
-        props.mainTable.grantReadWriteData(editUserLambda)
 
-
-         /**
-         * /createPost
-         * desc => an endpoint to create post
+        /**
+         * get cognito user by id
          */
-         const createPost = api.root.addResource('createPost')
-         const createPostLambda = new NodejsFunction(this, 'Create-Post',{
+        const getCognitoUserById = user.addResource('getCognitoUserById')
+        const getCognitoUserByIdLambda = new NodejsFunction(this, 'Get-Cognito-User-By-Id',{
             ...lambdaProps,
-            functionName: 'Create-Post',
-            entry: path.join(__dirname, '../../src/lambdas/api/post/createPostHandler.ts'),
+            functionName: 'Get-Cognito-User-By-Id',
+            entry: path.join(__dirname, '../../src/lambdas/api/user/getCognitoUserHandler.ts'),
             environment: {
                 ...env
             }
-         })
-         createPost.addMethod('POST', new LambdaIntegration(createPostLambda),{
-            authorizationType: AuthorizationType.COGNITO,
+        })
+        getCognitoUserById.addMethod('GET', new LambdaIntegration(getCognitoUserByIdLambda),{
             authorizer: auth,
-            // requestValidator: baseRequestValidator
-         })
-         props.mainTable.grantReadWriteData(createPostLambda)
+            authorizationType: AuthorizationType.COGNITO
+        })
 
-
-         /**
-          * /getPosts
-          * desc => an endpoint to get all posts
-          */
-         const getPosts = api.root.addResource('getPosts')
-         const getPostsLambda = new NodejsFunction(this, 'Get-Posts',{
+        /**
+         * delete user
+         */
+        const deleteUser = user.addResource('deleteUser')
+        const deleteUserLambda = new NodejsFunction(this, 'Delete-User',{
             ...lambdaProps,
-            functionName: 'Get-UserPosts',
-            entry: path.join(__dirname, '../../src/lambdas/api/post/getAllPostsHandler.ts'),
+            functionName: 'Delete-User',
+            entry: path.join(__dirname, '../../src/lambdas/api/user/deleteUserHandler.ts'),
             environment: {
                 ...env
             }
-         })
-         getPosts.addMethod('GET' ,new LambdaIntegration(getPostsLambda),{
-            authorizationType: AuthorizationType.COGNITO,
+        })
+        deleteUser.addMethod('DELETE', new LambdaIntegration(deleteUserLambda),{
             authorizer: auth,
-            // requestValidator: baseRequestValidator
-         })
-         props.mainTable.grantReadData(getPostsLambda)
+            authorizationType: AuthorizationType.COGNITO
+        })
 
-
-          /**
-          * /getUserPosts
-          * desc => an endpoint to get user posts
-          */
-         const getUserPosts = api.root.addResource('getPostsUser')
-         const getUserPostsLambda = new NodejsFunction(this, 'Get-PostsUser', {
+        /**
+         * update user
+         */
+        const updateUser = user.addResource('updateUser')
+        const updateUserLambda = new NodejsFunction(this, 'Update-Lambda',{
             ...lambdaProps,
-            functionName: 'Get-PostsUser',
-            entry: path.join(__dirname, '../../src/lambdas/api/post/getUserPostsHandler.ts'),
+            functionName: 'Update-User',
+            entry: path.join(__dirname, '../../src/lambdas/api/user/updateUserHandler.ts'),
             environment: {
                 ...env
             }
-         })
-         getUserPosts.addMethod('GET', new LambdaIntegration(getUserPostsLambda),{
-            authorizationType: AuthorizationType.COGNITO,
-            authorizer: auth
-         })
-         props.mainTable.grantReadData(getUserPostsLambda)
-         
+        })
+        updateUser.addMethod('PATCH', new LambdaIntegration(updateUserLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
-
-          /**
-          * /deletePost
-          * desc => an endpoint to get delete post
-          */
-         const deletePost = api.root.addResource('deletePost')
-         const deletePostLambda = new NodejsFunction(this, 'Delete-Post', {
-            ...lambdaProps,
-            functionName: 'Delete-Post',
-            entry: path.join(__dirname, '../../src/lambdas/api/post/deletePostHandler.ts'),
-            environment: {
-                ...env
-            }
-         })
-         deletePost.addMethod('DELETE', new LambdaIntegration(deletePostLambda),{
-            authorizationType: AuthorizationType.COGNITO,
-            authorizer: auth
-         })
-         props.mainTable.grantReadWriteData(deletePostLambda)
-
-
-
-         const join = api.root.addResource('join')
-         const joinLambda = new NodejsFunction(this, 'join-Post', {
-            ...lambdaProps,
-            functionName: 'join-Post',
-            entry: path.join(__dirname, '../../src/lambdas/api/post/joinEventHandler.ts'),
-            environment: {
-                ...env
-            }
-         })
-         join.addMethod('GET', new LambdaIntegration(joinLambda),{
-            authorizationType: AuthorizationType.COGNITO,
-            authorizer: auth
-         })
         
         this.apiUrl = api.url
     }

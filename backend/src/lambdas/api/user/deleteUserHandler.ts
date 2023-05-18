@@ -1,16 +1,16 @@
-// const connectToDatabase = require('../../database/db');
-// const User = require('../../models/User');
+import { connectDataBase } from "../../../data/db/connection";
+import { User } from "../../../data/models/User";
 
 module.exports.deleteUser = async (event: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
     const id = event.pathParameters.id;
   
     try {
-    //   await connectToDatabase();
-    //   const user = await User.findByIdAndRemove(id);
-    //   if (!user) {
-    //     callback(null, (404, `No user found with id: ${id}, cannot delete`));
-    //   }
+      await connectDataBase()
+      const user = await User.findByIdAndRemove(id);
+      if (!user) {
+        throw new Error(`No user found with id: ${id}, cannot delete`);
+      }
       return {
         headers: {
           "Content-Type" : "application/json",
@@ -20,10 +20,10 @@ module.exports.deleteUser = async (event: any, context: any) => {
           "Access-Control-Allow-Headers" : "*"
       },
         statusCode: 200,
-        // body: JSON.stringify({
-        //   message: `Removed user with id: ${user._id}`,
-        //   user,
-        // }),
+        body: JSON.stringify({
+          message: `Removed user with id: ${user._id}`,
+          user,
+        }),
       };
     } catch (error) {
       return(error);

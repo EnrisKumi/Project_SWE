@@ -1,14 +1,13 @@
-const connectToDatabase = require('../../database/db');
-const User = require('../../models/User');
+import { connectDataBase } from "../../../data/db/connection";
+import { User } from "../../../data/models/User";
 
-
-module.exports.getUserByCognitoId = async (event: any, context: any, callback: any) => {
+export const getUserByCognitoId = async (event: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
     const cognitoId = event.pathParameters.cognitoId;     
     console.log(cognitoId , " id here");
   
     try {
-      await connectToDatabase();
+      await connectDataBase()
       const user = await User.findOne(
         {userCognitoId : cognitoId}
         )

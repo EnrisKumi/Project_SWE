@@ -1,17 +1,16 @@
-// const connectToDatabase = require('../../database/db');
-// const User = require('../../models/User');
+import { connectDataBase } from "../../../data/db/connection";
+import { User } from "../../../data/models/User";
 
-
-module.exports.getUsers = async (event: any, callback: any, context: any) => {
+export const handler = async (callback: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
     try {
-        // await connectToDatabase();
-        // const users = await User.find();
-        // if (!users) {
-        //     callback(null, (404, 'No Users Found.'));
-        // }
+        const a = await connectDataBase()
+        const users = await User.find()
+        if (!users) {
+            callback(null, ('No Users Found.'));
+        }
 
-        callback(null, {
+        const response = {
             headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
@@ -20,8 +19,10 @@ module.exports.getUsers = async (event: any, callback: any, context: any) => {
                 "Access-Control-Allow-Headers": "*"
             },
             statusCode: 200,
-            body: JSON.stringify('users'),
-        });
+            body: JSON.stringify(users),
+        }
+
+        return response
     } catch (error) {
         return(error);
     }

@@ -1,11 +1,11 @@
-// const connectToDatabase = require('../../database/db');
-// const User = require('../../models/User');
+import { connectDataBase } from "../../../data/db/connection";
+import { User } from "../../../data/models/User";
 
-module.exports.updateUser = async (event: any, context: any) => {
+export const updateUser = async (event: any, context: any) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   try {
-    await connectToDatabase();
+    await connectDataBase()
 
     const reqBody = JSON.parse(event.body);
 

@@ -31,6 +31,7 @@
     "constructs": "^10.0.0",
     "dotenv": "^16.0.3",
     "moment": "^2.29.4",
+    "mongoose": "^7.1.1",
     "path": "^0.12.7",
     "source-map-support": "^0.5.21",
     "ulid": "^2.3.0",
