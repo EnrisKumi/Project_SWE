@@ -1,13 +1,52 @@
+
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue","Poppins"
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #f4f4f4;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.css-1801f5r {
+  background-color: rgb(245 242 242 / 60%) !important;
+}
+.MuiButtonBase-root {
+  text-transform: capitalize !important;
+}
+
+.css-1801f5r {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  min-height: 12vh;
+  max-height: fit-content;
+  display: flex;
+  flex-direction: column;
+}
+
+.css-15d7oug-MuiStack-root {
+  margin-top: auto;
+}
+.css-1oqqzyl-MuiContainer-root {
+  margin-top: auto;
+}
+
+.css-ahj2mt-MuiTypography-root {
+  text-transform: capitalize;
+}
+
+.error {
+  color: red;
+  background: pink;
+  border: 1px solid red;
+  border-radius: 4px;
+  padding: 8px;
+  margin: 10px 0;
 }

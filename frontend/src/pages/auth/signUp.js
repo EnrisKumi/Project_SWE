@@ -39,6 +39,7 @@ export default function SignUp() {
           signup(username,email,password);
           if(error==null){
             navigate('/confirmSignup');
+            
           }
         }
         console.log('Passwords do not match')

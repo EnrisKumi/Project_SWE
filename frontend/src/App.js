@@ -2,7 +2,6 @@ import './App.css';
 import { BrowserRouter, Route, Routes,Navigate} from 'react-router-dom'
 import { useAuthContext } from './hooks/auth/useAuthContext'
 
-import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import {Amplify} from 'aws-amplify'
 import awsconfig from './aws-exports'
@@ -14,8 +13,6 @@ import ForgotPassword from './pages/auth/forgotPassword'
 
 
 Amplify.configure(awsconfig);
-
-
 
 function App() {
 

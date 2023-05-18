@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState} from 'react'
 import { useAuthContext } from './useAuthContext'
 import { Auth} from "aws-amplify";
 
 export const useLogin = () => {
-  
+
   const [error, setError] = useState(null)
   const [isPending, setIsPending] = useState(false)
   const { dispatch } = useAuthContext()
@@ -18,7 +18,7 @@ export const useLogin = () => {
 
       // dispatch login action
       dispatch({ type: 'LOGIN', payload: user })
-
+      
         setIsPending(false)
         setError(null)
 
