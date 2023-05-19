@@ -264,7 +264,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        addSport.addMethod('POST', new LambdaIntegration(addSportLambda))
+        addSport.addMethod('POST', new LambdaIntegration(addSportLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * delete sport
@@ -278,7 +281,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        deleteSport.addMethod('DELETE', new LambdaIntegration(deleteSportLambda))
+        deleteSport.addMethod('DELETE', new LambdaIntegration(deleteSportLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get one sport
@@ -292,7 +298,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        getOneSport.addMethod('GET', new LambdaIntegration(getOneSportLambda))
+        getOneSport.addMethod('GET', new LambdaIntegration(getOneSportLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get sports
@@ -306,7 +315,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        getSports.addMethod('GET', new LambdaIntegration(getSportsLambda))
+        getSports.addMethod('GET', new LambdaIntegration(getSportsLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
     
         
 
