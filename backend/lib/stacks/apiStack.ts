@@ -249,6 +249,67 @@ export class ApiStack extends Stack {
             authorizationType: AuthorizationType.COGNITO
         })
 
+
+        const sport = api.root.addResource('sport')
+
+        /**
+         * add sport
+         */
+        const addSport = sport.addResource('addSport')
+        const addSportLambda = new NodejsFunction(this, 'Add-Sport',{
+            ...lambdaProps,
+            functionName: 'Add-Sport',
+            entry: path.join(__dirname, '../../src/lambdas/api/sports/addSportHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        addSport.addMethod('POST', new LambdaIntegration(addSportLambda))
+
+        /**
+         * delete sport
+         */
+        const deleteSport = sport.addResource('deleteSport')
+        const deleteSportLambda = new NodejsFunction(this, 'Delete-Sport', {
+            ...lambdaProps,
+            functionName: 'Delete-Sport',
+            entry: path.join(__dirname, '../../src/lambdas/api/sports/deleteSportHanlder.ts'),
+            environment: {
+                ...env
+            }
+        })
+        deleteSport.addMethod('DELETE', new LambdaIntegration(deleteSportLambda))
+
+        /**
+         * get one sport
+         */
+        const getOneSport = sport.addResource('getOneSport')
+        const getOneSportLambda = new NodejsFunction(this, 'Get-One-Sport',{
+            ...lambdaProps,
+            functionName: 'Get-One-Sport',
+            entry: path.join(__dirname, '../../src/lambdas/api/sports/getOneSportHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        getOneSport.addMethod('GET', new LambdaIntegration(getOneSportLambda))
+
+        /**
+         * get sports
+         */
+        const getSports = sport.addResource('getSports')
+        const getSportsLambda = new NodejsFunction(this, 'Get-Sports', {
+            ...lambdaProps,
+            functionName: 'Get-Sports',
+            entry: path.join(__dirname, '../../src/lambdas/api/sports/getSportsHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        getSports.addMethod('GET', new LambdaIntegration(getSportsLambda))
+    
+        
+
         
         this.apiUrl = api.url
     }
