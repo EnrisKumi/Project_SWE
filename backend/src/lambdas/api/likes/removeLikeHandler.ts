@@ -1,15 +1,14 @@
-const connectToDatabase = require("../../database/db");           //TODO --------serverless handler
-const User = require("../../models/User");
-const Post = require("../../models/Post");
+import { connectDataBase } from "../../../data/db/connection";
+import { Post } from "../../../data/models/Post";
 
-module.exports.removeLike = async(event, context, callback) =>{
+export const removeLike = async(event: any, context: any) =>{
 
     context.callbackWaitsForEmptyEventLoop = false;
     const userId = event.pathParameters.userId;
     const postId = event.pathParameters.postId;
 
     try {
-        await connectToDatabase();
+        await connectDataBase()
 
         const likePost = await Post.findOneAndUpdate(
             { _id: postId },

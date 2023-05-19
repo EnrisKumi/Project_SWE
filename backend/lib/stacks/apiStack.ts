@@ -435,6 +435,20 @@ export class ApiStack extends Stack {
             }
         })
         getLikes.addMethod('GET', new LambdaIntegration(getLikesLambda))
+
+        /**
+         * remove like
+         */
+        const removeLike = like.addResource('removeLike')
+        const removeLikeLambda = new NodejsFunction(this, 'Remove-Like',{
+            ...lambdaProps,
+            functionName: 'Remove-Like',
+            entry: path.join(__dirname, '../../src/lambdas/api/likes/removeLikeHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        removeLike.addMethod('GET', new LambdaIntegration(removeLikeLambda))
     
         
 
