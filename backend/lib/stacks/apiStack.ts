@@ -319,6 +319,65 @@ export class ApiStack extends Stack {
             authorizer: auth,
             authorizationType: AuthorizationType.COGNITO
         })
+
+
+        const location = api.root.addResource('location')
+
+        /**
+         * add location
+         */
+        const addLocation = location.addResource('addLocation')
+        const addLocationLambda = new NodejsFunction(this, 'Add-Location',{
+            ...lambdaProps,
+            functionName: 'Add-Location',
+            entry: path.join(__dirname, '../../src/lambdas/api/locations/addLocationHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        addLocation.addMethod('POST', new LambdaIntegration(addLocationLambda))
+
+        /**
+         * delete location
+         */
+        const deleteLocation = location.addResource('deleteLocation')
+        const deleteLocationLambda = new NodejsFunction(this, 'Delete-Location',{
+            ...lambdaProps,
+            functionName: 'Delete-Location',
+            entry: path.join(__dirname, '../../src/lambdas/api/locations/deleteLocationHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        deleteLocation.addMethod('DELETE', new LambdaIntegration(deleteLocationLambda))
+
+        /**
+         * get locations
+         */
+        const getLocations = location.addResource('getLocations')
+        const getLocationsLambda = new NodejsFunction(this, 'Get-Locations',{
+            ...lambdaProps,
+            functionName: 'Get-Locations',
+            entry: path.join(__dirname, '../../src/lambdas/api/locations/getLocationsHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        getLocations.addMethod('GET', new LambdaIntegration(getLocationsLambda))
+
+        /**
+         * get location
+         */
+        const getLocation = location.addResource('getLocation')
+        const getLocationLambda = new NodejsFunction(this, 'Get-Location',{
+            ...lambdaProps,
+            functionName: 'Get-Location',
+            entry: path.join(__dirname, '../../src/lambdas/api/locations/getOneLocationHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        getLocation.addMethod('GET', new LambdaIntegration(getLocationLambda))
     
         
 
