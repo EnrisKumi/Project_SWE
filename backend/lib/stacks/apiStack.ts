@@ -406,7 +406,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        addLike.addMethod('GET', new LambdaIntegration(addLikeLambda))
+        addLike.addMethod('GET', new LambdaIntegration(addLikeLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * check if liked post
@@ -420,7 +423,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        checkIfLiked.addMethod('GET', new LambdaIntegration(checkIfLikedLambda))
+        checkIfLiked.addMethod('GET', new LambdaIntegration(checkIfLikedLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get likes
@@ -434,7 +440,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        getLikes.addMethod('GET', new LambdaIntegration(getLikesLambda))
+        getLikes.addMethod('GET', new LambdaIntegration(getLikesLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * remove like
@@ -448,7 +457,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        removeLike.addMethod('GET', new LambdaIntegration(removeLikeLambda))
+        removeLike.addMethod('GET', new LambdaIntegration(removeLikeLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
     
         
 
