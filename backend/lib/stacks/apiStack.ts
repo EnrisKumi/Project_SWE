@@ -407,6 +407,20 @@ export class ApiStack extends Stack {
             }
         })
         addLike.addMethod('GET', new LambdaIntegration(addLikeLambda))
+
+        /**
+         * check if liked post
+         */
+        const checkIfLiked = like.addResource('checkIfLiked')
+        const checkIfLikedLambda = new NodejsFunction(this, 'Check-If-Liked',{
+            ...lambdaProps,
+            functionName: 'Check-If-Liked',
+            entry: path.join(__dirname, '../../src/lambdas/api/likes/checkIfLikedHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        checkIfLiked.addMethod('GET', new LambdaIntegration(checkIfLikedLambda))
     
         
 
