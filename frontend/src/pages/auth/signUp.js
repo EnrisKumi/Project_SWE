@@ -14,7 +14,6 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { ThemeProvider } from '@mui/material/styles';
 import { useSignup } from '../../hooks/auth/useSignUp';
-import { useNavigate } from 'react-router-dom';
 import { Divider } from "@mui/material";
 
 
@@ -37,17 +36,14 @@ export default function SignUp() {
     const [showPassword2, setShowPassword2] = useState(false);
     
 
-    const {signup,isPending,error}= useSignup();
-    const navigate = useNavigate();
+  const {signup,isPending,error}= useSignup();
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         if(password===confirmPassword){
           signup(username,email,password);
-          if(error==='confirm'){
-            navigate('/confirmSignup');
-          }
         }else{
           setConfirmPasswordError('Passwords do not match!')
         }
