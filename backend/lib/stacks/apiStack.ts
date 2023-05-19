@@ -335,7 +335,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        addLocation.addMethod('POST', new LambdaIntegration(addLocationLambda))
+        addLocation.addMethod('POST', new LambdaIntegration(addLocationLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * delete location
@@ -349,7 +352,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        deleteLocation.addMethod('DELETE', new LambdaIntegration(deleteLocationLambda))
+        deleteLocation.addMethod('DELETE', new LambdaIntegration(deleteLocationLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get locations
@@ -363,7 +369,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        getLocations.addMethod('GET', new LambdaIntegration(getLocationsLambda))
+        getLocations.addMethod('GET', new LambdaIntegration(getLocationsLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get location
@@ -377,7 +386,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        getLocation.addMethod('GET', new LambdaIntegration(getLocationLambda))
+        getLocation.addMethod('GET', new LambdaIntegration(getLocationLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
     
         
 
