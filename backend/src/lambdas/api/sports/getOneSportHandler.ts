@@ -1,16 +1,16 @@
-const connectToDatabase = require("../../database/db");
-const SportsTag = require('../../models/SportsTag');
+import { connectDataBase } from "../../../data/db/connection";
+import { SportsTag } from "../../../data/models/SportsTag";
 
-module.exports.getOneSport = async (event, context, callback) => {
+export const getOneSport = async (event: any, context:any) => {
     context.callbackWaitsForEmptyEventLoop = false;
     const id = event.pathParameters.id;
   
     try {
-      await connectToDatabase();
+      await connectDataBase()
       const sports = await SportsTag.findById(id);
   
       if (!sports) {
-        callback(null, (404, `No sport found with id: ${id}`));
+        throw new Error(`No sport found with id: ${id}`);
       }
   
       return {

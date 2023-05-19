@@ -1,16 +1,16 @@
-const connectToDatabase = require("../../database/db");
-const SportsTag = require('../../models/SportsTag');
+import { connectDataBase } from "../../../data/db/connection";
+import { SportsTag } from "../../../data/models/SportsTag";
 
-module.exports.getSports = async (event, context, callback) => {
+export const getSports = async (event: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
     try {
-      await connectToDatabase();
+      await connectDataBase()
       const sports = await SportsTag.find();
       if (!sports) {
-        callback(null, (404, 'No sports Found.'));   
+        throw new Error('No sports Found.');   
       }
   
-      callback(null, {
+      return {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
@@ -20,7 +20,7 @@ module.exports.getSports = async (event, context, callback) => {
         },
         statusCode: 200,
         body: JSON.stringify(sports),
-      });
+      };
     } catch (error) {
       return(error);
     }
