@@ -20,7 +20,7 @@ export const useSignup = () => {
       dispatch({ type: 'CONFIRM_SIGNUP', payload:{username:username,confirm:false} })
 
         setIsPending(false)
-        setError(null)
+        setError('confirm')
     } 
     catch(err) {
         setError(err.message)

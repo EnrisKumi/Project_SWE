@@ -3,6 +3,10 @@ import { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
@@ -16,11 +20,10 @@ import { useLogin } from '../../hooks/auth/useLogin';
 import { myTheme } from "../../theme/theme";
 
 import Football from "../../icons/Football.png";
-import logosign from "../../icons/logosign.png";
 
 import './authenticationStyle.css'
 
-
+import { Divider } from "@mui/material";
 
 
 export default function Login() {
@@ -37,6 +40,7 @@ export default function Login() {
       };
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
+
     const handleMouseDownPassword = (event) => {
       event.preventDefault();
     };
@@ -91,7 +95,8 @@ export default function Login() {
               type={showPassword ? 'text' : 'password'}
               placeholder="password"
               autoComplete="current-password"
-              endAdornment={
+              InputProps={{
+              endAdornment:(
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
@@ -101,12 +106,14 @@ export default function Login() {
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
-                </InputAdornment>
-              }
+                </InputAdornment>),
+              }}
               onChange={(e) => setPassword(e.target.value)} 
               value={password} 
             />
             {error && <div className='error'>{error}</div>} 
+
+            <Divider sx={{ width: 1, marginTop: 3, fontWeight: 200 }}></Divider>
           
             <Button
               type="submit"

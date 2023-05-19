@@ -1,19 +1,28 @@
 import * as React from 'react';
 import { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Divider } from "@mui/material";
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {ThemeProvider } from '@mui/material/styles';
 import { Auth} from "aws-amplify";
 import { useNavigate } from 'react-router-dom';
+import Link from "@mui/material/Link";
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-const theme = createTheme();
+import { myTheme } from "../../theme/theme";
+
+import Football from "../../icons/Football.png";
+
+import './authenticationStyle.css'
+
 
 export default function ForgotPassword() {
 
@@ -25,6 +34,7 @@ export default function ForgotPassword() {
     const [authCode, setAuthCode] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [forgotPass,setForgotPass]=useState(false)
+    const [showPassword, setShowPassword] = useState(false);
 
     const navigate = useNavigate();
 
@@ -33,6 +43,7 @@ export default function ForgotPassword() {
         try {
           await Auth.forgotPassword(username);
           setIsPending(false)
+          setError(null);
           setForgotPass(true)
         }  catch (err){
           setError(err.message)
@@ -45,6 +56,7 @@ export default function ForgotPassword() {
         try {
           await  Auth.forgotPasswordSubmit(username, authCode, newPassword);
           setIsPending(false)
+          setError(null);
           navigate('/login');
         }  catch (err){
           setError(err.message)
@@ -63,29 +75,35 @@ export default function ForgotPassword() {
         forgot_Password();
     };
 
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    console.log(error)
+    const handleMouseDownPassword = (event) => {
+      event.preventDefault();
+    };
+
 
         
   return (
-    <ThemeProvider theme={theme}>
+    <div className="backgroundasd">
+    <ThemeProvider theme={myTheme}>
         {!forgotPass && (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-            Enter Username
-        </Typography>
+          <Container
+          component="main"
+          maxWidth="xs"
+          className="main-container"
+        >
+          <CssBaseline />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Box marginBottom={4}>
+              <img className="top" src={Football} height={75} width={75} />
+            </Box>
+
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
           <TextField
@@ -100,6 +118,14 @@ export default function ForgotPassword() {
               value={username} 
             />
           </Grid>
+
+
+          {error && <div className='error'>{error}</div>} 
+          <Divider sx={{ width: 1, marginTop: 3, fontWeight: 200 }}></Divider>
+            <Grid item xs={12}></Grid>
+            <Grid item xs={12}></Grid>
+            <Grid item xs={12}></Grid>
+        
           <Button
             type="submit"
             fullWidth
@@ -108,28 +134,37 @@ export default function ForgotPassword() {
           >
             Get authentication code
           </Button>
+
+          <Grid item xs>
+                <Link href="/login" variant="body2">
+                  {"I have an account! Login"}
+                </Link>
+              </Grid>
           
         </Box>
       </Box>
     </Container>)}
 
     {forgotPass && (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
+        <Container
+        component="main"
+        maxWidth="xs"
+        className="main-container"
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-            Reset Password
-        </Typography>
+        <CssBaseline />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Box marginBottom={4}>
+            <img className="top" src={Football} height={75} width={75} />
+          </Box>
+            <Typography component="h1" variant="h5">
+                Reset Password
+            </Typography>
         <Box component="form" noValidate onSubmit={handle_Submit} sx={{ mt: 3 }}>
                     <Grid item xs={12}>
                         <TextField
@@ -149,26 +184,45 @@ export default function ForgotPassword() {
                             fullWidth
                             name="new_password"
                             label="New Password"
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             id="password"
+                            InputProps={{
+                              endAdornment:(
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                  >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                  </IconButton>
+                                </InputAdornment>),
+                              }}
                             onChange={(e) =>setNewPassword(e.target.value)} 
                             value={newPassword}
                         />
                       </Grid>
+
+          {error && <div className='error'>{error}</div>} 
+          <Divider sx={{ width: 1, marginTop: 3, fontWeight: 200 }}></Divider>
+
           <Button
             type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Reset
+            Reset Password
           </Button>
+          
           
         </Box>
       </Box>
     </Container>)}
 
   </ThemeProvider>
+  </div>
     
     );
 }

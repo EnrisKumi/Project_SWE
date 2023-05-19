@@ -28,9 +28,8 @@ export const useConfirmSignUp = () => {
     } 
     catch(err) {
   
-        setError(err.message)
+        setError('Wrong Authentication code')
         setIsPending(false)
-
     }
   }
 
