@@ -144,6 +144,103 @@ export class ApiStack extends Stack {
             authorizationType: AuthorizationType.COGNITO
         })
 
+
+        const comment = api.root.addResource('comment')
+
+        /**
+         * delete comment
+         */
+        const deleteComment = comment.addResource('deleteComment')
+        const deleteCommentLambda = new NodejsFunction(this, 'Delete-Comment',{
+            ...lambdaProps,
+            functionName: 'Delete-Comment',
+            entry: path.join(__dirname, '../../src/lambdas/api/comment/deleteCommentHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        deleteComment.addMethod('DELETE', new LambdaIntegration(deleteCommentLambda),{
+        })
+
+        /**
+         * get comment at post
+         */
+        const getCommentAtPost = comment.addResource('getCommentAtPost')
+        const getCommentAtPostLambda = new NodejsFunction(this, 'Get-Comment-At-Post', {
+            ...lambdaProps,
+            functionName: 'Get-Comment-At-Post',
+            entry: path.join(__dirname, '../../src/lambdas/api/comment/getCommentAtPostHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        getCommentAtPost.addMethod('GET', new LambdaIntegration(getCommentAtPostLambda),{
+        })
+
+        /**
+         * get comments by user id
+         */
+        const getCommentsByUserId = comment.addResource('getCommentsByUserId')
+        const getCommentsByUserIdLambda = new NodejsFunction(this, 'Get-Comments-By-User-Id',{
+            ...lambdaProps,
+            functionName: 'Get-Comments-By-User-Id',
+            entry: path.join(__dirname, '../../src/lambdas/api/comment/getCommentsByUserIdHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        getCommentsByUserId.addMethod('GET', new LambdaIntegration(getCommentsByUserIdLambda),{
+
+        })
+
+        /**
+         * get one comment
+         */
+        const getOneComment = comment.addResource('getOneComment')
+        const getOneCommentLambda = new NodejsFunction(this, 'Get-One-Comment',{
+            ...lambdaProps,
+            functionName: 'Get-One-Comment',
+            entry: path.join(__dirname, '../../src/lambdas/api/comment/getOneCommentHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        getOneComment.addMethod('GET', new LambdaIntegration(getOneCommentLambda),{
+
+        })
+
+        /**
+         * post comment at post
+         */
+        const postCommentAtPost = comment.addResource('postCommentAtPost')
+        const postCommentAtPostLambda = new NodejsFunction(this, 'Post-Commet-At-Post',{
+            ...lambdaProps,
+            functionName: 'Post-Commet-At-Post',
+            entry: path.join(__dirname, '../../src/lambdas/api/comment/postCommentAtPostHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        postCommentAtPost.addMethod('POST', new LambdaIntegration(postCommentAtPostLambda),{
+
+        })
+
+        /**
+         * update comment
+         */
+        const updateComment = comment.addResource('updateComment')
+        const updateCommentLambda = new NodejsFunction(this, 'Update-Comment',{
+            ...lambdaProps,
+            functionName: 'Update-Comment',
+            entry: path.join(__dirname, '../../src/lambdas/api/comment/updateCommentHandler.ts'),
+            environment: {
+                ...env
+            }
+        }) 
+        updateComment.addMethod('PUT', new LambdaIntegration(updateCommentLambda),{
+            
+        })
+
         
         this.apiUrl = api.url
     }
