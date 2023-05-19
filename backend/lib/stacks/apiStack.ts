@@ -160,6 +160,8 @@ export class ApiStack extends Stack {
             }
         })
         deleteComment.addMethod('DELETE', new LambdaIntegration(deleteCommentLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
         })
 
         /**
@@ -175,6 +177,8 @@ export class ApiStack extends Stack {
             }
         })
         getCommentAtPost.addMethod('GET', new LambdaIntegration(getCommentAtPostLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
         })
 
         /**
@@ -190,7 +194,8 @@ export class ApiStack extends Stack {
             }
         })
         getCommentsByUserId.addMethod('GET', new LambdaIntegration(getCommentsByUserIdLambda),{
-
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
         })
 
         /**
@@ -206,7 +211,8 @@ export class ApiStack extends Stack {
             }
         })
         getOneComment.addMethod('GET', new LambdaIntegration(getOneCommentLambda),{
-
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
         })
 
         /**
@@ -222,7 +228,8 @@ export class ApiStack extends Stack {
             }
         })
         postCommentAtPost.addMethod('POST', new LambdaIntegration(postCommentAtPostLambda),{
-
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
         })
 
         /**
@@ -238,7 +245,8 @@ export class ApiStack extends Stack {
             }
         }) 
         updateComment.addMethod('PUT', new LambdaIntegration(updateCommentLambda),{
-            
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
         })
 
         
