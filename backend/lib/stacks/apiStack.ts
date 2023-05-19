@@ -421,6 +421,20 @@ export class ApiStack extends Stack {
             }
         })
         checkIfLiked.addMethod('GET', new LambdaIntegration(checkIfLikedLambda))
+
+        /**
+         * get likes
+         */
+        const getLikes = like.addResource('getLikes')
+        const getLikesLambda = new NodejsFunction(this, 'Get-Likes',{
+            ...lambdaProps,
+            functionName: 'Get-Likes',
+            entry: path.join(__dirname, '../../src/lambdas/api/likes/getLikesHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        getLikes.addMethod('GET', new LambdaIntegration(getLikesLambda))
     
         
 

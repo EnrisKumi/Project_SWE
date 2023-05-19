@@ -1,18 +1,16 @@
-const connectToDatabase = require("../../database/db");
-const User = require("../../models/User");
-const Post = require("../../models/Post");
+import { connectDataBase } from "../../../data/db/connection";
 
-module.exports.getLikes = async (event, context, callback) => {
+export const getLikes = async (event: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
     const id = event.pathParameters.id;
 
     try {
-        await connectToDatabase();
+        await connectDataBase()
 
         const post = await Post.findById(id).populate("likes");
 
         if (!post) {
-            callback(null, (404, `No post found with id: ${id}`));
+            throw new Error(`No post found with id: ${id}`);
         }
 
         return {
