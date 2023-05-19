@@ -1,13 +1,16 @@
 import { connectDataBase } from "../../../data/db/connection";
 import { LocationTag } from "../../../data/models/LocationTag";
 
-export const getLocations = async (event:any, context:any) => {
+export const getOneLocation = async (event: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
+    const id = event.pathParameters.id;
+  
     try {
       await connectDataBase();
-      const location = await LocationTag.find();
+      const location = await LocationTag.findById(id);
+  
       if (!location) {
-        throw new Error('No locations Found.');    
+        throw new Error(`No location found with id: ${id}`);
       }
   
       return {
@@ -25,4 +28,3 @@ export const getLocations = async (event:any, context:any) => {
       return(error);
     }
   };
-  

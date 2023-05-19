@@ -7,7 +7,7 @@ export const handler = async (callback: any, context: any) => {
         const a = await connectDataBase()
         const users = await User.find()
         if (!users) {
-            callback(null, ('No Users Found.'));
+            throw new Error('No Users Found.');
         }
 
         const response = {
