@@ -390,6 +390,23 @@ export class ApiStack extends Stack {
             authorizer: auth,
             authorizationType: AuthorizationType.COGNITO
         })
+
+
+        const like = api.root.addResource('like')
+
+        /**
+         * like post
+         */
+        const addLike = like.addResource('addLike')
+        const addLikeLambda = new NodejsFunction(this, 'Add-Like',{
+            ...lambdaProps,
+            functionName: 'Add-Like',
+            entry: path.join(__dirname, '../../src/lambdas/api/likes/addLikeHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        addLike.addMethod('GET', new LambdaIntegration(addLikeLambda))
     
         
 
