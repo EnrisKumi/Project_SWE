@@ -352,7 +352,6 @@ export class ApiStack extends Stack {
         })
 
 
-
         const comment = api.root.addResource('comment')
 
         /**
@@ -776,6 +775,94 @@ export class ApiStack extends Stack {
             authorizationType: AuthorizationType.COGNITO
         })
 
+
+        const join = api.root.addResource('join')
+
+        /**
+         * check joined post
+         */
+        const checkJoinedPost = join.addResource('checkJoinedPost')
+        const checkJoinedPostLambda = new NodejsFunction(this, 'Check-Joined-Post',{
+            ...lambdaProps,
+            functionName: 'Check-Joined-Post',
+            entry: path.join(__dirname, '../../src/lambdas/api/checkJoinedPostHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        checkJoinedPost.addMethod('GET', new LambdaIntegration(checkJoinedPostLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
+
+        /**
+         * get joined users
+         */
+        const getJoinedUsers = join.addResource('getJoinedUsers')
+        const getJoinedUsersLambda = new NodejsFunction(this, 'Get-Joined-Users',{
+            ...lambdaProps,
+            functionName: 'Get-Joined-Users',
+            entry: path.join(__dirname, '../../src/lambdas/api/getJoinedUsersHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        getJoinedUsers.addMethod('GET', new LambdaIntegration(getJoinedUsersLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
+
+        /**
+         * join post
+         */
+        const joinPost = join.addResource('joinPost')
+        const joinPostLambda = new NodejsFunction(this, 'Join-Post',{
+            ...lambdaProps,
+            functionName: 'Join-Post',
+            entry: path.join(__dirname, '../../src/lambdas/api/joinPostHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        joinPost.addMethod('GET', new LambdaIntegration(joinPostLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
+
+        /**
+         * leave post
+         */
+        const leavePost = join.addResource('leavePost')
+        const leavePostLambda = new NodejsFunction(this, 'Leave-Post',{
+            ...lambdaProps,
+            functionName: 'Leave-Post',
+            entry: path.join(__dirname, '../../src/lambdas/api/leavePostHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        leavePost.addMethod('GET', new LambdaIntegration(leavePostLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
+
+
+        /**
+         * search handler
+         */
+        const search = api.root.addResource('search')
+        const searchPostLambda = new NodejsFunction(this, 'Search',{
+            ...lambdaProps,
+            functionName: 'Search',
+            entry: path.join(__dirname, '../../src/lambdas/api/searchHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        search.addMethod('GET', new LambdaIntegration(searchPostLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
         
         this.apiUrl = api.url
     }
