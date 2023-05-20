@@ -159,7 +159,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        createPostAtUser.addMethod('POST', new LambdaIntegration(createPostAtUserLambda))
+        createPostAtUser.addMethod('POST', new LambdaIntegration(createPostAtUserLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * delete post by user id
@@ -173,7 +176,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        deletePostByUserId.addMethod('DELETE', new LambdaIntegration(deletePostByUserIdLambda))
+        deletePostByUserId.addMethod('DELETE', new LambdaIntegration(deletePostByUserIdLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get all posts
@@ -187,7 +193,10 @@ export class ApiStack extends Stack {
                 ...env
             } 
         })
-        getAllPosts.addMethod('GET', new LambdaIntegration(getAllPostsLambda))
+        getAllPosts.addMethod('GET', new LambdaIntegration(getAllPostsLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get one post
@@ -201,7 +210,10 @@ export class ApiStack extends Stack {
                 ...env
             } 
         })
-        getOnePost.addMethod('GET', new LambdaIntegration(getOnePostLambda))
+        getOnePost.addMethod('GET', new LambdaIntegration(getOnePostLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get pages for location sport
@@ -215,7 +227,10 @@ export class ApiStack extends Stack {
                 ...env
             } 
         })
-        getPagesForLocationSport.addMethod('GET', new LambdaIntegration(getPagesForLocationSportLambda))
+        getPagesForLocationSport.addMethod('GET', new LambdaIntegration(getPagesForLocationSportLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get pages for tags
@@ -229,8 +244,11 @@ export class ApiStack extends Stack {
                 ...env
             } 
         })
-        getPagesForTags.addMethod('GET', new LambdaIntegration(getPagesForTagsLambda))
-        
+        getPagesForTags.addMethod('GET', new LambdaIntegration(getPagesForTagsLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
+
 
         const comment = api.root.addResource('comment')
 
