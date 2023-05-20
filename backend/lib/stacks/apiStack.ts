@@ -493,6 +493,20 @@ export class ApiStack extends Stack {
         })
         followUser.addMethod('GET', new LambdaIntegration(followUserLambda))
 
+        /**
+         * get followed 
+         */
+        const followedUsed = follow.addResource('followedUsed')
+        const followedUsedLambda = new NodejsFunction(this, 'Followed-User',{
+            ...lambdaProps,
+            functionName: 'Followed-User',
+            entry: path.join(__dirname, '../../src/lambdas/api/follow/getFollowedHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        followedUsed.addMethod('GET', new LambdaIntegration(followedUsedLambda))
+
         
         this.apiUrl = api.url
     }
