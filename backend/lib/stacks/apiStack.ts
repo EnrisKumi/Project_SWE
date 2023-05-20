@@ -477,7 +477,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        checkIfFollows.addMethod('GET', new LambdaIntegration(checkIfFollowsLambda))
+        checkIfFollows.addMethod('GET', new LambdaIntegration(checkIfFollowsLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * follow user
@@ -491,7 +494,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        followUser.addMethod('GET', new LambdaIntegration(followUserLambda))
+        followUser.addMethod('GET', new LambdaIntegration(followUserLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get followed 
@@ -505,7 +511,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        followedUsed.addMethod('GET', new LambdaIntegration(followedUsedLambda))
+        followedUsed.addMethod('GET', new LambdaIntegration(followedUsedLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get someone followers 
@@ -519,7 +528,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        getSomeoneFollowers.addMethod('GET', new LambdaIntegration(getSomeoneFollowersLambda))
+        getSomeoneFollowers.addMethod('GET', new LambdaIntegration(getSomeoneFollowersLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get your followers
@@ -533,7 +545,10 @@ export class ApiStack extends Stack {
                 ...env
             }
         })
-        getYourFollowers.addMethod('GET', new LambdaIntegration(getYourFollowersLambda))
+        getYourFollowers.addMethod('GET', new LambdaIntegration(getYourFollowersLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
 
         /**
@@ -548,7 +563,10 @@ export class ApiStack extends Stack {
                 ...env
             } 
         })
-        unfollow.addMethod('GET', new LambdaIntegration(unfollowLambda))
+        unfollow.addMethod('GET', new LambdaIntegration(unfollowLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         
         this.apiUrl = api.url
