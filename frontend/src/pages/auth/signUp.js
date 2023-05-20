@@ -161,7 +161,7 @@ export default function SignUp() {
               </Grid>
             </Grid>
 
-            {error && <div className='error'>{error}</div>}
+            {!confirmPassword &&(error && <div className='error'>{error}</div>)}
             {confirmPasswordError && <div className='error'>{confirmPasswordError}</div>} 
 
             <Divider sx={{ width: 1,marginTop: (error||confirmPasswordError) ? 1 : 3 , fontWeight: 200 }}></Divider>

@@ -3,8 +3,9 @@ import {useLogout} from '../../hooks/auth/useLogout'
 import Navbar from '../../components/navbar.js'
 
 
-export default function MainPage() {
 
+export default function MainPage() {
+ 
     const {logout ,isPending}=useLogout();
 
   return (

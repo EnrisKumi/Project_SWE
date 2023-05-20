@@ -10,6 +10,7 @@ import SignUp from './pages/auth/signUp';
 import MainPage from './pages/home/mainPage'
 import ConfirmSignUp from './pages/auth/confirmSignUp'
 import ForgotPassword from './pages/auth/forgotPassword'
+import ChatApp from './chat/chatApp';
 
 
 Amplify.configure(awsconfig);
@@ -63,7 +64,12 @@ function App() {
           path="/forgotPassword"
           element={<ForgotPassword/>}
         />
+
+      <Route path="/chat" element={<ChatApp />} />
+      
       </Routes>
+
+      
     </BrowserRouter>
      )}
     </div>
