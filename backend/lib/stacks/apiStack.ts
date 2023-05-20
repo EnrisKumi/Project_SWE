@@ -535,6 +535,21 @@ export class ApiStack extends Stack {
         })
         getYourFollowers.addMethod('GET', new LambdaIntegration(getYourFollowersLambda))
 
+
+        /**
+         * unfollow
+         */
+        const unfollow = follow.addResource('unfollow')
+        const unfollowLambda = new NodejsFunction(this, 'Unfollow',{
+            ...lambdaProps,
+            functionName: 'Unfollow',
+            entry: path.join(__dirname, '../../src/lambdas/api/follow/unfollowHandler.ts'),
+            environment: {
+                ...env
+            } 
+        })
+        unfollow.addMethod('GET', new LambdaIntegration(unfollowLambda))
+
         
         this.apiUrl = api.url
     }
