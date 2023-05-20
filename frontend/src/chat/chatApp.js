@@ -1,6 +1,7 @@
 
 
-import Chat from '../chat/chat';
+import Chat from './chat';
+import ChatNavbar from './chatNavbar';
 
 import { useAuthContext } from '../hooks/auth/useAuthContext'
 
@@ -16,6 +17,8 @@ export default function ChatApp() {
   return (
     <div className={style.appContainer}>
         <div className='{style.sectionContainer}'>
+          <ChatNavbar/>
+
           {user ? <Chat user={user} /> : null}
         </div>
 
