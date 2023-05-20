@@ -261,7 +261,10 @@ export class ApiStack extends Stack {
                 ...env
             } 
         })
-        getPostByLocationOrSport.addMethod('GET', new LambdaIntegration(getPostByLocationOrSportLambda))
+        getPostByLocationOrSport.addMethod('GET', new LambdaIntegration(getPostByLocationOrSportLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get post by user id
@@ -275,7 +278,10 @@ export class ApiStack extends Stack {
                 ...env
             } 
         })
-        getPostsByUserId.addMethod('GET', new LambdaIntegration(getPostsByUserIdLambda))
+        getPostsByUserId.addMethod('GET', new LambdaIntegration(getPostsByUserIdLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get joined post
@@ -289,7 +295,10 @@ export class ApiStack extends Stack {
                 ...env
             } 
         })
-        getPostJoined.addMethod('GET', new LambdaIntegration(getPostJoinedLambda))
+        getPostJoined.addMethod('GET', new LambdaIntegration(getPostJoinedLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get post pages
@@ -303,7 +312,10 @@ export class ApiStack extends Stack {
                 ...env
             }  
         }) 
-        getPostPages.addMethod('GET', new LambdaIntegration(getPostPagesLambda))
+        getPostPages.addMethod('GET', new LambdaIntegration(getPostPagesLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * get posts by tags
@@ -317,7 +329,10 @@ export class ApiStack extends Stack {
                 ...env
             }  
         })
-        getPostsByTag.addMethod('GET', new LambdaIntegration(getPostsByTagLambda))
+        getPostsByTag.addMethod('GET', new LambdaIntegration(getPostsByTagLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
         /**
          * update post
@@ -331,7 +346,10 @@ export class ApiStack extends Stack {
                 ...env
             }  
         })
-        updatePost.addMethod('PATCH', new LambdaIntegration(updatePostLambda))
+        updatePost.addMethod('PATCH', new LambdaIntegration(updatePostLambda),{
+            authorizer: auth,
+            authorizationType: AuthorizationType.COGNITO
+        })
 
 
 
