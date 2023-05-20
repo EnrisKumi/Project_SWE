@@ -1,5 +1,6 @@
 import { connectDataBase } from "../../../data/db/connection";
 import { Comment } from "../../../data/models/Comments";
+import { Post } from "../../../data/models/Post";
 
 
 export const postCommentAtPost = async (event: any, context: any) => {

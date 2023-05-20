@@ -461,7 +461,23 @@ export class ApiStack extends Stack {
             authorizer: auth,
             authorizationType: AuthorizationType.COGNITO
         })
-    
+
+
+        const follow = api.root.addResource('follow')
+        
+        /**
+         * check if follows
+         */
+        const checkIfFollows = follow.addResource('checkIfFollows')
+        const checkIfFollowsLambda = new NodejsFunction(this, 'Check-If-Follows',{
+            ...lambdaProps,
+            functionName: 'Check-If-Follows',
+            entry: path.join(__dirname, '../../src/lambdas/api/follow/checkIfFollowsHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        checkIfFollows.addMethod('GET', new LambdaIntegration(checkIfFollowsLambda))
         
 
         
