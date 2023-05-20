@@ -521,6 +521,20 @@ export class ApiStack extends Stack {
         })
         getSomeoneFollowers.addMethod('GET', new LambdaIntegration(getSomeoneFollowersLambda))
 
+        /**
+         * get your followers
+         */
+        const getYourFollowers = follow.addResource('getYourFollowers')
+        const getYourFollowersLambda = new NodejsFunction(this, 'Get-Your-Followers',{
+            ...lambdaProps,
+            functionName: 'Get-Your-Followers',
+            entry: path.join(__dirname, '../../src/lambdas/api/follow/getYourFollowersHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        getYourFollowers.addMethod('GET', new LambdaIntegration(getYourFollowersLambda))
+
         
         this.apiUrl = api.url
     }
