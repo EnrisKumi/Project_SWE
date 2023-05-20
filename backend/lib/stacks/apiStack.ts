@@ -249,6 +249,91 @@ export class ApiStack extends Stack {
             authorizationType: AuthorizationType.COGNITO
         })
 
+        /**
+         * get post by location or sport
+         */
+        const getPostByLocationOrSport = post.addResource('getPostByLocationOrSport')
+        const getPostByLocationOrSportLambda = new NodejsFunction(this, 'Get-Post-By-Location-Or-Sport',{
+            ...lambdaProps,
+            functionName: 'Get-Post-By-Location-Or-Sport',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/getPostByLocationOrSportHandler.ts'),
+            environment: {
+                ...env
+            } 
+        })
+        getPostByLocationOrSport.addMethod('GET', new LambdaIntegration(getPostByLocationOrSportLambda))
+
+        /**
+         * get post by user id
+         */
+        const getPostsByUserId = post.addResource('getPostsByUserId')
+        const getPostsByUserIdLambda= new NodejsFunction(this, 'Get-Posts-By-User-Id',{
+            ...lambdaProps,
+            functionName: 'Get-Posts-By-User-Id',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/getPostByUserIdHandler.ts'),
+            environment: {
+                ...env
+            } 
+        })
+        getPostsByUserId.addMethod('GET', new LambdaIntegration(getPostsByUserIdLambda))
+
+        /**
+         * get joined post
+         */
+        const getPostJoined = post.addResource('getPostJoined')
+        const getPostJoinedLambda = new NodejsFunction(this, 'Get-Post-Joined',{
+            ...lambdaProps,
+            functionName: 'Get-Post-Joined',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/getpostJoinedHandler.ts'),
+            environment: {
+                ...env
+            } 
+        })
+        getPostJoined.addMethod('GET', new LambdaIntegration(getPostJoinedLambda))
+
+        /**
+         * get post pages
+         */
+        const getPostPages = post.addResource('getPostPages')
+        const getPostPagesLambda = new NodejsFunction(this, 'Get-Post-Pages',{
+            ...lambdaProps,
+            functionName: 'Get-Post-Pages',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/getPostPagesHandler.ts'),
+            environment: {
+                ...env
+            }  
+        }) 
+        getPostPages.addMethod('GET', new LambdaIntegration(getPostPagesLambda))
+
+        /**
+         * get posts by tags
+         */
+        const getPostsByTag = post.addResource('getPostsByTag')
+        const getPostsByTagLambda = new NodejsFunction(this, 'Get-Posts-By-Tag',{
+            ...lambdaProps,
+            functionName: 'Get-Posts-By-Tag',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/getPostsByTagHandler.ts'),
+            environment: {
+                ...env
+            }  
+        })
+        getPostsByTag.addMethod('GET', new LambdaIntegration(getPostsByTagLambda))
+
+        /**
+         * update post
+         */
+        const updatePost = post.addResource('updatePost')
+        const updatePostLambda = new NodejsFunction(this, 'Update-Post',{
+            ...lambdaProps,
+            functionName: 'Update-Post',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/updatePostHandler.ts'),
+            environment: {
+                ...env
+            }  
+        })
+        updatePost.addMethod('PATCH', new LambdaIntegration(updatePostLambda))
+
+
 
         const comment = api.root.addResource('comment')
 
