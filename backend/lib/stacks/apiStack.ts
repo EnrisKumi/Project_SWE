@@ -145,6 +145,93 @@ export class ApiStack extends Stack {
         })
 
 
+        const post = api.root.addResource('post')
+
+        /**
+         * create post at user
+         */
+        const createPostAtUser = post.addResource('createPostAtUser')
+        const createPostAtUserLambda = new NodejsFunction(this, 'Create-Post-At-User',{
+            ...lambdaProps,
+            functionName: 'Create-Post-At-User',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/createPostAtUserHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        createPostAtUser.addMethod('POST', new LambdaIntegration(createPostAtUserLambda))
+
+        /**
+         * delete post by user id
+         */
+        const deletePostByUserId = post.addResource('deletePostByUserId')
+        const deletePostByUserIdLambda = new NodejsFunction(this, 'Delete-Post-By-User-Id',{
+            ...lambdaProps,
+            functionName: 'Delete-Post-By-User-Id',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/deletePostByUserIdHandler.ts'),
+            environment: {
+                ...env
+            }
+        })
+        deletePostByUserId.addMethod('DELETE', new LambdaIntegration(deletePostByUserIdLambda))
+
+        /**
+         * get all posts
+         */
+        const getAllPosts = post.addResource('getAllPosts')
+        const getAllPostsLambda = new NodejsFunction(this, 'Get-All-Posts',{
+            ...lambdaProps,
+            functionName: 'Get-All-Posts',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/getAllPostsHandler.ts'),
+            environment: {
+                ...env
+            } 
+        })
+        getAllPosts.addMethod('GET', new LambdaIntegration(getAllPostsLambda))
+
+        /**
+         * get one post
+         */
+        const getOnePost = post.addResource('getOnePost')
+        const getOnePostLambda = new NodejsFunction(this, 'Get-One-Post',{
+            ...lambdaProps,
+            functionName: 'Get-One-Post',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/getOnePostHandler.ts'),
+            environment: {
+                ...env
+            } 
+        })
+        getOnePost.addMethod('GET', new LambdaIntegration(getOnePostLambda))
+
+        /**
+         * get pages for location sport
+         */
+        const getPagesForLocationSport = post.addResource('getPagesForLocationSport')
+        const getPagesForLocationSportLambda = new NodejsFunction(this, 'Get-Pages-For-Location-Sport',{
+            ...lambdaProps,
+            functionName: 'Get-Pages-For-Location-Sport',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/getPagesForLocationSportsHandler.ts'),
+            environment: {
+                ...env
+            } 
+        })
+        getPagesForLocationSport.addMethod('GET', new LambdaIntegration(getPagesForLocationSportLambda))
+
+        /**
+         * get pages for tags
+         */
+        const getPagesForTags = post.addResource('getPagesForTags')
+        const getPagesForTagsLambda = new NodejsFunction(this, 'Get-Pages-For-Tags',{
+            ...lambdaProps,
+            functionName: 'Get-Pages-For-Tags',
+            entry: path.join(__dirname, '../../src/lambdas/api/post/getPagesForTagsHandler.ts'),
+            environment: {
+                ...env
+            } 
+        })
+        getPagesForTags.addMethod('GET', new LambdaIntegration(getPagesForTagsLambda))
+        
+
         const comment = api.root.addResource('comment')
 
         /**
