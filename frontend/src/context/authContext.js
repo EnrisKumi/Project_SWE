@@ -11,7 +11,9 @@ export const authReducer = (state, action) => {
     case 'AUTH_IS_READY':
       return { user: action.payload, authIsReady: true}
     case 'CONFIRM_SIGNUP':
-        return {...state,confirmSignUp: action.payload}    
+        return {...state,confirmSignup: action.payload}    
+    case 'USERNAME':
+      return {...state,username: action.payload}  
     default:
       return state
   }
@@ -21,7 +23,8 @@ export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, { 
     user: null,
     authIsReady: false,
-    confirmSignUp: {username:null,confirm:false},
+    username:null,
+    confirmSignup:false
   })
 
   const checkUser= async () => {

@@ -21,7 +21,7 @@ export const useSignup = () => {
       await Auth.signUp({ username, password, attributes: { email } });
 
       //dispatch confirmSignUp action
-      dispatch({ type: 'CONFIRM_SIGNUP', payload:{username:username,confirm:false} })
+      dispatch({ type: 'USERNAME', payload:username })
 
         setIsPending(false)
         setError(null)

@@ -17,9 +17,8 @@ Amplify.configure(awsconfig);
 
 function App() {
 
-  const { authIsReady, user,confirmSignUp } = useAuthContext();
+  const { authIsReady,user,confirmSignup} = useAuthContext();
   
-  const confirm=confirmSignUp?.confirm;
 
   return (
     <div className="App">
@@ -57,7 +56,7 @@ function App() {
 
         <Route
           path="/confirmSignup"
-          element={!confirm ? <ConfirmSignUp/> : <Navigate to={"/login"} />}
+          element={!confirmSignup ? <ConfirmSignUp/> : <Navigate to={"/login"} />}
         />
 
         <Route

@@ -7,20 +7,17 @@ export const useConfirmSignUp = () => {
   const [error, setError] = useState(null)
   const [isPending, setIsPending] = useState(false)
   const { dispatch } = useAuthContext()
-  const {confirmSignUp } = useAuthContext();
-  const username = confirmSignUp?.username;
-  console.log(confirmSignUp);
+  const {username} = useAuthContext();
 
   const confirmSignup = async (authCode) => {
     setError(null)
     setIsPending(true)
   
     try {
-      
         await Auth.confirmSignUp(username, authCode);
 
-      // dispatch confirmSignUp action
-       dispatch({ type: 'CONFIRM_SIGNUP', payload:{username:null,confirm:true} })
+        // dispatch confirmSignUp action
+        dispatch({ type: 'CONFIRM_SIGNUP', payload:true })
 
         setIsPending(false)
         setError(null)
@@ -28,7 +25,7 @@ export const useConfirmSignUp = () => {
     } 
     catch(err) {
   
-        setError('Wrong Authentication code')
+        setError(err.message)
         setIsPending(false)
     }
   }
