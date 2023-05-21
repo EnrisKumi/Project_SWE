@@ -36,7 +36,7 @@ export default function SendMessages({scroll,user }) {
         console.log(error);
     }
     setInput('')
-    //scroll.current.scrollIntoView({behavior: 'smooth'})
+    scroll.current.scrollIntoView({behavior: 'smooth'})
   }
 
   return (
