@@ -4,18 +4,14 @@ import Navbar from '../../components/navbar.js'
 import {useApi} from '../../hooks/api/useApi';
 
 
-
-
 export default function MainPage() {
  
     const {logout ,isPending}=useLogout();
 
-    const { getMongoIdFromCognitoId }=useApi();
-    
+    const { getMongoIdFromCognitoId, getUser } =  useApi();
 
-    getMongoIdFromCognitoId().then((res)=>{
-      console.log(res);
-    })
+    const user = Promise.allSettled([getUser()])
+    console.log(user)
 
   return (
     <div>
