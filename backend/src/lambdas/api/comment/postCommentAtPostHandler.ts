@@ -3,7 +3,7 @@ import { Comment } from "../../../data/models/Comments";
 import { Post } from "../../../data/models/Post";
 
 
-export const postCommentAtPost = async (event: any, context: any) => {
+export const handler = async (event: any, context: any) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const id = event.pathParameters.id;
 

@@ -3,7 +3,7 @@ import { Post } from "../../data/models/Post";
 import { User } from "../../data/models/User";
 
 
-export const search = async (event: any, context: any) => {
+export const handler = async (event: any, context: any) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
   try {

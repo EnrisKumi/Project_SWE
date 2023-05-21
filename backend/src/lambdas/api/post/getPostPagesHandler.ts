@@ -1,7 +1,7 @@
 import { connectDataBase } from "../../../data/db/connection";
 import { Post } from "../../../data/models/Post";
 
-export const getPostPages = async (event: any, context: any) => {
+export const handler = async (event: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
     
     try {

@@ -1,7 +1,7 @@
 import { connectDataBase } from "../../../data/db/connection";
 import { User } from "../../../data/models/User";
 
-export const getUserByCognitoId = async (event: any, context: any) => {
+export const handler = async (event: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
     const cognitoId = event.pathParameters.cognitoId;     
     console.log(cognitoId , " id here");

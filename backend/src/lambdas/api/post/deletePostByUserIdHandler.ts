@@ -2,7 +2,7 @@ import { connectDataBase } from "../../../data/db/connection";
 import { Post } from "../../../data/models/Post";
 import { User } from "../../../data/models/User";
 
-export const deletePostByUserId = async (event: any, context: any) => {
+export const handler = async (event: any, context: any) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const userId = event.pathParameters.userId;
   const postId = event.pathParameters.postId;

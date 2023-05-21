@@ -2,7 +2,7 @@ import { connectDataBase } from "../../../data/db/connection";
 import { User } from "../../../data/models/User";
 
 
-export const getFollowed = async (event: any, context: any) => {
+export const handler = async (event: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
     const id = event.pathParameters.id;
   

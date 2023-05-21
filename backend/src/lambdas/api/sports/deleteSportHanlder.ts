@@ -1,7 +1,7 @@
 import { connectDataBase } from "../../../data/db/connection";
 import { SportsTag } from "../../../data/models/SportsTag";
 
-export const deleteSport = async (event:any, context:any, callback: any) => {
+export const handler = async (event:any, context:any, callback: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
     const id = event.pathParameters.id;
   

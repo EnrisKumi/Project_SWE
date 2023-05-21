@@ -1,7 +1,7 @@
 import { connectDataBase } from "../../../data/db/connection";
 import { LocationTag } from "../../../data/models/LocationTag";
 
-export const deleteLocation = async (event: any, context: any) => {
+export const handler = async (event: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
     const id = event.pathParameters.id;
   

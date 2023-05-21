@@ -1,7 +1,7 @@
 import { connectDataBase } from "../../../data/db/connection";
 import { Comment } from "../../../data/models/Comments";
 
-export const deleteComment = async (event:any, context: any) => {
+export const handler = async (event:any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
     const id = event.pathParameters.id;
   
