@@ -3,7 +3,7 @@ import { User } from "../../../data/models/User";
 
 export const handler = async (event: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
-    const cognitoId = event.pathParameters.cognitoId;
+    const cognitoId = event.queryStringParameters.cognitoId;
 
     try {
         await connectDataBase()

@@ -10,7 +10,7 @@ export const handler = async (event: any, context: any) => {
     const reqBody = JSON.parse(event.body);
     const updateComments = await Comment.updateOne(
       {
-        _id: event.pathParameters.id,
+        _id: event.queryStringParameters.id,
       },
       {
         text: reqBody.text,

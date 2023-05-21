@@ -4,7 +4,7 @@ import { User } from "../../../data/models/User";
 
 export const handler = async (event: any, context: any) => {
   context.callbackWaitsForEmptyEventLoop = false;
-  const id = event.pathParameters.id;
+  const id = event.queryStringParameters.id;
 
   const { postCognitoId, username, text,tags, status, date, startTime, limit } = JSON.parse(
     event.body

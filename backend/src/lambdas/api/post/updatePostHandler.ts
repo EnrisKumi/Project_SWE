@@ -12,7 +12,7 @@ export const handler = async (event: any, context: any) => {
 
     const updatePosts = await Post.updateOne(
       {
-        _id: event.pathParameters.id,
+        _id: event.queryStringParameters.id,
       },
       {
         text: reqBody.text,

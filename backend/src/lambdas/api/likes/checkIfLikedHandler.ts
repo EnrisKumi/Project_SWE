@@ -3,8 +3,8 @@ import { Post } from "../../../data/models/Post";
 
 export const handler = async (event: any, context: any) => {
   context.callbackWaitsForEmptyEventLoop = false;
-  const id = event.pathParameters.id;
-  const postId = event.pathParameters.postId;
+  const id = event.queryStringParameters.id;
+  const postId = event.queryStringParameters.postId;
 
   try {
     await connectDataBase()

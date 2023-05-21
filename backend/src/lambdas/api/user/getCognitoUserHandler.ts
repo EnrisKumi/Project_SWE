@@ -3,7 +3,8 @@ import { User } from "../../../data/models/User";
 
 export const handler = async (event: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
-    const cognitoId = event.pathParameters.cognitoId;     
+    console.log(event)
+    const cognitoId = event.queryStringParameters.cognitoId;     
     console.log(cognitoId , " id here");
   
     try {

@@ -3,8 +3,8 @@ import { User } from "../../../data/models/User";
 
 export const handler = async (event: any, context: any) => {
   context.callbackWaitsForEmptyEventLoop = false;
-  const id = event.pathParameters.id;
-  const followersId = event.pathParameters.followersId;
+  const id = event.queryStringParameters.id;
+  const followersId = event.queryStringParameters.followersId;
 
   try {
     await connectDataBase()

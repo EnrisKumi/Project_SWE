@@ -5,7 +5,7 @@ import { Post } from "../../../data/models/Post";
 
 export const handler = async (event: any, context: any) => {
   context.callbackWaitsForEmptyEventLoop = false;
-  const id = event.pathParameters.id;
+  const id = event.queryStringParameters.id;
 
   const { userName, commentCognitoId, text, date } = JSON.parse(event.body);
 

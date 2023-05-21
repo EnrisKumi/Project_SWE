@@ -6,8 +6,8 @@ export const handler = async (event: any, context: any) => {
 
     context.callbackWaitsForEmptyEventLoop = false;
 
-    const userId = event.pathParameters.userId;
-    const postId = event.pathParameters.postId;
+    const userId = event.queryStringParameters.userId;
+    const postId = event.queryStringParameters.postId;
 
     try {
         await connectDataBase()

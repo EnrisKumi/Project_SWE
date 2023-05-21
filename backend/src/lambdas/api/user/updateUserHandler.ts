@@ -11,7 +11,7 @@ export const handler = async (event: any, context: any) => {
 
     const updateUser = await User.updateOne(
       {
-        _id: event.pathParameters.id
+        _id: event.queryStringParameters.id
       },   
       {
         location: reqBody.location,
@@ -45,7 +45,7 @@ export const handler = async (event: any, context: any) => {
   try {
     await connectToDatabase();
 
-    const user = await User.findById(event.pathParameters.id);
+    const user = await User.findById(event.queryStringParameters.id);
 
     if (user) {
       user.username = username || user.username;

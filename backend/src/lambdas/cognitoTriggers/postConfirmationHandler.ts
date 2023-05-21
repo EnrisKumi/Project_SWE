@@ -1,44 +1,53 @@
-import { PutItemCommand, PutItemCommandInput } from "@aws-sdk/client-dynamodb"
-import { PostConfirmationTriggerHandler } from "aws-lambda"
-import { dynamoDBClient } from "../../clients/AWS"
+import { connectDataBase } from "../../data/db/connection";
+import { User } from "../../data/models/User";
 
-export const handler: PostConfirmationTriggerHandler = async (event, context, callback) => {
-    console.log(JSON.stringify(event))
-    console.log(context)
 
-    if(event.triggerSource === 'PostConfirmation_ConfirmSignUp'){
-        try {
-            const { userName } = event
+export const handler = async (event: any, context: any) => {
+    console.log(event)
+    context.callbackWaitsForEmptyEventLoop = false;
+    const cognitoId = event.request.userAttributes.sub;
+    const username = event.userName
+    const location = " "
+    const bio = " "
+    const prfilePicture = " "
+    const date = Date.now()
+    console.log(cognitoId, username, location, bio, prfilePicture, date)
 
-            const signUpTime = new Date().toISOString()
+    try {
+        await connectDataBase()
 
-            if (!process.env.DYNAMO_DB_TABLE_NAME) {
-                throw new Error('DynamoDB table not found!')
-              }
+        const user = await User.findOne({ userCognitoId: cognitoId });
 
-            const postAuthPutUserParams: PutItemCommandInput  = {
-                TableName: process.env.DYNAMO_DB_TABLE_NAME,
-                ConditionExpression: 'attribute_not_exists(PK) AND attribute_not_exists(SK)',
-                Item: {
-                    PK: {S: `User#${event.request.userAttributes.sub}`},
-                    SK: {S: `User#${event.request.userAttributes.sub}`},
-                    username: {S: userName},
-                    signUpTime: {S: signUpTime},
-                    type: {S: `User#${event.request.userAttributes.sub}`},
-                    profilePicture: {S: "https://s3.eu-central-1.amazonaws.com/user.images.bucket/defaultPicture.png"}
-                }
-            }
-        
-            const postAuthPutUserResponse = await dynamoDBClient.send(new PutItemCommand(postAuthPutUserParams))
-            console.log(postAuthPutUserResponse)
+        if (user) {
+            console.log("!!!!!!!!!!!!!!!!!!!!! EXISTS !!!!!!!!!!!!!!!!!!!!!!!!!!")
+        } else {
+            User.init();
+            const newUser = new User({
+                userCognitoId: cognitoId,
+                username: username,
+                location: location,
+                bio: bio,
+                prfilePicture: prfilePicture,
+                date: date
+            });
+            await newUser.save()
 
-            callback(null, event)
-        } catch (error) {
-            console.log(error)
-            callback(new Error('Something went wrong!'))
+
+            return {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Allow": "GET, OPTIONS, POST",
+                    "Access-Control-Allow-Methods": "GET, OPTIONS, POST",
+                    "Access-Control-Allow-Headers": "*"
+                },
+                statusCode: 200,
+                body: JSON.stringify(newUser),
+            };
         }
-    } else {
-        callback(null, event)
     }
-
+    catch (error) {
+        console.log(error)
+        return (error);
+    }
 }

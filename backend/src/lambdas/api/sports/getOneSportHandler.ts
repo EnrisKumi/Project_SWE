@@ -3,7 +3,7 @@ import { SportsTag } from "../../../data/models/SportsTag";
 
 export const handler = async (event: any, context:any) => {
     context.callbackWaitsForEmptyEventLoop = false;
-    const id = event.pathParameters.id;
+    const id = event.queryStringParameters.id;
   
     try {
       await connectDataBase()

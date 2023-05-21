@@ -5,8 +5,8 @@ const Post = require('../../models/Post');
 
 module.exports.handler = async (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
-  const id = event.pathParameters.id;
-  //const postId = event.pathParameters.postId;
+  const id = event.queryStringParameters.id;
+  //const postId = event.queryStringParameters.postId;
 
 
   // try {

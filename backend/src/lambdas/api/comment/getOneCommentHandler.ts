@@ -4,7 +4,7 @@ import { Comment } from "../../../data/models/Comments";
 
 export const handler = async (event: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
-    const id = event.pathParameters.id;
+    const id = event.queryStringParameters.id;
   
     try {
       await connectDataBase()
