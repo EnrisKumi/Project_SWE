@@ -29,7 +29,7 @@ export const handler = async (event: any, context: any) => {
     if (!post) {
         throw new Error("No posts Found.");
     }
-
+    console.log(user)
     return {
       headers: {
         "Content-Type": "application/json",

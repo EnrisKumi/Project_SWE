@@ -29,8 +29,8 @@ export const handler = async (event: any, context: any) => {
         post.status = 'false';
       }
 
-      console.log(post.status);
-  
+      console.log(post.status, post);
+      
       return {
         headers: {
           "Content-Type" : "application/json",

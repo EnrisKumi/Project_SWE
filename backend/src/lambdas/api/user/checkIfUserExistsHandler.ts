@@ -26,7 +26,7 @@ export const handler = async (event: any, context: any) => {
             });
             await newUser.save()
 
-
+            
             return {
                 headers: {
                     "Content-Type": "application/json",

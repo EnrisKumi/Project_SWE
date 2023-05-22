@@ -6,9 +6,16 @@ export const handler = async (event: any, context: any) => {
   context.callbackWaitsForEmptyEventLoop = false;
   const id = event.queryStringParameters.id;
 
-  const { postCognitoId, username, text,tags, status, date, startTime, limit } = JSON.parse(
-    event.body
-  );
+  const {
+    postCognitoId,
+    username,
+    text,
+    tags,
+    status,
+    date,
+    startTime,
+    limit,
+  } = JSON.parse(event.body);
 
   const post = new Post({
     postCognitoId,
@@ -22,7 +29,7 @@ export const handler = async (event: any, context: any) => {
   });
 
   try {
-    await connectDataBase()
+    await connectDataBase();
     console.log(post);
     const createPost = await Post.create(post);
     const createdPost = await User.findOneAndUpdate(
@@ -30,6 +37,8 @@ export const handler = async (event: any, context: any) => {
       { $push: { posts: createPost._id } },
       { new: true }
     );
+    console.log(createdPost);
+
     return {
       headers: {
         "Content-Type": "application/json",
@@ -42,6 +51,6 @@ export const handler = async (event: any, context: any) => {
       body: JSON.stringify(createdPost),
     };
   } catch (error) {
-    return(error);
+    return error;
   }
 };

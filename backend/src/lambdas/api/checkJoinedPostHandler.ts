@@ -12,7 +12,7 @@ export const handler = async (event: any, context: any) => {
     const likeCheck = await Post.findById(postId);
     if(!likeCheck){ throw new Error('Not found') }
     const booleanResponse = likeCheck.joined.includes(id);
-
+    console.log(booleanResponse)
     return {
       headers: {
         "Content-Type": "application/json",

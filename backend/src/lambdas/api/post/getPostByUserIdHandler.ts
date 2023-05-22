@@ -29,7 +29,7 @@ export const handler = async (event: any, context: any) => {
                 post[index].status = "OnGoing";
             }
         }
-
+        console.log(user.posts);
       return {
         headers: {
           "Content-Type" : "application/json",

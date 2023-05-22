@@ -14,6 +14,7 @@ export const handler = async (event: any, context: any) => {
     if(likeCheck){
         booleanResponse = likeCheck.likes.includes(id);
     }
+    console.log(booleanResponse)
     return {
       headers: {
         "Content-Type": "application/json",

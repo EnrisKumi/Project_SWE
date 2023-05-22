@@ -19,7 +19,7 @@ export const handler = async (event: any, context: any) => {
         limit: reqBody.limit
       }
     )
-
+    console.log(updatePosts);
     return {
       headers: {
         "Content-Type": "application/json",

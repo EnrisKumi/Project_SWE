@@ -13,7 +13,7 @@ export const handler = async (event: any, context: any) => {
         if (!post) {
             throw new Error(`No post found with id: ${id}`);
         }
-
+        console.log(post.joined);
         return {
             headers: {
                 "Content-Type": "application/json",
