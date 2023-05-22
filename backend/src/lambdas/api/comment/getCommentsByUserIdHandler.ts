@@ -11,7 +11,7 @@ export const handler = async (event: any, context: any) => {
       if (user) { 
         const post = await user.find('posts')
       }
-
+      console.log(user?.posts?.comment)
       return {
         headers: {
           "Content-Type" : "application/json",

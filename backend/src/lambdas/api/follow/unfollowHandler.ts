@@ -21,7 +21,7 @@ export const handler = async (event: any, context: any) => {
       {$pull: {followed: followersId}},
       {new : true},
     );
-    
+    console.log(user1.followers);
     return {
       headers: {
         "Content-Type": "application/json",

@@ -14,7 +14,7 @@ export const handler = async (event: any, context: any) => {
     if(userFollower){
         booleanResponse = userFollower.followers.includes(id)
     }
-   
+   console.log(booleanResponse)
     return {
       headers: {
         "Content-Type": "application/json",

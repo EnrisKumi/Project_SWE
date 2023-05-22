@@ -12,7 +12,7 @@ export const handler = async (event: any, context: any) => {
       if (!user) {
         throw new Error(`No user found with id: ${id}`);
       }
-  
+      console.log(user.followers);
       return {
         headers: {
           "Content-Type" : "application/json",

@@ -11,6 +11,7 @@ export const handler = async (event:any, context: any) => {
       if (!comment) {
         throw new Error(`No comment found with id: ${id}, cannot delete`);
       }
+      console.log(comment)
       return {
         headers: {
           "Content-Type" : "application/json",

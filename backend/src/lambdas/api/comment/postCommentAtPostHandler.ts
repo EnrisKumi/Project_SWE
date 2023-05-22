@@ -26,6 +26,7 @@ export const handler = async (event: any, context: any) => {
       { $push: { comment: createComment._id } },
       { new: true }
     );
+    console.log(createdComment)
     return {
       headers: {
         "Content-Type": "application/json",

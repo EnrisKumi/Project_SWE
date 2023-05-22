@@ -20,7 +20,7 @@ export const handler = async (event: any, context: any) => {
       {$push : {followed: followersId}},
       {new : true}
     )
-    
+    console.log(user1)
     return {
       headers: {
         "Content-Type": "application/json",

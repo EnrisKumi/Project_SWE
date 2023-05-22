@@ -16,7 +16,7 @@ export const handler = async (event: any, context: any) => {
         text: reqBody.text,
       }
     )
-
+    console.log(updateComments)
     return {
       headers: {
         "Content-Type": "application/json",
