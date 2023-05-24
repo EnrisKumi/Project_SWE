@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useLogout } from "../../hooks/auth/useLogout";
 import Navbar from "../../components/navbar.js";
-import { useApi } from "../../hooks/api/useApi";
 import { Box } from "@mui/material";
 import Feed from "../../components/feed";
 import Tags from "../../components/tags";
 import { useAuthContext } from "../../hooks/auth/useAuthContext";
+import NewPostModal from "../../components/newPostModal";
 
 export default function MainPage() {
   const { logout, isPending } = useLogout();
@@ -17,7 +17,6 @@ export default function MainPage() {
   const mongoId = currentUser?.data._id;
 
   return (
-    //TODO: newPostModal
       <Box sx={{ backgroundColor: "background.myBackground" }}>
       <button className="btn" onClick={logout}>Logout</button>
       <div>{cognitoId}{mongoId}</div>
@@ -29,6 +28,10 @@ export default function MainPage() {
             seteffectRunFromModal={seteffectRunFromModal}
             tag={tag}
             setTag={setTag}
+          />
+          <NewPostModal
+            effectRunFromModal={effectRunFromModal}
+            seteffectRunFromModal={seteffectRunFromModal}
           />
       </Box>
   );

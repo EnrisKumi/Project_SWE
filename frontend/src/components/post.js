@@ -209,7 +209,6 @@ export default function Post({
   ///////////////////////////////////////////////////////////////
   const allComments = async () => {
     try {
-      console.log("🚀 ~ file: post.js:195 ~ allComments ~ res:");
       const res = await axios.get(
         `${url}comment/getCommentAtPost?id=${_id}`,
         requestInfo
