@@ -18,7 +18,6 @@ export default function Feed({ called, setTag, tag, effectRunFromModal }) {
   const matchesDesktop = useMediaQuery(theme.breakpoints.up("sm"));
 
   const { user } = useAuthContext();
-  const cognitoId = user.attributes.sub;
   const token = user.signInUserSession.idToken.jwtToken;
   const requestInfo = {
     headers: {
@@ -159,13 +158,12 @@ export default function Feed({ called, setTag, tag, effectRunFromModal }) {
         <Box sx={{ flex: { xs: 1, sm: 4 } }}>
           {posts.map((el) => {
             return (
-              // <Post
-              //   feedEffectRun={feedEffectRun}
-              //   setfeedEffectRun={setfeedEffectRun}
-              //   called="feed"
-              //   post={el}
-              // />
-              <div>post</div>
+              <Post
+                feedEffectRun={feedEffectRun}
+                setfeedEffectRun={setfeedEffectRun}
+                called="feed"
+                post={el}
+              />
             );
           })}
         </Box>

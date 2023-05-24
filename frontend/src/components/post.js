@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Avatar,
   Modal,
@@ -16,28 +15,26 @@ import {
   Popover,
   Skeleton,
 } from "@mui/material";
-
+import React from "react";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
 import Checkbox from "@mui/material/Checkbox";
-
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import FormControl from "@mui/material/FormControl";
 import OutlinedInput from "@mui/material/OutlinedInput";
-
 import { DeleteOutline, MoreVert } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { useAuthContext } from "../hooks/auth/useAuthContext";
-import moment from "moment";
-
-//TODO: Comment, ShowTags, JoinedUsersData
-
 import peopleIcon from "../icons/Group 180.png";
 import calendarIcon from "../icons/Group 179.png";
 import commentIcon from "../icons/Group 175.png";
 import chatIcon from "../icons/chat_2.png";
-import { useApi } from "../hooks/api/useApi";
+import moment from "moment";
+import { useAuthContext } from "../hooks/auth/useAuthContext";
+import ShowTags from "./showTags";
+import Comment from "./comment";
+import JoinedUsersData from "./joinedUsersData";
+const url = "https://2pj6vv3pwi.execute-api.eu-central-1.amazonaws.com/prod/";
 
 const StyledButton = styled(Button)(({ theme }) => ({
   backgroundColor: "#118C94",
@@ -57,12 +54,16 @@ export default function Post({
   setuserProfileFeedEffect,
   settabValue,
 }) {
-  const { user } = useAuthContext();
-  const { getUser } = useApi();
-  const currentUserId = user.attributes.sub;
-  //   const currentUserMongoId = getUser().then((res) => {
-  //     console.log(res._id)
-  //  })
+  const { user, currentUser } = useAuthContext();
+  const cognitoId = user.attributes.sub;
+  const mongoId = currentUser?.data._id;
+  const token = user.signInUserSession.idToken.jwtToken;
+  const requestInfo = {
+    headers: {
+      Authorization: token,
+    }
+  };
+
   const {
     username,
     likes,
@@ -97,7 +98,6 @@ export default function Post({
       setAnchorEl(false);
     }, 2000);
   };
-
   const onUsernameClick = () => {
     if (called === "userProfile") {
       settabValue("MyPosts");
@@ -118,23 +118,15 @@ export default function Post({
   const postedFromNow = moment(date).fromNow();
 
   ///////////////////////////////////////////////////////////////
-  // const getJoinedUsers = async () => {
-  //     const userAuth = await Auth.currentAuthenticatedUser();
-  //     const token = userAuth.signInUserSession.idToken.jwtToken;
-  //     const requestInfo = {
-  //       headers: {
-  //         Authorization: token,
-  //       },
-  //     };
-  //     const joinedU = await axios.get(
-  //       `https://0tcdj2tfi8.execute-api.eu-central-1.amazonaws.com/dev/joined/users/${_id}`,
-  //       requestInfo
-  //     );
+  const getJoinedUsers = async () => {
+    const joinedU = await axios.get(
+      `${url}join/getJoinedUsers?id=${_id}`,
+      requestInfo
+    );
+    return await joinedU.data;
+  };
 
-  //     return await joinedU.data;
-  //   };
-
-  //   const [joinedUsers, setJoinedUsers] = useState(false);
+  const [joinedUsers, setJoinedUsers] = useState(false);
   ///////////////////////////////////////////////////////////////
 
   const clear = () => {
@@ -142,282 +134,229 @@ export default function Post({
     setLiked("");
   };
 
-  //   const joinPost = async () => {
-  //     const userAuth = await Auth.currentAuthenticatedUser();
-  //     const token = userAuth.signInUserSession.idToken.jwtToken;
-  //     const requestInfo = {
-  //       headers: {
-  //         Authorization: token,
-  //       },
-  //     };
-  //     await axios.get(
-  //       `https://0tcdj2tfi8.execute-api.eu-central-1.amazonaws.com/dev/joinPost/${currentUserMongoId}/${_id}`,
-  //       requestInfo
-  //     );
-  //     // shouldEffectRun ? setshouldEffectRun(false) : setshouldEffectRun(true);
-  //     // feedEffectRun ? setfeedEffectRun(false) : setfeedEffectRun(true);
-  //   };
+  ///////////////////////////////////////////////////////////////
+  const joinPost = async () => {
+    await axios.get(
+      `${url}join/joinPost?userId=${mongoId}&postId=${_id}`,
+      requestInfo
+    );
+  };
+  ///////////////////////////////////////////////////////////////
 
-  // const unjoinPost = async () => {
-  //     const userAuth = await Auth.currentAuthenticatedUser();
-  //     const token = userAuth.signInUserSession.idToken.jwtToken;
-  //     const requestInfo = {
-  //       headers: {
-  //         Authorization: token,
-  //       },
-  //     };
-  //     await axios.get(
-  //       `https://0tcdj2tfi8.execute-api.eu-central-1.amazonaws.com/dev/unjoinPost/${currentUserMongoId}/${_id}`,
-  //       requestInfo
-  //     );
-  //     // feedEffectRun ? setfeedEffectRun(false) : setfeedEffectRun(true);
-  //     // shouldEffectRun ? setshouldEffectRun(false) : setshouldEffectRun(true);
-  //   };
+  ///////////////////////////////////////////////////////////////
+  const unjoinPost = async () => {
+    await axios.get(
+      `${url}join/joinPost?userId=${mongoId}&postId=${_id}`,
+      requestInfo
+    );
+  };
+  ///////////////////////////////////////////////////////////////
 
-  // const deletePost = async (e, _id) => {
-  //     try {
-  //       const userAuth = await Auth.currentAuthenticatedUser();
-  //       const token = userAuth.signInUserSession.idToken.jwtToken;
-  //       const requestInfo = {
-  //         headers: {
-  //           Authorization: token,
-  //         },
-  //       };
-  //       e.preventDefault();
-  //       await axios.delete(
-  //         `https://0tcdj2tfi8.execute-api.eu-central-1.amazonaws.com/dev/delete/post/${currentUserMongoId}/${_id}`,
-  //         requestInfo
-  //       );
+  ///////////////////////////////////////////////////////////////
+  const deletePost = async (e, _id) => {
+    try {
+      e.preventDefault();
+      await axios.delete(
+        `${url}post/deletePostByUserId?userId=${mongoId}&postId=${_id}`,
+        requestInfo
+      );
 
-  //       called === "userProfile"
-  //         ? setuserProfileFeedEffect(!userProfileFeedEffect)
-  //         : setfeedEffectRun(!feedEffectRun);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+      called === "userProfile"
+        ? setuserProfileFeedEffect(!userProfileFeedEffect)
+        : setfeedEffectRun(!feedEffectRun);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  ///////////////////////////////////////////////////////////////
 
-  // useEffect(() => {
-  //     getUserFromCognitoId(postCognitoId).then((userWhoPostedData) =>
-  //       setuserWhoPosted(userWhoPostedData)
-  //     );
-  //   }, []);
+  useEffect(() => {
+    allComments();
+  }, [shouldEffectRun]);
 
-  //   useEffect(() => {
-  //     allComments();
-  //   }, [shouldEffectRun]);
+  useEffect(() => {
+    setpostLoading(false);
+    // checkLike(currentUserMongoId, _id).then((bool) => {
+    //   setchecked(bool);
 
-  //   useEffect(() => {
-  //     checkLike(currentUserMongoId, _id).then((bool) => {
-  //       setchecked(bool);
-  //       setpostLoading(false);
-  //     });
-  //     checkJoin(currentUserMongoId, _id).then((bool) => {
-  //       setisJoined(bool);
-  //     });
-  //   }, [shouldEffectRun, currentUserMongoId, _id]);
+    // });
+    // checkJoin(currentUserMongoId, _id).then((bool) => {
+    //   setisJoined(bool);
+    // });
+  }, [shouldEffectRun, mongoId, _id]);
 
-  // const allComments = async () => {
-  //     try {
-  //       const userAuth = await Auth.currentAuthenticatedUser();
-  //       const token = userAuth.signInUserSession.idToken.jwtToken;
-  //       const requestInfo = {
-  //         headers: {
-  //           Authorization: token,
-  //         },
-  //       };
-  //       const res = await axios.get(
-  //         `https://0tcdj2tfi8.execute-api.eu-central-1.amazonaws.com/dev/comments/post/${_id}`,
-  //         requestInfo
-  //       );
-  //       setComments(res.data);
+  ///////////////////////////////////////////////////////////////
+  const allComments = async () => {
+    try {
+      console.log("🚀 ~ file: post.js:195 ~ allComments ~ res:")
+      const res = await axios.get(
+        `${url}comment/getCommentAtPost?id=${_id}`,
+        requestInfo
+      );
+      
+      setComments(res.data);
 
-  //       return res.data;
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
+      return res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  ///////////////////////////////////////////////////////////////
 
-  // const renderDeleteButton = (
-  //     <>
-  //       {postCognitoId === currentUserId ? (
-  //         <IconButton
-  //           onClick={(e) => deletePost(e, post._id)}
-  //           aria-label="settings"
-  //         >
-  //           <DeleteOutline />
-  //         </IconButton>
-  //       ) : (
-  //         <IconButton aria-label="settings">
-  //           <MoreVert />
-  //         </IconButton>
-  //       )}
-  //     </>
-  //   );
+  const renderDeleteButton = (
+    <>
+      {postCognitoId === cognitoId ? (
+        <IconButton
+          onClick={(e) => deletePost(e, post._id)}
+          aria-label="settings"
+        >
+          <DeleteOutline />
+        </IconButton>
+      ) : (
+        <IconButton aria-label="settings">
+          <MoreVert />
+        </IconButton>
+      )}
+    </>
+  );
 
-  // const renderJoinButton = (
-  //     <>
-  //       {currentUserId == postCognitoId ? (
-  //         <>
-  //           <StyledButton
-  //             onClick={(e) =>
-  //               joined?.length > 0 ? setJoinedUsers(true) : handleClick(e)
-  //             }
-  //             sx={{
-  //               fontSize: "10px",
-  //             }}
-  //             size="small"
-  //             variant="contained"
-  //           >
-  //             Check{" "}
-  //           </StyledButton>
-  //           <Popover
-  //             id={id}
-  //             open={open}
-  //             anchorEl={anchorEl}
-  //             onClose={handleClose}
-  //             anchorOrigin={{
-  //               vertical: "bottom",
-  //               horizontal: "left",
-  //             }}
-  //             transformOrigin={{
-  //               vertical: "top",
-  //               horizontal: "center",
-  //             }}
-  //           >
-  //             <Typography sx={{ p: 2 }}>No one has joined yet</Typography>
-  //           </Popover>
-  //         </>
-  //       ) : isJoined === true ? (
-  //         <StyledButton
-  //           onClick={() => {
-  //             setisJoined(false);
-  //             setnumberJoined((numberJoined) => numberJoined - 1);
-  //             unjoinPost();
-  //           }}
-  //           size="small"
-  //           variant="contained"
-  //         >
-  //           Leave
-  //         </StyledButton>
-  //       ) : numberJoined == limit ? (
-  //         <StyledButton
-  //           disabled
-  //           sx={{ paddingX: 1 }}
-  //           color="secondary"
-  //           size="small"
-  //           variant="contained"
-  //         >
-  //           Completed
-  //         </StyledButton>
-  //       ) : (
-  //         <StyledButton
-  //           onClick={() => {
-  //             setisJoined(true);
-  //             setnumberJoined((numberJoined) => numberJoined + 1);
-  //             joinPost();
-  //           }}
-  //           size="small"
-  //           variant="contained"
-  //         >
-  //           Join
-  //         </StyledButton>
-  //       )}
-  //     </>
-  //   );
+  const renderJoinButton = (
+    <>
+      {postCognitoId === cognitoId ? (
+        <>
+          <StyledButton
+            onClick={(e) =>
+              joined?.length > 0 ? setJoinedUsers(true) : handleClick(e)
+            }
+            sx={{
+              fontSize: "10px",
+            }}
+            size="small"
+            variant="contained"
+          >
+            Check{" "}
+          </StyledButton>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+          >
+            <Typography sx={{ p: 2 }}>No one has joined yet</Typography>
+          </Popover>
+        </>
+      ) : isJoined === true ? (
+        <StyledButton
+          onClick={() => {
+            setisJoined(false);
+            setnumberJoined((numberJoined) => numberJoined - 1);
+            unjoinPost();
+          }}
+          size="small"
+          variant="contained"
+        >
+          Leave
+        </StyledButton>
+      ) : numberJoined === limit ? (
+        <StyledButton
+          disabled
+          sx={{ paddingX: 1 }}
+          color="secondary"
+          size="small"
+          variant="contained"
+        >
+          Completed
+        </StyledButton>
+      ) : (
+        <StyledButton
+          onClick={() => {
+            setisJoined(true);
+            setnumberJoined((numberJoined) => numberJoined + 1);
+            joinPost();
+          }}
+          size="small"
+          variant="contained"
+        >
+          Join
+        </StyledButton>
+      )}
+    </>
+  );
+  ////////////////////////////////////////////////////////////
+  const getLikes = async () => {
+    try {
+      const res = await axios.get(`${url}like/getLikes?id=${_id}`, requestInfo);
+      setpostLikes(res.data.length);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  ///////////////////////////////////////////////////////////////
 
-  // const getLikes = async () => {
-  //     try {
-  //       const userAuth = await Auth.currentAuthenticatedUser();
-  //       const token = userAuth.signInUserSession.idToken.jwtToken;
-  //       const requestInfo = {
-  //         headers: {
-  //           Authorization: token,
-  //         },
-  //       };
-  //       const res = await axios.get(
-  //         ` https://0tcdj2tfi8.execute-api.eu-central-1.amazonaws.com/dev/getLike/users/${_id}`,
-  //         requestInfo
-  //       );
-  //       setpostLikes(res.data.length);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  useEffect(() => {
+    getLikes();
+  }, [shouldEffectRun]);
 
-  //   useEffect(() => {
-  //     getLikes();
-  //   }, [shouldEffectRun]);
+  ///////////////////////////////////////////////////////////////
+  const postComment = async () => {
+    try {
+      await axios.post(
+        `${url}comment/postCommentAtPost?id=${_id}`,
+        {
+          commentCognitoId: cognitoId,
+          userName: user.username,
+          text: commentsText,
+          date: Date.now(),
+        },
+        requestInfo
+      );
+      shouldEffectRun ? setshouldEffectRun(false) : setshouldEffectRun(true);
+      clear();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  ///////////////////////////////////////////////////////////////
 
-  // const postComment = async () => {
-  //     try {
-  //       const userAuth = await Auth.currentAuthenticatedUser();
-  //       const token = userAuth.signInUserSession.idToken.jwtToken;
-  //       const requestInfo = {
-  //         headers: {
-  //           Authorization: token,
-  //         },
-  //       };
-  //       await axios.post(
-  //         `https://0tcdj2tfi8.execute-api.eu-central-1.amazonaws.com/dev/comment/post/${_id}`,
-  //         {
-  //           commentCognitoId: currentUserId,
-  //           userName: userContext.loggedUser.username,
-  //           text: commentsText,
-  //           date: Date.now(),
-  //         },
-  //         requestInfo
-  //       );
-  //       shouldEffectRun ? setshouldEffectRun(false) : setshouldEffectRun(true);
-  //       clear();
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
+  const renderComments = comments.map((data) => {
+    return <Comment data={data} />;
+  });
 
-  //   const removeLikeAtPost = async () => {
-  //     try {
-  //       const userAuth = await Auth.currentAuthenticatedUser();
-  //       const token = userAuth.signInUserSession.idToken.jwtToken;
-  //       const requestInfo = {
-  //         headers: {
-  //           Authorization: token,
-  //         },
-  //       };
-  //       setpostLikes((postLikes) => postLikes - 1);
-  //       await axios.get(
-  //         `https://0tcdj2tfi8.execute-api.eu-central-1.amazonaws.com/dev/unLike/${currentUserMongoId}/${_id}`,
-  //         requestInfo
-  //       );
-  //       // shouldEffectRun ? setshouldEffectRun(false) : setshouldEffectRun(true);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   const renderComments = comments.map((data) => {
-  //     return <Comment data={data} />;
-  //   });
+  ///////////////////////////////////////////////////////////////
+  const addLikeAtPost = async () => {
+    try {
+      setpostLikes((postLikes) => postLikes + 1);
+      await axios.get(
+        `${url}like/addLike?userId=${mongoId}&postId=${_id}`,
+        requestInfo
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  ///////////////////////////////////////////////////////////////
 
-  //   const addLikeAtPost = async () => {
-  //     try {
-  //       const userAuth = await Auth.currentAuthenticatedUser();
-  //       const token = userAuth.signInUserSession.idToken.jwtToken;
-  //       const requestInfo = {
-  //         headers: {
-  //           Authorization: token,
-  //         },
-  //       };
-  //       setpostLikes((postLikes) => postLikes + 1);
-  //       await axios.get(
-  //         `https://0tcdj2tfi8.execute-api.eu-central-1.amazonaws.com/dev/addLike/users/${currentUserMongoId}/${_id}`,
-  //         requestInfo
-  //       );
-
-  //       // shouldEffectRun ? setshouldEffectRun(false) : setshouldEffectRun(true);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  ///////////////////////////////////////////////////////////////
+  const removeLikeAtPost = async () => {
+    try {
+      setpostLikes((postLikes) => postLikes - 1);
+      await axios.get(
+        `${url}like/removeLike?userId=${mongoId}&postId=${_id}`,
+        requestInfo
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  ///////////////////////////////////////////////////////////////
 
   return (
     <>
@@ -459,6 +398,25 @@ export default function Post({
                   {username.substring(0, 1)}
                 </Avatar>
               }
+              action={
+                <Stack flexDirection="row" alignItems="center">
+                  {status === "Completed" ? (
+                    <StyledButton
+                      disabled
+                      sx={{ paddingX: 1 }}
+                      color="secondary"
+                      size="small"
+                      variant="contained"
+                    >
+                      Event Finished
+                    </StyledButton>
+                  ) : (
+                    renderJoinButton
+                  )}
+
+                  {renderDeleteButton}
+                </Stack>
+              }
               subheader={postedFromNow}
             />
           </Stack>
@@ -475,18 +433,23 @@ export default function Post({
 
           <Stack sx={{ padding: "10px", width: "100%" }}>
             <Stack flexDirection="row" alignItems="center">
-              <img src={calendarIcon} height={20} width={20} alt="t"/>
+              <img src={calendarIcon} height={20} width={20} alt="e"/>
               <Typography mx={1}>
                 {" "}
                 {startTime?.substring(0, 10) + " " + startTime?.slice(11, 21)}
               </Typography>
             </Stack>
             <Stack my="3px" flexDirection="row" alignItems="center">
-              <img src={peopleIcon} height={20} width={20} alt="t"/>
+              <img src={peopleIcon} height={20} width={20} alt="2"/>
               <Typography mx={1}>
                 {" "}
                 {numberJoined}/{limit}
               </Typography>
+            </Stack>
+            <Stack flexDirection="row" alignItems="center">
+              {tags?.map((el) => (
+                <ShowTags tags={el} />
+              ))}
             </Stack>
 
             <Divider
@@ -503,6 +466,28 @@ export default function Post({
               alignItems="center"
               sx={{ justifyContent: "space-between" }}
             >
+              <Tooltip title="">
+                <Checkbox
+                  sx={{ width: 20, height: 20 }}
+                  checked={checked}
+                  onClick={
+                    checked ? () => setchecked(false) : () => setchecked(true)
+                  }
+                  onChange={
+                    checked
+                      ? () => {
+                          removeLikeAtPost();
+                        }
+                      : () => {
+                          addLikeAtPost();
+                        }
+                  }
+                  icon={<FavoriteBorder sx={{ width: 20, height: 20 }} />}
+                  checkedIcon={
+                    <Favorite sx={{ color: "red", width: 20, height: 20 }} />
+                  }
+                />
+              </Tooltip>
 
               <Tooltip
                 sx={{ marginRight: "auto" }}
@@ -512,12 +497,12 @@ export default function Post({
                 }}
               >
                 <IconButton aria-label="add-comment">
-                  <img src={commentIcon} height={20} width={20} alt="t"/>
+                  <img src={commentIcon} height={20} width={20} />
                 </IconButton>
               </Tooltip>
-              {currentUserId === postCognitoId ? (
+              {cognitoId === postCognitoId ? (
                 <Button
-                  startIcon={<img src={chatIcon} height={15} width={15} alt="t"/>}
+                  startIcon={<img src={chatIcon} height={15} width={15} />}
                   color="primary"
                   sx={{
                     marginLeft: "auto",
@@ -537,7 +522,7 @@ export default function Post({
               ) : null}
               {isJoined ? (
                 <Button
-                  startIcon={<img src={chatIcon} height={15} width={15} alt="t" />}
+                  startIcon={<img src={chatIcon} height={15} width={15} />}
                   color="primary"
                   sx={{
                     marginLeft: "auto",
@@ -561,7 +546,7 @@ export default function Post({
               <Typography paddingRight="4px" paddingLeft="2px">
                 {postLikes}
               </Typography>
-              <Typography>{postLikes == 1 ? "Like" : "Likes"} </Typography>
+              <Typography>{postLikes === 1 ? "Like" : "Likes"} </Typography>
             </Stack>
             <Stack flexDirection="row">
               <Button
@@ -593,16 +578,75 @@ export default function Post({
             <Stack>
               {showComment ? (
                 <>
+                  <FormControl
+                    onSubmit={() => {
+                      postComment();
+                      setcommentsOpen(!commentsOpen);
+                      setShowComment(!showComment);
+                    }}
+                  >
+                    <OutlinedInput
+                      size="small"
+                      id="outlined-adornment-weight"
+                      placeholder="Type your comment"
+                      value={commentsText}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <StyledButton
+                            type="submit"
+                            onSubmit={() => {
+                              postComment();
+                              setcommentsOpen(!commentsOpen);
+                              setShowComment(!showComment);
+                            }}
+                            onClick={() => {
+                              postComment();
+                              setcommentsOpen(!commentsOpen);
+                              setShowComment(!showComment);
+                            }}
+                            sx={{ color: "white" }}
+                          >
+                            Done
+                          </StyledButton>
+                        </InputAdornment>
+                      }
+                      aria-describedby="outlined-weight-helper-text"
+                      onChange={(e) => setCommentsText(e.target.value)}
+                      inputProps={{
+                        "aria-label": "weight",
+                      }}
+                    />
+                  </FormControl>
                   {/* <IconButton
-              onClick={() => {
-                postComment();
-              }}
-            >
-              <AddIcon />
-            </IconButton> */}
+                onClick={() => {
+                  postComment();
+                }}
+              >
+                <AddIcon />
+              </IconButton> */}
                 </>
               ) : null}
             </Stack>
+            {commentsOpen ? renderComments : null}
+            <Modal
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              open={joinedUsers}
+              onClose={() => setJoinedUsers(false)}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <JoinedUsersData
+                effectRun={effectRun}
+                seteffectRun={seteffectRun}
+                setJoinedUsers={setJoinedUsers}
+                _id={_id}
+                getJoinedUsers={getJoinedUsers}
+              />
+            </Modal>
           </Stack>
         </Card>
       )}
