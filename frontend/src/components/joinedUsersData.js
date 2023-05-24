@@ -3,6 +3,8 @@ import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 
 import xIcon from "../icons/Group 182.png";
+import { MoonLoader } from "react-spinners";
+import JoinedUsersLine from "./joinedUserLine";
 
 export default function JoinedUsersData({
   _id,
@@ -48,7 +50,7 @@ export default function JoinedUsersData({
         gap={10}
       >
         <IconButton onClick={() => setJoinedUsers(false)}>
-          <img src={xIcon} height={20} width={20} />
+          <img src={xIcon} height={20} width={20} alt="missing"/>
         </IconButton>
 
         <Typography sx={{}} fontSize="14px" color="gray" textAlign="center">
@@ -67,10 +69,20 @@ export default function JoinedUsersData({
 
       {loading ? (
         <div style={style}>
-         
+          <MoonLoader color="grey" loading speedMultiplier={1} />
         </div>
       ) : (
         <Stack width={1} sx={{ overflow: "hidden", overflowY: "scroll" }}>
+          {joinedU?.map((aFollower) => (
+            <JoinedUsersLine
+              effectRun={effectRun}
+              seteffectRun={seteffectRun}
+              aFollower={aFollower}
+              seteffect={seteffect}
+              _id={_id}
+              effect={effect}
+            />
+          ))}
         </Stack>
       )}
     </Stack>

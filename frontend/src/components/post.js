@@ -61,7 +61,7 @@ export default function Post({
   const requestInfo = {
     headers: {
       Authorization: token,
-    }
+    },
   };
 
   const {
@@ -170,30 +170,51 @@ export default function Post({
   };
   ///////////////////////////////////////////////////////////////
 
+  ///////////////////////////////////////////////////////////////
+  const checkLike = async (currentUserMongoId, postId) => {
+    const res = await axios.get(
+      `${url}like/checkIfLiked?id=${currentUserMongoId}&postId=${postId}`,
+      requestInfo
+    );
+
+    return await res.data;
+  };
+  ///////////////////////////////////////////////////////////////
+
+  ///////////////////////////////////////////////////////////////
+  const checkJoin = async (currentUserMongoId, postId) => {
+    const res = await axios.get(
+      `${url}join/checkJoinedPost?id=${currentUserMongoId}&postId=${postId}`,
+      requestInfo
+    );
+
+    return await res.data;
+  };
+  ///////////////////////////////////////////////////////////////
+
   useEffect(() => {
     allComments();
   }, [shouldEffectRun]);
 
   useEffect(() => {
-    setpostLoading(false);
-    // checkLike(currentUserMongoId, _id).then((bool) => {
-    //   setchecked(bool);
-
-    // });
-    // checkJoin(currentUserMongoId, _id).then((bool) => {
-    //   setisJoined(bool);
-    // });
+    checkLike(mongoId, _id).then((bool) => {
+      setchecked(bool);
+      setpostLoading(false);
+    });
+    checkJoin(mongoId, _id).then((bool) => {
+      setisJoined(bool);
+    });
   }, [shouldEffectRun, mongoId, _id]);
 
   ///////////////////////////////////////////////////////////////
   const allComments = async () => {
     try {
-      console.log("🚀 ~ file: post.js:195 ~ allComments ~ res:")
+      console.log("🚀 ~ file: post.js:195 ~ allComments ~ res:");
       const res = await axios.get(
         `${url}comment/getCommentAtPost?id=${_id}`,
         requestInfo
       );
-      
+
       setComments(res.data);
 
       return res.data;
@@ -433,14 +454,14 @@ export default function Post({
 
           <Stack sx={{ padding: "10px", width: "100%" }}>
             <Stack flexDirection="row" alignItems="center">
-              <img src={calendarIcon} height={20} width={20} alt="e"/>
+              <img src={calendarIcon} height={20} width={20} alt="e" />
               <Typography mx={1}>
                 {" "}
                 {startTime?.substring(0, 10) + " " + startTime?.slice(11, 21)}
               </Typography>
             </Stack>
             <Stack my="3px" flexDirection="row" alignItems="center">
-              <img src={peopleIcon} height={20} width={20} alt="2"/>
+              <img src={peopleIcon} height={20} width={20} alt="2" />
               <Typography mx={1}>
                 {" "}
                 {numberJoined}/{limit}

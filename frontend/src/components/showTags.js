@@ -18,12 +18,12 @@ export default function ShowTags({tags}) {
 
   const getLocationTag = async () => {
     const res = await axios.get(
-      `${url}location/getLocations/${tags}`, requestInfo);
+      `${url}location/getLocation?id=${tags}`, requestInfo);
     setlocationTag(res.data);
   };
 
   const getSportTag = async () => {
-    const res = await axios.get(`${url}sport/getSports/${tags}`, requestInfo);
+    const res = await axios.get(`${url}sport/getOneSport?id=${tags}`, requestInfo);
     setsportTag(res.data);
   };
 

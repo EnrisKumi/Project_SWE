@@ -3,6 +3,7 @@ import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/auth/useAuthContext";
+const url = "https://2pj6vv3pwi.execute-api.eu-central-1.amazonaws.com/prod/";
 
 export default function JoinedUsersLine({
   effect,
@@ -12,25 +13,23 @@ export default function JoinedUsersLine({
   effectRun,
   seteffectRun,
 }) {
-    const { user } = useAuthContext();
-    const cognitoId = user.attributes.sub;
-    const token = user.signInUserSession.idToken.jwtToken;
-    const requestInfo = {
-      headers: {
-        Authorization: token,
-      },
-    };
   const navigate = useNavigate();
   const handleNavigateClick = (cognitoId) => {
     navigate(`/userprofile/${cognitoId}`);
   };
+  const { user } = useAuthContext();
+  const token = user.signInUserSession.idToken.jwtToken;
+  const requestInfo = {
+    headers: {
+      Authorization: token,
+    },
+  };
 
   const unjoinPost = async (e) => {
     e.preventDefault();
-
     try {
       await axios.get(
-        `https://0tcdj2tfi8.execute-api.eu-central-1.amazonaws.com/dev/unjoinPost/${aFollower._id}/${_id}`,
+        `${url}join/leavePost?userId=${aFollower._id}&postId=${_id}`,
         requestInfo
       );
 
