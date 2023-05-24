@@ -1,5 +1,5 @@
 import { connectDataBase } from "../../../data/db/connection";
-import { Post } from "../../../data/models/Post";
+import { Post } from "../../../data/models/modelsConfig";
 
 export const handler = async (event: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
@@ -13,7 +13,7 @@ export const handler = async (event: any, context: any) => {
         if (!post) {
             throw new Error(`No post found with id: ${id}`);
         }
-        console.log(post.likes)
+        console.log(post)
         return {
             headers: {
                 "Content-Type": "application/json",

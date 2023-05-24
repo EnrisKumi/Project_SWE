@@ -1,5 +1,5 @@
 import { connectDataBase } from "../../../data/db/connection";
-import { Comment } from "../../../data/models/Comments";
+import { Comment } from "../../../data/models/modelsConfig";
 
 export const handler = async (event:any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;

@@ -11,7 +11,7 @@ const commentSchema = new mongoose.Schema({
     },
     userId: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: "User"
     },
     date: {
         type: Date,
@@ -24,4 +24,3 @@ const commentSchema = new mongoose.Schema({
 })
 
 const Comment = mongoose.model('Comment', commentSchema);
-export { Comment }

@@ -8,5 +8,3 @@ const sportsSchema = new mongoose.Schema({
 });
 
 const SportsTag = mongoose.model("SportsTag", sportsSchema);
-
-export { SportsTag }

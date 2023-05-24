@@ -1,5 +1,5 @@
 import { connectDataBase } from "../../../data/db/connection";
-import { LocationTag } from "../../../data/models/LocationTag";
+import { LocationTag } from "../../../data/models/modelsConfig";
 
 export const handler = async (event: any, context: any) => {
   context.callbackWaitsForEmptyEventLoop = false;

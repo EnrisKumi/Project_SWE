@@ -1,6 +1,5 @@
 import { connectDataBase } from "../../../data/db/connection";
-import { Post } from "../../../data/models/Post";
-import { User } from "../../../data/models/User";
+import { Post, User } from "../../../data/models/modelsConfig";
 
 export const handler = async (event: any, context: any) => {
   context.callbackWaitsForEmptyEventLoop = false;
@@ -27,17 +26,18 @@ export const handler = async (event: any, context: any) => {
     startTime,
     limit,
   });
+  console.log("🚀 ~ file: createPostAtUserHandler.ts:30 ~ handler ~ post:", post)
 
   try {
     await connectDataBase();
-    console.log(post);
     const createPost = await Post.create(post);
+    console.log("🚀 ~ file: createPostAtUserHandler.ts:35 ~ handler ~ createPost:", createPost)
     const createdPost = await User.findOneAndUpdate(
       { _id: id },
       { $push: { posts: createPost._id } },
       { new: true }
     );
-    console.log(createdPost);
+    console.log("🚀 ~ file: createPostAtUserHandler.ts:40 ~ handler ~ createdPost:", createdPost)
 
     return {
       headers: {
@@ -51,6 +51,7 @@ export const handler = async (event: any, context: any) => {
       body: JSON.stringify(createdPost),
     };
   } catch (error) {
+    console.log(error)
     return error;
   }
 };

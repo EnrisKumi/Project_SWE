@@ -1,6 +1,5 @@
 import { connectDataBase } from "../../../data/db/connection";
-import { User } from "../../../data/models/User";
-
+import { User } from "../../../data/models/modelsConfig";
 export const handler = async (event: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;
     const id = event.queryStringParameters.id;

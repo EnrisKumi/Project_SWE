@@ -1,5 +1,5 @@
 import { connectDataBase } from "../../../data/db/connection";
-import { SportsTag } from "../../../data/models/SportsTag";
+import { SportsTag } from "../../../data/models/modelsConfig";
 
 export const handler = async (event: any, context: any) => {
     context.callbackWaitsForEmptyEventLoop = false;

@@ -57,12 +57,12 @@ const PostSchema = new mongoose.Schema(
         ref: "Comment",
       },
     ],
-    history: [
-      {
-        date: { type: Date, default: Date.now() },
-        userId: { type: Schema.Types.ObjectId, ref: "User" },
-      },
-    ],
+    // history: [
+    //   {
+    //     date: { type: Date, default: Date.now() },
+    //     userId: { type: Schema.Types.ObjectId, ref: User },
+    //   },
+    // ],
   },
   {
     timestamps: true
@@ -71,4 +71,3 @@ const PostSchema = new mongoose.Schema(
 
 const Post = mongoose.model("Post", PostSchema);
 
-export { Post }

@@ -9,4 +9,3 @@ const locationSchema = new mongoose.Schema({
 })
 
 const LocationTag = mongoose.model('LocationTag', locationSchema);
-export { LocationTag }
