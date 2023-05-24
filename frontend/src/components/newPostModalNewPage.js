@@ -172,7 +172,7 @@ export default function NewPostModalNewPage({
             width: "100%",
           }}
           multiline
-          placeholder="What's on yo mind, huh?"
+          placeholder="What's on yo mind?"
           rows={3}
           variant="standard"
           value={text}

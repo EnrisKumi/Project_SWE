@@ -17,97 +17,99 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import logoHobbytales from "../icons/logoHobbyTales.png";
 import userProfileIcon from "../icons/Group 172.png";
 import searchIcon from "../icons/Group 173.png";
 import backIcon from "../icons/Group 181.png";
-
-import { useState } from "react";
-import { useEffect } from "react";
-
-import { Link } from "react-router-dom";
+import { useAuthContext } from "../hooks/auth/useAuthContext";
+import axios from "axios";
+import UserSearchModal from './userSearchModal'
+import { useLogout } from "../hooks/auth/useLogout";
+const url = "https://2pj6vv3pwi.execute-api.eu-central-1.amazonaws.com/prod/";
 
 function getWindowDimensions() {
-    const { innerWidth: width, innerHeight: height } = window;
-    const percentageINeed = 0.5 * width;
-    return {
-      percentageINeed,
-      width,
-      height,
-    };
-  }
-  export function useWindowDimensions() {
-    const [windowDimensions, setWindowDimensions] = useState(
-      getWindowDimensions()
-    );
-  
-    useEffect(() => {
-      function handleResize() {
-        setWindowDimensions(getWindowDimensions());
-      }
-  
-      window.addEventListener("resize", handleResize);
-      return () => window.removeEventListener("resize", handleResize);
-    }, []);
-  
-    return windowDimensions;
-  }
+  const { innerWidth: width, innerHeight: height } = window;
+  const percentageINeed = 0.5 * width;
+  return {
+    percentageINeed,
+    width,
+    height,
+  };
+}
+export function useWindowDimensions() {
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return windowDimensions;
+}
 
 export default function Navbar({ called, userId }) {
+  const { percentageINeed } = useWindowDimensions();
 
-        const { percentageINeed } = useWindowDimensions();
+  const [username, setusername] = useState("");
+  const theme = useTheme();
+  const matchesDesktop = useMediaQuery(theme.breakpoints.up("sm"));
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [searchOpen, setsearchOpen] = useState(false);
+  const [searchvalue, setsearchvalue] = useState("");
+  const [navbarsearch, setnavbarsearch] = useState("");
+  const [usersFound, setusersFound] = useState();
+  const [modal, setmodal] = useState(false);
+  const [loading, setloading] = useState(true);
+  const { logout, isPending } = useLogout();
 
-        const [username, setusername] = useState("");
-        const theme = useTheme();
-        const matchesDesktop = useMediaQuery(theme.breakpoints.up("sm"));
-        //const userContext = useContext(UserContext);
-        const currentUserId = '';
-        const [anchorEl, setAnchorEl] = useState(null);
-        const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
-        const [searchOpen, setsearchOpen] = useState(false);
-        const [searchvalue, setsearchvalue] = useState("");
-        const [navbarsearch, setnavbarsearch] = useState("");
-        const [usersFound, setusersFound] = useState();
-        const [modal, setmodal] = useState(false);
-        console.log(searchvalue == "");
+  const { user, currentUser } = useAuthContext();
+  const cognitoId = user.attributes.sub;
+  const mongoId = currentUser?.data._id;
+  const token = user.signInUserSession.idToken.jwtToken;
+  const requestInfo = {
+    headers: {
+      Authorization: token,
+    },
+  };
 
-        /////SEARCH BAR
+  ///////////////////////////////////////////////////////////////
+  const SearchResults = async () => {
+    try {
+      const res = await axios.get(
+        `${url}search?searchQuery=${searchvalue}`,
+        requestInfo
+      );
+      const data = res.data;
+      setusersFound(data);
+      setloading(false);
+    } catch (error) {}
+  };
+  ///////////////////////////////////////////////////////////////
 
-        // const SearchResults = async () => {
-        //     const userAuth = await Auth.currentAuthenticatedUser();
-        //     const token = userAuth.signInUserSession.idToken.jwtToken;
-        //     const requestInfo = {
-        //       headers: {
-        //         Authorization: token,
-        //       },
-        //     };
-        //     const res = await axios.get(
-        //       `https://0tcdj2tfi8.execute-api.eu-central-1.amazonaws.com/dev/searchParams?searchQuery=${searchvalue}`,
-        //       requestInfo
-        //     );
-        //     const data = res.data;
-        //     setusersFound(data);
-        //   };
+  /////LOGOUT
 
-        /////LOGOUT
+  // async function handleSignOut() {
+  //     try {
+  //       await Auth.signOut();
+  //       localStorage.setItem("isLogged", false);
+  //       window.location.href = "/";
+  //     } catch (error) {
+  //       console.log("error signing out: ", error);
+  //     }
+  //   }
 
-        // async function handleSignOut() {
-        //     try {
-        //       await Auth.signOut();
-        //       localStorage.setItem("isLogged", false);
-        //       window.location.href = "/";
-        //     } catch (error) {
-        //       console.log("error signing out: ", error);
-        //     }
-        //   }
-
-
-        
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -149,7 +151,7 @@ export default function Navbar({ called, userId }) {
       <MenuItem
         onClick={() => {
           handleMenuClose();
-          //handleSignOut();
+          logout()
         }}
       >
         Log Out
@@ -173,17 +175,17 @@ export default function Navbar({ called, userId }) {
       startAdornment={
         <InputAdornment
           onClick={() => {
-            if (searchvalue == "") {
+            if (searchvalue === "") {
               setsearchvalue("");
             } else {
               setnavbarsearch(searchvalue);
-              //SearchResults();
+              SearchResults();
               setmodal(true);
             }
           }}
           position="start"
         >
-          <img src={searchIcon} height={20} width={20} />
+          <img src={searchIcon} height={20} width={20} alt="missing"/>
         </InputAdornment>
       }
       endAdornment={
@@ -238,13 +240,13 @@ export default function Navbar({ called, userId }) {
               setsearchvalue("");
             } else {
               setnavbarsearch(searchvalue);
-              //SearchResults();
+              SearchResults();
               setmodal(true);
             }
           }}
           position="start"
         >
-          <img src={searchIcon} height={20} width={20} />
+          <img src={searchIcon} height={20} width={20} alt="missing"/>
         </InputAdornment>
       }
       endAdornment={
@@ -300,7 +302,7 @@ export default function Navbar({ called, userId }) {
 
       <MenuItem
         onClick={() => {
-          //handleSignOut();
+          logout()
           handleProfileMenuOpen();
         }}
       >
@@ -340,7 +342,7 @@ export default function Navbar({ called, userId }) {
               size="large"
               color="inherit"
             >
-              <img src={backIcon} height={25} width={25} />
+              <img src={backIcon} height={25} width={25} alt="missing"/>
             </IconButton>
           ) : (
             <IconButton
@@ -352,7 +354,7 @@ export default function Navbar({ called, userId }) {
               size="large"
               color="inherit"
             >
-              <img src={logoHobbytales} height={25} width={150} />
+              <img src={logoHobbytales} height={25} width={150} alt="missing"/>
             </IconButton>
           )}
           {renderMobileSearchInput}
@@ -382,7 +384,7 @@ export default function Navbar({ called, userId }) {
               horizontal: "center",
             }}
           >
-            {/* <UserSearchModal usersFound={usersFound} /> */}
+          <UserSearchModal loading={loading} usersFound={usersFound} />
           </Popover>
 
           <Box
@@ -402,7 +404,7 @@ export default function Navbar({ called, userId }) {
                   onClick={() => setsearchOpen(true)}
                   color="inherit"
                 >
-                  <img src={searchIcon} height={20} width={20} />
+                  <img src={searchIcon} height={20} width={20} alt="missing"/>
                 </IconButton>
                 <IconButton
                   size="large"
@@ -410,11 +412,11 @@ export default function Navbar({ called, userId }) {
                   aria-controls={mobileMenuId}
                   aria-haspopup="true"
                   component={Link}
-                  to={`/userprofile/${currentUserId}`}
+                  to={`/userprofile/${mongoId}`}
                   color="inherit"
-                //   onClick={() => addUser()}
+                  //   onClick={() => addUser()}
                 >
-                  <img src={userProfileIcon} height={25} width={25} />
+                  <img src={userProfileIcon} height={25} width={25} alt="missing"/>
                 </IconButton>
               </>
             )}
@@ -461,7 +463,7 @@ export default function Navbar({ called, userId }) {
                   }}
                 >
                   <Typography variant="h6" noWrap color={"inherit"}>
-                    <img src={logoHobbytales} height={30} width={175} />
+                    <img src={logoHobbytales} height={30} width={175} alt="missing"/>
                   </Typography>
                 </Box>
                 <Box flex={1}>{renderDesktopSearchInput}</Box>
@@ -481,7 +483,7 @@ export default function Navbar({ called, userId }) {
                     horizontal: "center",
                   }}
                 >
-                  {/* <UserSearchModal usersFound={usersFound} /> */}
+                <UserSearchModal loading={loading} usersFound={usersFound} />
                 </Popover>
 
                 <Stack
@@ -495,7 +497,7 @@ export default function Navbar({ called, userId }) {
                 >
                   <IconButton
                     component={Link}
-                    to={`/userprofile/${currentUserId}`}
+                    to={`/userprofile/${mongoId}`}
                     size="large"
                     edge="end"
                     aria-label="account of current user"
@@ -504,7 +506,7 @@ export default function Navbar({ called, userId }) {
                     // onClick={() => addUser()}
                     color="inherit"
                   >
-                    <img src={userProfileIcon} height={25} width={25} />
+                    <img src={userProfileIcon} height={25} width={25} alt="missing"/>
                   </IconButton>
                 </Stack>
               </Toolbar>
@@ -549,7 +551,7 @@ export default function Navbar({ called, userId }) {
                   size="large"
                   color="inherit"
                 >
-                  <img src={backIcon} height={20} width={20} />
+                  <img src={backIcon} height={20} width={20} alt="missing"/>
                 </IconButton>
 
                 <Typography> {username} </Typography>
@@ -584,16 +586,5 @@ export default function Navbar({ called, userId }) {
   );
   const mainNavbar = matchesDesktop ? renderDesktopNavbar : renderMobileNavbar;
 
-    return (called == "main" ? mainNavbar : renderUserProfileNavbar)
+  return called === "main" ? mainNavbar : renderUserProfileNavbar;
 }
-
-
-
-
-
-
-
-
-
-
-

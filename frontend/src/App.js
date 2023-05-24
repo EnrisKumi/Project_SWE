@@ -64,6 +64,11 @@ function App() {
           element={<ForgotPassword/>}
         />
 
+        {/*<Route
+        path="/userprofile/:cognitoId"
+        element={<UserProfile />}
+    />*/}
+
       <Route path="/chat" element={<ChatApp />} />
       
       </Routes>
