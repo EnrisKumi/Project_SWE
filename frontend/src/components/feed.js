@@ -3,9 +3,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuthContext } from "../hooks/auth/useAuthContext";
 import Post from "./post";
+const url = "https://2pj6vv3pwi.execute-api.eu-central-1.amazonaws.com/prod/";
 
 export default function Feed({ called, setTag, tag, effectRunFromModal }) {
-  const url = "https://2pj6vv3pwi.execute-api.eu-central-1.amazonaws.com/prod/";
   const [posts, setPosts] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState();

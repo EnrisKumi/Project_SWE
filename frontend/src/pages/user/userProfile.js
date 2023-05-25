@@ -3,6 +3,9 @@ import { useAuthContext } from "../../hooks/auth/useAuthContext";
 import { useState } from "react";
 import { Box, Divider, Skeleton, Stack, Tab, Tabs } from "@mui/material";
 import Navbar from "../../components/navbar";
+import NewPostModal from "../../components/newPostModal";
+import UserDetails from "../../components/userDetails";
+import Feed from "../../components/userFeed";
 
 
 export default function UserProfile() {
