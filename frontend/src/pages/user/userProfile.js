@@ -21,6 +21,8 @@ export default function UserProfile() {
   const [location, setLocation] = useState("")
   const [prfilePicture, setPrfilePicture] = useState("")
   const [userId, setUserId] = useState("")
+  const [followed, setFollowed] = useState([])
+  const [followers, setFollowers]= useState([])
 
 
   const { user, currentUser } = useAuthContext();
@@ -45,6 +47,8 @@ export default function UserProfile() {
       setUsername(res.username)
       setPrfilePicture(res.prfilePicture)
       setUserId(res._id)
+      setFollowed(res.followed)
+      setFollowers(res.followers)
     })
   }, [c]);
 
@@ -79,6 +83,8 @@ export default function UserProfile() {
               settabValue={settabValue}
               tabValue={tabValue}
               prfilePicture={prfilePicture}
+              followed={followed}
+              followers={followers}
             />
 
             {dividerLoading ? (

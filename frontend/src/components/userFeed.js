@@ -28,6 +28,13 @@ export default function Feed({
   const [userProfileFeedEffect, setuserProfileFeedEffect] = useState(false);
   const [loading, setloading] = useState(true);
   const [userPosts, setUserPosts] = useState([]);
+
+  const getUserFromDatabase = async(cognitoId) => {
+    const res = await axios.get(`${url}user/getCognitoUserById?cognitoId=${cognitoId}`,
+    requestInfo)
+    return res.data._id
+  }
+
   const getUserPosts = async (mongoId) => {
     setloading(true);
     const endpoint =
@@ -65,8 +72,8 @@ export default function Feed({
     });
 
   useEffect(() => {
-    getUserPosts(mongoId);
-  }, [effectRun, userProfileFeedEffect, tabValue, cognitoId]);
+    getUserFromDatabase(cognitoId).then((id) => getUserPosts(id));
+  }, [effectRun, userProfileFeedEffect, tabValue]);
 
   return (
     <Stack flex={8} marginBottom={userPosts?.length > 3 ? 12 : 0}>

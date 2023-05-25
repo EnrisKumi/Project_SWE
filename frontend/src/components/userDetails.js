@@ -37,18 +37,14 @@ export default function UserDetails({
   settabValue,
   tabValue,
   prfilePicture,
-  loggedUser
+  followed,
+  followers,
 }) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
   const { user, currentUser } = useAuthContext();
-  const cognitoId = user.attributes.sub;
   const mongoId = currentUser?.data._id;
-  const username = currentUser?.data?.username;
-  const followers = currentUser?.data?.followers;
-  const followed = currentUser?.data?.followed;
   const token = user.signInUserSession.idToken.jwtToken;
-
   const requestInfo = {
     headers: {
       Authorization: token,
@@ -76,7 +72,6 @@ export default function UserDetails({
   const [followedU, setFollowedU] = useState(false);
   const [userDetailsEffect, setuserDetailsEffect] = useState(false);
   const [followedEffect, setfollowedEffect] = useState(false);
-
 
   const follow = async (e, currentUserMongoId, userMongoId) => {
     e.preventDefault();
@@ -127,7 +122,7 @@ export default function UserDetails({
           }}
           variant="contained"
           onClick={(e) => {
-            follow(e, userId, mongoId);
+            follow(e, mongoId, userId);
           }}
         >
           Follow
@@ -153,13 +148,11 @@ export default function UserDetails({
   // }, [open, isFollowed, effectRun, userDetailsEffect, followedEffect]);
 
   useEffect(() => {
-    setdividerLoading(false)
+    setdividerLoading(false);
   }, [open, isFollowed, effectRun, userDetailsEffect, followedEffect]);
 
   useEffect(() => {
-    checkFollow(userId, mongoId).then((bool) =>
-      setisFollowed(bool)
-    );
+    checkFollow(userId, mongoId).then((bool) => setisFollowed(bool));
   }, [isFollowed, mongoId, userId, runEffect]);
 
   return (
@@ -293,11 +286,11 @@ export default function UserDetails({
             />
           ) : (
             <Typography
-            sx={{
-              alignSelf: { xs: "flex-start", sm: "flex-start" },
-              fontWeight: { xs: 100, sm: 100 },
-              fontSize: { sm: "16px" },
-            }}
+              sx={{
+                alignSelf: { xs: "flex-start", sm: "flex-start" },
+                fontWeight: { xs: 100, sm: 100 },
+                fontSize: { sm: "16px" },
+              }}
               variant="p"
               component="span"
             >
@@ -394,7 +387,7 @@ export default function UserDetails({
             setuserDetailsEffect={setuserDetailsEffect}
             checkId={checkId}
             setFollowersU={setFollowersU}
-            userId={checkId ? mongoId : userId}
+            userId={checkId ? userId : mongoId}
             settabValue={settabValue}
             tabValue={tabValue}
           />

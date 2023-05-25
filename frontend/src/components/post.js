@@ -518,12 +518,12 @@ export default function Post({
                 }}
               >
                 <IconButton aria-label="add-comment">
-                  <img src={commentIcon} height={20} width={20} />
+                  <img src={commentIcon} height={20} width={20} alt="comment"/>
                 </IconButton>
               </Tooltip>
               {cognitoId === postCognitoId ? (
                 <Button
-                  startIcon={<img src={chatIcon} height={15} width={15} />}
+                  startIcon={<img src={chatIcon} height={15} width={15} alt="comment"/>}
                   color="primary"
                   sx={{
                     marginLeft: "auto",
@@ -543,7 +543,7 @@ export default function Post({
               ) : null}
               {isJoined ? (
                 <Button
-                  startIcon={<img src={chatIcon} height={15} width={15} />}
+                  startIcon={<img src={chatIcon} height={15} width={15} alt="comment"/>}
                   color="primary"
                   sx={{
                     marginLeft: "auto",

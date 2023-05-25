@@ -97,14 +97,9 @@ export default function EditProfile({
     }
   };
 
-
-
   const handleReload = () => {
     window.location.reload();
   };
-
-
-
 
   return (
     <Stack
