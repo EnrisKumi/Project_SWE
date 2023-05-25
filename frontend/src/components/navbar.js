@@ -412,7 +412,7 @@ export default function Navbar({ called, userId }) {
                   aria-controls={mobileMenuId}
                   aria-haspopup="true"
                   component={Link}
-                  to={`/userprofile/${mongoId}`}
+                  to={`/userprofile/${cognitoId}`}
                   color="inherit"
                   //   onClick={() => addUser()}
                 >
@@ -497,7 +497,7 @@ export default function Navbar({ called, userId }) {
                 >
                   <IconButton
                     component={Link}
-                    to={`/userprofile/${mongoId}`}
+                    to={`/userprofile/${cognitoId}`}
                     size="large"
                     edge="end"
                     aria-label="account of current user"

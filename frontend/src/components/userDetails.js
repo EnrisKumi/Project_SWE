@@ -36,33 +36,24 @@ export default function UserDetails({
   setdividerLoading,
   settabValue,
   tabValue,
+  prfilePicture,
+  loggedUser
 }) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
-  // const userContext = useContext(UserContext);
-  // const { username, prfilePicture, followers, followed } = userContext.user;
-  // const {
-  //   isFollowed,
-  //   setisFollowed,
-  //   setuserMongoId,
-  //   setcurrentUserMongoId,
-  //   currentUserMongoId,
-  //   userMongoId,
-  // } = userContext;
   const { user, currentUser } = useAuthContext();
   const cognitoId = user.attributes.sub;
   const mongoId = currentUser?.data._id;
   const username = currentUser?.data?.username;
-  const prfilePicture = currentUser?.data?.prfilePicture;
   const followers = currentUser?.data?.followers;
   const followed = currentUser?.data?.followed;
   const token = user.signInUserSession.idToken.jwtToken;
+
   const requestInfo = {
     headers: {
       Authorization: token,
     },
   };
-
   const navigate = useNavigate();
   const handleNavigateClick = () => {
     navigate(`/editprofile`);
@@ -76,12 +67,9 @@ export default function UserDetails({
   const handleClose = () => setOpen(false);
   const handleFollowedUModalClose = () => setFollowedU(false);
   const handleFollowersUModalClose = () => setFollowersU(false);
-  const checkId = false
+  const checkId = userId === mongoId;
   const [runEffect, setrunEffect] = useState(false);
-
-  const [loading, setloading] = useState(true);
-
-  //////////////////////////////
+  const [loading, setloading] = useState(false);
   const [followersOpen, setFollowersOpen] = useState(false);
   const [showFollowers, setShowFollowers] = useState(false);
   const [followersU, setFollowersU] = useState(false);
@@ -89,7 +77,7 @@ export default function UserDetails({
   const [userDetailsEffect, setuserDetailsEffect] = useState(false);
   const [followedEffect, setfollowedEffect] = useState(false);
 
-  //////////////////////////////////
+
   const follow = async (e, currentUserMongoId, userMongoId) => {
     e.preventDefault();
     const idk = await axios.get(
@@ -161,16 +149,12 @@ export default function UserDetails({
     </>
   );
   // useEffect(() => {
-  //   userContext
-  //     .getUserFromDatabase(userId, setloading)
-  //     .then(() => setdividerLoading(false));
-  //   getMongoIdFromCognitoId(userId).then((id) => setuserMongoId(id));
-  //   getCurrentUserId().then((id) =>
-  //     getMongoIdFromCognitoId(id).then((mongoId) =>
-  //       setcurrentUserMongoId(mongoId)
-  //     )
-  //   );
+  //   setdividerLoading(false)
   // }, [open, isFollowed, effectRun, userDetailsEffect, followedEffect]);
+
+  useEffect(() => {
+    setdividerLoading(false)
+  }, [open, isFollowed, effectRun, userDetailsEffect, followedEffect]);
 
   useEffect(() => {
     checkFollow(userId, mongoId).then((bool) =>
@@ -309,15 +293,15 @@ export default function UserDetails({
             />
           ) : (
             <Typography
-              sx={{
-                paddingX: { xs: "8px", sm: 0 },
-                fontSize: { xs: "14px", sm: "16px" },
-                fontWeight: { xs: 300, sm: 400 },
-              }}
+            sx={{
+              alignSelf: { xs: "flex-start", sm: "flex-start" },
+              fontWeight: { xs: 100, sm: 100 },
+              fontSize: { sm: "16px" },
+            }}
               variant="p"
               component="span"
             >
-              {bio}
+              Bio: {bio}
             </Typography>
           )}
         </Stack>
@@ -352,7 +336,7 @@ export default function UserDetails({
               component="span"
               fontWeight={100}
             >
-              {location}
+              Location: {location}
             </Typography>
           )}
         </Stack>
@@ -410,7 +394,7 @@ export default function UserDetails({
             setuserDetailsEffect={setuserDetailsEffect}
             checkId={checkId}
             setFollowersU={setFollowersU}
-            userId={checkId ? userId : mongoId}
+            userId={checkId ? mongoId : userId}
             settabValue={settabValue}
             tabValue={tabValue}
           />
@@ -434,7 +418,7 @@ export default function UserDetails({
             seteffectRun={seteffectRun}
             effectRun={effectRun}
             setFollowedU={setFollowedU}
-            userId={checkId ? userId : mongoId}
+            userId={checkId ? mongoId : userId}
           />
         </Modal>
         <Modal

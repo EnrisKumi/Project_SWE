@@ -66,7 +66,7 @@ export default function Feed({
 
   useEffect(() => {
     getUserPosts(mongoId);
-  }, [effectRun, userProfileFeedEffect, tabValue]);
+  }, [effectRun, userProfileFeedEffect, tabValue, cognitoId]);
 
   return (
     <Stack flex={8} marginBottom={userPosts?.length > 3 ? 12 : 0}>

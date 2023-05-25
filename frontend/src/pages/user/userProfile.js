@@ -1,24 +1,29 @@
 import { useParams } from "react-router";
 import { useAuthContext } from "../../hooks/auth/useAuthContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Divider, Skeleton, Stack, Tab, Tabs } from "@mui/material";
 import Navbar from "../../components/navbar";
 import NewPostModal from "../../components/newPostModal";
 import UserDetails from "../../components/userDetails";
 import Feed from "../../components/userFeed";
-
+import axios from "axios";
+const url = "https://2pj6vv3pwi.execute-api.eu-central-1.amazonaws.com/prod/";
 
 export default function UserProfile() {
-//   const { cognitoId } = useParams();
+  const { cognitoId } = useParams();
   const [effectRun, seteffectRun] = useState(false);
   const [dividerLoading, setdividerLoading] = useState(true);
   const [tabValue, settabValue] = useState("MyPosts");
   const [noPosts, setnoPosts] = useState(false);
+  const [c, setC] = useState("")
+  const [bio, setBio] = useState("")
+  const [username, setUsername] = useState("")
+  const [location, setLocation] = useState("")
+  const [prfilePicture, setPrfilePicture] = useState("")
+  const [userId, setUserId] = useState("")
+
+
   const { user, currentUser } = useAuthContext();
-  const cognitoId = user.attributes.sub;
-  const mongoId = currentUser?.data._id;
-  const bio = currentUser?.data.bio
-  const location = currentUser?.data.location
   const token = user.signInUserSession.idToken.jwtToken;
   const requestInfo = {
     headers: {
@@ -26,7 +31,24 @@ export default function UserProfile() {
     },
   };
 
-  const check = cognitoId === currentUser?.data.userCognitoId
+  const getUserFromDatabase = async(cognitoId) => {
+    const res = await axios.get(`${url}user/getCognitoUserById?cognitoId=${cognitoId}`,
+    requestInfo)
+    return res.data
+  }
+
+  useEffect(() => {
+    getUserFromDatabase(cognitoId).then((res)=>{
+      setC(res.userCognitoId)
+      setBio(res.bio)
+      setLocation(res.location)
+      setUsername(res.username)
+      setPrfilePicture(res.prfilePicture)
+      setUserId(res._id)
+    })
+  }, [c]);
+
+  const check = c === currentUser?.data.userCognitoId
   const handleChange = (event, newValue) => {
     settabValue(newValue);
     setnoPosts(false);
@@ -51,11 +73,12 @@ export default function UserProfile() {
               setdividerLoading={setdividerLoading}
               seteffectRun={seteffectRun}
               effectRun={effectRun}
-              userId={cognitoId}
+              userId={userId}
               bio={bio}
               location={location}
               settabValue={settabValue}
               tabValue={tabValue}
+              prfilePicture={prfilePicture}
             />
 
             {dividerLoading ? (
@@ -89,7 +112,7 @@ export default function UserProfile() {
                     />
                   </Tabs>
                 ) : (
-                  <>{`${user?.username} Posts `}</>
+                  <>{`${username} Posts `}</>
                 )}
               </Divider>
             )}

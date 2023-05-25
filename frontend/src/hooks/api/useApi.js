@@ -6,7 +6,7 @@ const url = "https://2pj6vv3pwi.execute-api.eu-central-1.amazonaws.com/prod/";
   
 export function useApi() {
 
-    const { user } = useAuthContext();
+    const { user} = useAuthContext();
 
     const cognitoId = user.attributes.sub
     const token = user.signInUserSession.idToken.jwtToken;
@@ -26,7 +26,6 @@ export function useApi() {
       const getUser = async() => {
         const res = await axios.get(`${url}user/getCognitoUserById?cognitoId=${cognitoId}`,
         requestInfo)
-        console.log(res.data)
         return res.data
       }
 

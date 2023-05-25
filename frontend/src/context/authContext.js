@@ -45,7 +45,7 @@ export const AuthContextProvider = ({ children }) => {
     dispatch({ type: 'SET_USER', payload: res })
   }
 
-  const checkUser= async () => {
+ const checkUser= async () => {
     try{
             const authUser=await Auth.currentAuthenticatedUser({bypassCache: true});
             dispatch({ type: 'AUTH_IS_READY', payload: authUser })

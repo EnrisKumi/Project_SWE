@@ -9,13 +9,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import { getCurrentUserId, updateUserInfo } from "../apiCalls";
 import xIcon from "../icons/Group 182.png";
 import FileBase from "react-file-base64";
 import { useAuthContext } from "../hooks/auth/useAuthContext";
 import axios from "axios";
+import { AuthContext } from "../context/authContext";
+import { useApi } from "../hooks/api/useApi";
 const url = "https://2pj6vv3pwi.execute-api.eu-central-1.amazonaws.com/prod/";
 
 export default function EditProfile({
@@ -30,9 +32,9 @@ export default function EditProfile({
   const { user, currentUser } = useAuthContext();
   const cognitoId = user.attributes.sub;
   const mongoId = currentUser?.data._id;
-  const bio = user?.data.bio
-  const location = user?.data.location
-  const prfilePicture = user.data.prfilePicture
+  const bio = currentUser?.data.bio
+  const location = currentUser?.data.location
+  const prfilePicture = currentUser.data.prfilePicture
   const token = user.signInUserSession.idToken.jwtToken;
   const requestInfo = {
     headers: {
@@ -72,10 +74,10 @@ export default function EditProfile({
     navigate(`/userprofile/${cognitoId}`);
   };
 
-  const handleSave = (e) => {
+  const handleSave =async (e) => {
     try {
       e.preventDefault();
-      updateUserInfo(
+      await updateUserInfo(
         mongoId,
         newBio,
         newLocation,
@@ -88,10 +90,21 @@ export default function EditProfile({
       if (called === "userdetails") {
         setOpen(false);
       }
+     
+      handleReload();
     } catch (error) {
       console.log(error);
     }
   };
+
+
+
+  const handleReload = () => {
+    window.location.reload();
+  };
+
+
+
 
   return (
     <Stack

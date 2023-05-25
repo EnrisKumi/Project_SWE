@@ -57,6 +57,7 @@ export default function Post({
   const { user, currentUser } = useAuthContext();
   const cognitoId = user.attributes.sub;
   const mongoId = currentUser?.data._id;
+  const prfilePicture = currentUser?.data.prfilePicture
   const token = user.signInUserSession.idToken.jwtToken;
   const requestInfo = {
     headers: {
