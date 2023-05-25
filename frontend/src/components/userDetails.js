@@ -79,11 +79,10 @@ export default function UserDetails({
       `${url}follow/followUser?id=${currentUserMongoId}&followersId=${userMongoId}`,
       requestInfo
     );
-    if (runEffect) {
-      setrunEffect(false);
-    } else {
-      setrunEffect(true);
-    }
+    setrunEffect(true);
+    setTimeout(function(){
+      window.location.reload();
+   }, 100);
   };
   //////////////////////////////////
 
@@ -94,11 +93,10 @@ export default function UserDetails({
       `${url}follow/unfollow?id=${currentUserMongoId}&followersId=${userMongoId}`,
       requestInfo
     );
-    if (runEffect) {
-      setrunEffect(false);
-    } else {
-      setrunEffect(true);
-    }
+    setrunEffect(true);
+    setTimeout(function(){
+      window.location.reload();
+   }, 5000);
   };
   //////////////////////////////////
 
@@ -135,7 +133,7 @@ export default function UserDetails({
           }}
           variant="contained"
           onClick={(e) => {
-            unfollow(e, userId, mongoId);
+            unfollow(e, mongoId, userId);
           }}
         >
           Unfollow
@@ -152,7 +150,7 @@ export default function UserDetails({
   }, [open, isFollowed, effectRun, userDetailsEffect, followedEffect]);
 
   useEffect(() => {
-    checkFollow(userId, mongoId).then((bool) => setisFollowed(bool));
+    checkFollow(mongoId, userId).then((bool) => setisFollowed(bool));
   }, [isFollowed, mongoId, userId, runEffect]);
 
   return (
