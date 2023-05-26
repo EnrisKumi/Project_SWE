@@ -10,33 +10,32 @@ export default function Comment({data}) {
 
   return (
     <>
-      <Stack paddingLeft="2px" marginBottom={1}>
+      <Stack padding="5px" marginBottom={1}>
         <Stack flexDirection="row">
           <Typography
             component={Link}
             to={`/userprofile/${data.commentCognitoId}`}
-            sx={{
-              textDecoration: "none",
-              color: "text.primary",
-            }}
-            marginRight={1}
-            fontWeight={600}
+            sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start',
+                  fontSize: 16, textDecoration: "none" }}
+                  fontWeight={600}
           >
-            {data?.userName}{" "}
+            {data?.userName}
           </Typography>
+
           <Typography
-            sx={{ marginLeft: "auto", fontSize: 12 }}
-            fontWeight={100}
-          >
-            {commentedFromNow}{" "}
-          </Typography>
+                  sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start',
+                  fontSize: 12,marginTop:"2px",px:"7px"}}
+                  fontWeight={300}
+                >
+                  {commentedFromNow}
+                </Typography>
         </Stack>
-        <Stack flexDirection="row" marginTop="0px" alignItems="center">
+        <Stack flexDirection="row" alignItems="center">
           <Typography
-            sx={{ width: 1, wordBreak: "break-all" }}
-            fontWeight={100}
+            sx={{ width: 1, wordBreak: "break-all" ,display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start'}}
+            fontWeight={500}
           >
-            {data?.text}{" "}
+            {data?.text}
           </Typography>
         </Stack>
       </Stack>

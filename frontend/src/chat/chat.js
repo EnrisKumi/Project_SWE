@@ -15,8 +15,7 @@ export default function Chat({user}) {
 
   const [messages, setMessages] = useState([]);
   const scroll = useRef();
-  const postId = '1';
-  console.log(messages);
+  const {postId} = useParams();
 
   useEffect(() => {
 

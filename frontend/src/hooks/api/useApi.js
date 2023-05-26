@@ -29,6 +29,12 @@ export function useApi() {
         return res.data
       }
 
-  return {getMongoIdFromCognitoId, getUser}
+      const getUserFromDatabase = async(userCognitoId) => {
+        const res = await axios.get(`${url}user/getCognitoUserById?cognitoId=${userCognitoId}`,
+        requestInfo)
+        return res.data
+      }
+
+  return {getMongoIdFromCognitoId, getUser,getUserFromDatabase}
 }
 

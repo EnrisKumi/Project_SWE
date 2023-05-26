@@ -94,25 +94,13 @@ export default function Navbar({ called, userId }) {
       setloading(false);
     } catch (error) {}
   };
-  ///////////////////////////////////////////////////////////////
 
-  /////LOGOUT
-
-  // async function handleSignOut() {
-  //     try {
-  //       await Auth.signOut();
-  //       localStorage.setItem("isLogged", false);
-  //       window.location.href = "/";
-  //     } catch (error) {
-  //       console.log("error signing out: ", error);
-  //     }
-  //   }
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+    // setAnchorEl(event.currentTarget);
   };
 
   const handleMobileMenuClose = () => {
@@ -147,7 +135,6 @@ export default function Navbar({ called, userId }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Settings</MenuItem>
       <MenuItem
         onClick={() => {
           handleMenuClose();
@@ -293,17 +280,11 @@ export default function Navbar({ called, userId }) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Settings />
-        </IconButton>
-        <p>Settings</p>
-      </MenuItem>
+     
 
       <MenuItem
         onClick={() => {
-          logout()
-          handleProfileMenuOpen();
+          logout();
         }}
       >
         <IconButton

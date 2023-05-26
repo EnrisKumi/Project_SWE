@@ -44,7 +44,7 @@ export default function NewPostModalNewPage({
 }) {
   const [value, setValue] = useState(dayjs());
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("sm"));
+
   const [text, setText] = useState("");
   const [limit, setLimit] = useState("");
   const [isposting, setisposting] = useState(false);
@@ -157,9 +157,9 @@ export default function NewPostModalNewPage({
         />
         <Stack flexDirection="row" gap={2} my={1} alignItems="center">
           <Avatar
-            sx={{ width: 40, height: 40 }}
             alt="photo"
-            src={mongoId?.prfilePicture}
+            src={currentUser?.data?.prfilePicture}
+            sx={{ width: "40px", height: "40px" }}
           />
           <Typography fontWeight={500} fontSize="16px" variant="span">
             {user.username}

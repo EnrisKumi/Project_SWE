@@ -29,7 +29,7 @@ export default function SendMessages({scroll,user }) {
         name: user.username,
         uid: user.attributes.sub,
         timestamp: serverTimestamp(),
-        postId : '1'
+        postId : postId
 
     })
     }catch(error){

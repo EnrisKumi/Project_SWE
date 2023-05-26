@@ -8,16 +8,14 @@ import {
   Stack,
   TextField,
   Typography,
+  styled
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { getCurrentUserId, updateUserInfo } from "../apiCalls";
 import xIcon from "../icons/Group 182.png";
 import FileBase from "react-file-base64";
 import { useAuthContext } from "../hooks/auth/useAuthContext";
 import axios from "axios";
-import { AuthContext } from "../context/authContext";
-import { useApi } from "../hooks/api/useApi";
 const url = "https://2pj6vv3pwi.execute-api.eu-central-1.amazonaws.com/prod/";
 
 export default function EditProfile({
@@ -101,6 +99,13 @@ export default function EditProfile({
     window.location.reload();
   };
 
+  const UserBox = styled(Box)({
+    display: "flex",
+    alignItems: "center",
+    gap: "5px",
+    marginBottom: "5px",
+  });
+
   return (
     <Stack
       color="text.primary"
@@ -142,8 +147,9 @@ export default function EditProfile({
         }}
       />
       <Stack gap={2} my={1} alignItems="center">
+      <UserBox></UserBox>
         <Avatar sx={{ width: 90, height: 90 }} src={prfilePicture} />
-
+        <UserBox></UserBox>
         <Typography
           fontWeight={500}
           color="primary"
@@ -157,6 +163,7 @@ export default function EditProfile({
             onDone={({ base64 }) => setNewProfilePicture(base64)}
           />
         </Typography>
+         <UserBox></UserBox>
       </Stack>
       <TextField
         id="outlined-number"

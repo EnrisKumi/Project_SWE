@@ -21,12 +21,12 @@ export default function FollowedData({
   const [followed, setFollowed] = useState();
   const [loading, setloading] = useState(true);
   const navigate = useNavigate();
+  
   const handleNavigateClick = (cognitoId) => {
     setFollowedU(false);
     setfollowedEffect(!followedEffect);
     seteffectRun(!effectRun);
     settabValue("MyPosts");
-
     navigate(`/userprofile/${cognitoId}`);
   };
   const { user, currentUser } = useAuthContext();

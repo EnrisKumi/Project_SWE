@@ -61,9 +61,13 @@ function App() {
 
             <Route path="/forgotPassword" element={<ForgotPassword />} />
 
-            <Route path="/userprofile/:cognitoId" element={<UserProfile />} />
+            <Route path="/userprofile/:cognitoId" element={
+              
+             user ? <UserProfile /> : <Navigate to={"/login"} />
+             
+             } />
 
-            <Route path="/chat" element={<ChatApp />} />
+            <Route path="/chat/:postId" element={<ChatApp />} />
           </Routes>
         </BrowserRouter>
       )}

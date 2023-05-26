@@ -58,6 +58,8 @@ export default function UserProfile() {
     setnoPosts(false);
   };
 
+  
+
   return (
     <>
       <Box sx={{ height: "100vh", backgroundColor: "background.myBackground" }}>
@@ -75,6 +77,7 @@ export default function UserProfile() {
           <Stack flex={4} flexDirection="column" sx={{ backgroundColor: "" }}>
             <UserDetails
               setdividerLoading={setdividerLoading}
+              cognitoId={cognitoId}
               seteffectRun={seteffectRun}
               effectRun={effectRun}
               userId={userId}

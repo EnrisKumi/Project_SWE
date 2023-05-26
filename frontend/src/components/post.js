@@ -34,6 +34,7 @@ import { useAuthContext } from "../hooks/auth/useAuthContext";
 import ShowTags from "./showTags";
 import Comment from "./comment";
 import JoinedUsersData from "./joinedUsersData";
+import { useApi } from "../hooks/api/useApi";
 const url = "https://2pj6vv3pwi.execute-api.eu-central-1.amazonaws.com/prod/";
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -55,9 +56,9 @@ export default function Post({
   settabValue,
 }) {
   const { user, currentUser } = useAuthContext();
+  const {getUserFromDatabase}=useApi();
   const cognitoId = user.attributes.sub;
   const mongoId = currentUser?.data._id;
-  const prfilePicture = currentUser?.data.prfilePicture
   const token = user.signInUserSession.idToken.jwtToken;
   const requestInfo = {
     headers: {
@@ -92,6 +93,8 @@ export default function Post({
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [postLoading, setpostLoading] = useState(true);
   const [postLikes, setpostLikes] = useState(likes.length);
+  const [showProfilePicture,setShowProfilePicture]=useState(false)
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -113,9 +116,9 @@ export default function Post({
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  const [userWhoPosted, setuserWhoPosted] = useState();
+  const [userWhoPosted, setuserWhoPosted] = useState(null);
 
-  const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+ 
   const postedFromNow = moment(date).fromNow();
 
   ///////////////////////////////////////////////////////////////
@@ -196,6 +199,20 @@ export default function Post({
   useEffect(() => {
     allComments();
   }, [shouldEffectRun]);
+
+  useEffect(()=>{
+    const fetchPostUser = async () => {
+      try {
+        const user = await getUserFromDatabase(postCognitoId);
+        setuserWhoPosted(user);
+        console.log(user)
+      } catch (error) {
+        // Handle any errors that occur during the API call
+        console.error(error);
+      }
+    };
+    fetchPostUser();
+  },[postCognitoId]);
 
   useEffect(() => {
     checkLike(mongoId, _id).then((bool) => {
@@ -393,10 +410,11 @@ export default function Post({
         >
           <Stack flexdirection="row">
             <CardHeader
-              sx={{ padding: "10px" }}
+              sx={{ padding: '10px'}}
               title={
                 <Typography
-                  sx={{ fontSize: 16, fontWeight: 500, textDecoration: "none" }}
+                  sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', px: '3x',paddingTop:'12px',
+                  fontSize: 16, fontWeight: 500, textDecoration: "none" }}
                   color="text.primary"
                   component={Link}
                   to={`/userprofile/${postCognitoId}`}
@@ -405,31 +423,37 @@ export default function Post({
                   {username}
                 </Typography>
               }
+              subheader={
+                
+                <Typography
+                  sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start' ,
+                  fontSize: 12, fontWeight: 300,}}
+                >
+                  {postedFromNow}
+                </Typography>
+              }
               avatar={
                 <Avatar
-                  src={userWhoPosted?.prfilePicture}
-                  sx={{
-                    bgcolor: `#B24D74`,
+                alt={username.substring(0, 1)}
+                src={userWhoPosted?.prfilePicture}
+                sx={{
+                    bgcolor: "#3C3A3B",
                     textDecoration: "none",
                     width: "40px",
                     height: "40px",
                   }}
-                  aria-label="recipe"
-                >
-                  {username.substring(0, 1)}
-                </Avatar>
+              />
               }
               action={
                 <Stack flexDirection="row" alignItems="center">
                   {status === "Completed" ? (
                     <StyledButton
-                      disabled
-                      sx={{ paddingX: 1 }}
-                      color="secondary"
-                      size="small"
-                      variant="contained"
+                      sx={{ paddingX: 1 , 
+                        color: '##118C94',
+                        backgroundColor: "#118C9433",   
+                      }}
                     >
-                      Event Finished
+                      Completed
                     </StyledButton>
                   ) : (
                     renderJoinButton
@@ -438,11 +462,11 @@ export default function Post({
                   {renderDeleteButton}
                 </Stack>
               }
-              subheader={postedFromNow}
+              
             />
           </Stack>
 
-          <CardContent sx={{ padding: "10px" }}>
+          <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start', padding: '15px'}}>
             <Typography
               sx={{ fontSize: 16, wordBreak: "break-word" }}
               variant="body2"
