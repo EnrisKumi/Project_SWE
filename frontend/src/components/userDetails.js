@@ -21,17 +21,12 @@ import { useAuthContext } from "../hooks/auth/useAuthContext";
 const url = "https://2pj6vv3pwi.execute-api.eu-central-1.amazonaws.com/prod/";
 
 export default function UserDetails({
-  userId,
-  bio,
-  location,
   effectRun,
   seteffectRun,
   setdividerLoading,
   settabValue,
   tabValue,
-  prfilePicture,
-  followed,
-  followers,
+  cognitoId
 }) {
 
   const { user, currentUser } = useAuthContext();
@@ -49,13 +44,48 @@ export default function UserDetails({
   const handleClose = () => setOpen(false);
   const handleFollowedUModalClose = () => setFollowedU(false);
   const handleFollowersUModalClose = () => setFollowersU(false);
-  const checkId = userId === mongoId;
+
   const [runEffect, setrunEffect] = useState(false);
   const [loading, setloading] = useState(false);
   const [followersU, setFollowersU] = useState(false);
   const [followedU, setFollowedU] = useState(false);
   const [userDetailsEffect, setuserDetailsEffect] = useState(false);
   const [followedEffect, setfollowedEffect] = useState(false);
+
+  const [c, setC] = useState("")
+  const [bio, setBio] = useState("")
+  const [username, setUsername] = useState("")
+  const [location, setLocation] = useState("")
+  const [prfilePicture, setPrfilePicture] = useState("")
+  const [userId, setUserId] = useState("")
+  const [followed, setFollowed] = useState([])
+  const [followers, setFollowers]= useState([])
+
+  const getUserFromDatabase = async(cognitoId) => {
+    const res = await axios.get(`${url}user/getCognitoUserById?cognitoId=${cognitoId}`,
+    requestInfo)
+    return res.data
+  }
+
+  useEffect(() => {
+    getUserFromDatabase(cognitoId).then((res)=>{
+      setC(res.userCognitoId)
+      setBio(res.bio)
+      setLocation(res.location)
+      setUsername(res.username)
+      setPrfilePicture(res.prfilePicture)
+      setUserId(res._id)
+      setFollowed(res.followed)
+      setFollowers(res.followers)
+    })
+  }, [c]);
+
+  const handleReload = () => {
+    window.location.reload();
+  };
+
+
+  const checkId = c === currentUser?.data.userCognitoId
 
   const follow = async (e, currentUserMongoId, userMongoId) => {
     e.preventDefault();
@@ -380,7 +410,7 @@ export default function UserDetails({
             setuserDetailsEffect={setuserDetailsEffect}
             checkId={checkId}
             setFollowersU={setFollowersU}
-            userId={checkId ? userId : mongoId}
+            userId={checkId ? mongoId : userId}
             settabValue={settabValue}
             tabValue={tabValue}
           />

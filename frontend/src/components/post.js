@@ -150,7 +150,7 @@ export default function Post({
   ///////////////////////////////////////////////////////////////
   const unjoinPost = async () => {
     await axios.get(
-      `${url}join/joinPost?userId=${mongoId}&postId=${_id}`,
+      `${url}join/leavePost?userId=${mongoId}&postId=${_id}`,
       requestInfo
     );
   };

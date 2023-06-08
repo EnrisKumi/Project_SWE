@@ -68,7 +68,6 @@ export default function UnFollowUsersLine({
       <Stack flexDirection="row" alignItems="center" gap={2}>
         <Avatar
           src={aFollower.prfilePicture}
-          onClick={(e) => handleNavigateClick(aFollower?.userCognitoId)}
           sx={{
             bgcolor: `red`,
             textDecoration: "none",
@@ -82,7 +81,6 @@ export default function UnFollowUsersLine({
         </Avatar>
 
         <Typography
-          onClick={(e) => handleNavigateClick(aFollower?.userCognitoId)}
           sx={{ textDecoration: "none", color: "text.primary" }}
           marginRight={1}
           fontWeight={600}

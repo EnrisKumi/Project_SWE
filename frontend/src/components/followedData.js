@@ -117,7 +117,6 @@ export default function FollowedData({
               padding={1}
             >
               <Avatar
-                onClick={(e) => handleNavigateClick(aFollower?.userCognitoId)}
                 src={aFollower.prfilePicture}
                 sx={{
                   bgcolor: `red`,
@@ -133,7 +132,6 @@ export default function FollowedData({
               </Avatar>
 
               <Typography
-                onClick={(e) => handleNavigateClick(aFollower?.userCognitoId)}
                 sx={{ textDecoration: "none", color: "text.primary" }}
                 marginRight={1}
                 fontWeight={600}
