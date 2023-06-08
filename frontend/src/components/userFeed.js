@@ -45,7 +45,11 @@ export default function Feed({
       const res = await axios.get(endpoint, requestInfo);
       const data = res.data;
 
-      setUserPosts(data);
+      if(tabValue === "MyPosts"){
+      setUserPosts(data.reverse());
+      }else{
+        setUserPosts(data);
+      }
       setloading(false);
       if (data.length === 0) {
         setnoPosts(true);
@@ -56,7 +60,6 @@ export default function Feed({
   };
   const renderPosts = userPosts
     .slice(0)
-    .reverse()
     .map((el) => {
       return (
         <Post

@@ -255,18 +255,26 @@ export default function UserDetails({
 
         <Stack flex={1}></Stack>
       </Stack>
-      <Stack flex={4} flexDirection="column">
-        <Stack
-          flexDirection="row"
-          sx={{ backgroundColor: "", paddingY: { xs: 1, sm: 1 } }}
+      <Stack flex={4} flexDirection="column" py="15px">
+      <Stack
+          justifyContent="space-around"
+          sx={{
+            backgroundColor: "",
+            paddingY: 0,
+            paddingX: { xs: 1, sm: 0 },
+            fontSize: "12px",
+            flexDirection: { xs: "column", sm: "column" },
+          }}
         >
           {loading ? (
             <Skeleton
               my={1}
               animation="wave"
-              sx={{ marginLeft: "8px" }}
               height={10}
               width="20%"
+              sx={{
+                alignSelf: { xs: "flex-start", sm: "flex-start" },
+              }}
             />
           ) : (
             <Typography
@@ -277,6 +285,7 @@ export default function UserDetails({
               }}
               variant="p"
               component="span"
+              fontWeight={100}
             >
               Bio: {bio}
             </Typography>

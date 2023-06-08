@@ -103,6 +103,8 @@ export default function NewPostModalNewPage({
       );
       if (calledd !== "UserProfile") {
         handleNavigateClick();
+      }else{
+        handleReload();
       }
       clear();
       setisposting(false);
@@ -111,6 +113,10 @@ export default function NewPostModalNewPage({
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const handleReload = () => {
+    window.location.reload();
   };
 
   useEffect(() => {}, [mongoId, cognitoId]);
@@ -131,8 +137,6 @@ export default function NewPostModalNewPage({
         >
           <IconButton
             onClick={() => setOpen(false)}
-            component={Link}
-            to="/mainPage"
           >
             <img src={xIcon} height={20} width={20} alt="missing"/>
           </IconButton>

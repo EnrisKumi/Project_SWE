@@ -16,6 +16,8 @@ export default function JoinedUsersData({
   const [joinedU, setJoinedU] = useState();
   const [effect, seteffect] = useState(false);
 
+
+
   const [loading, setloading] = useState(true);
   const style = {
     position: "fixed",
