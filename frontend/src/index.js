@@ -4,12 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AuthContextProvider } from './context/authContext';
+import { ThemeProvider } from "@mui/material/styles";
+import { myTheme } from "./theme/theme.js";
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <AuthContextProvider>
-      <App />
+        <ThemeProvider theme={myTheme}>
+          <App />
+        </ThemeProvider>
     </AuthContextProvider>
   </React.StrictMode>
 );

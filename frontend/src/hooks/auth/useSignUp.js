@@ -1,13 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState} from 'react'
 import { useAuthContext } from './useAuthContext'
 import { Auth} from "aws-amplify";
+import { useNavigate } from 'react-router-dom';
+
 
 
 export const useSignup = () => {
-  const [isCancelled, setIsCancelled] = useState(false)
   const [error, setError] = useState(null)
-  const [isPending, setIsPending] = useState(false)
+  const [isPending, setIsPending] = useState(null)
   const { dispatch } = useAuthContext()
+
+  const navigate = useNavigate();
 
   const signup = async (username,email, password) => {
     setError(null)
@@ -18,24 +21,17 @@ export const useSignup = () => {
       await Auth.signUp({ username, password, attributes: { email } });
 
       //dispatch confirmSignUp action
-      dispatch({ type: 'CONFIRM_SIGNUP', payload:{username:username,confirm:false} })
+      dispatch({ type: 'USERNAME', payload:username })
 
-      if (!isCancelled) {
         setIsPending(false)
         setError(null)
-      }
+        navigate('/confirmSignup');
     } 
     catch(err) {
-      if (!isCancelled) {
         setError(err.message)
         setIsPending(false)
-      }
     }
   }
 
-  useEffect(() => {
-    return () => setIsCancelled(true)
-  }, [])
-
-  return { signup, error, isPending }
+  return { signup, error, isPending}
 }

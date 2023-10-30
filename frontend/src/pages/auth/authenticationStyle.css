@@ -1,0 +1,54 @@
+.main-container {
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+    max-height: 700px;
+    position: relative;
+  }
+  
+  .top {
+    position: absolute;
+    padding: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+    top: -45px;
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    z-index: 9;
+    padding: 15px;
+  }
+  .topi {
+    position: absolute;
+    padding: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+    top: -45px;
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    z-index: 9;
+    padding: 15px;
+  }
+  /* Body {
+      background-image: url('../src/logos/Background2.svg') !important;
+    } */
+  .backgroundasd {
+    background-image: url("../../icons/Background2.svg");
+    width: 100vw !important;
+    height: 100vh !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 10px;
+  }
+  
+  .css-1vwun8p-MuiButtonBase-root-MuiButton-root{
+    text-transform: capitalize !important;
+  }

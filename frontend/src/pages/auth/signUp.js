@@ -1,25 +1,29 @@
 import * as React from 'react';
 import { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { ThemeProvider } from '@mui/material/styles';
 import { useSignup } from '../../hooks/auth/useSignUp';
-import { useNavigate } from 'react-router-dom';
+import { Divider } from "@mui/material";
 
 
 
 
-const theme = createTheme();
+import './authenticationStyle.css'
+import Football from "../../icons/Football.png";
+
+import { myTheme } from "../../theme/theme";
+
 
 export default function SignUp() {
 
@@ -27,43 +31,56 @@ export default function SignUp() {
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [confirmPasswordError,setConfirmPasswordError]=useState('')
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword2, setShowPassword2] = useState(false);
     
 
-    const {signup,isPending,error}= useSignup();
-    const navigate = useNavigate();
+  const {signup,isPending,error}= useSignup();
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        if(password==confirmPassword){
+        if(password===confirmPassword){
           signup(username,email,password);
-          if(error==null){
-            navigate('/confirmSignup');
-          }
+        }else{
+          setConfirmPasswordError('Passwords do not match!')
         }
-        console.log('Passwords do not match')
+    };
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handleClickShowPassword2 = () => setShowPassword2((show) => !show);
+
+    const handleMouseDownPassword = (event) => {
+      event.preventDefault();
     };
 
 
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
+    <div className="backgroundasd">
+    <ThemeProvider theme={myTheme}>
+    <Container
+      component="main"
+      maxWidth="xs"
+      className="main-container"
+    >
+      <CssBaseline />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Box marginBottom={4}>
+          <img className="top" src={Football} height={75} width={75} />
+        </Box>
+
+        <Typography component="h1" variant="h5">
+          Sign up
+        </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -96,9 +113,22 @@ export default function SignUp() {
                   fullWidth
                   name="password"
                   label="Password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   id="password"
                   autoComplete="new-password"
+                  InputProps={{
+                    endAdornment:(
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>),
+                    }}
                   onChange={(e) => setPassword(e.target.value)} 
                   value={password} 
                 />
@@ -109,20 +139,33 @@ export default function SignUp() {
                   fullWidth
                   name="ConfirmPassword"
                   label="Confirm Password"
-                  type="password"
+                  type={showPassword2 ? 'text' : 'password'}
                   id="ConfirmPassword"
                   autoComplete="ConfirmPassword"
+                  InputProps={{
+                    endAdornment:(
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword2}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword2 ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>),
+                    }}
                   onChange={(e) => setConfirmPassword(e.target.value)} 
                   value={confirmPassword} 
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
             </Grid>
+
+            {!confirmPassword &&(error && <div className='error'>{error}</div>)}
+            {confirmPasswordError && <div className='error'>{confirmPasswordError}</div>} 
+
+            <Divider sx={{ width: 1,marginTop: (error||confirmPasswordError) ? 1 : 3 , fontWeight: 200 }}></Divider>
+
             <Button
               type="submit"
               fullWidth
@@ -131,8 +174,10 @@ export default function SignUp() {
             >
               Sign Up
             </Button>
+
+
             <Grid container justifyContent="flex-end">
-              <Grid item>
+              <Grid item xs>
                 <Link href="/login" variant="body2">
                   Already have an account? Login
                 </Link>
@@ -142,5 +187,6 @@ export default function SignUp() {
         </Box>
       </Container>
     </ThemeProvider>
+    </div>
   );
 }

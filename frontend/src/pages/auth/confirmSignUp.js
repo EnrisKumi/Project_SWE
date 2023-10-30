@@ -1,20 +1,22 @@
 import * as React from 'react';
 import { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {ThemeProvider } from '@mui/material/styles';
 import { useConfirmSignUp } from '../../hooks/auth/useConfirmSignUp';
+import { Divider } from "@mui/material";
 
+import { myTheme } from "../../theme/theme";
 
+import Football from "../../icons/Football.png";
 
-const theme = createTheme();
+import './authenticationStyle.css'
+
 
 export default function ConfirmSignUp() {
     const [authCode, setAuthCode] = useState('')
@@ -27,20 +29,26 @@ export default function ConfirmSignUp() {
 
         
   return (
-    <ThemeProvider theme={theme}>
-    <Container component="main" maxWidth="xs">
+
+    <div className="backgroundasd">
+    <ThemeProvider theme={myTheme}>
+    <Container
+      component="main"
+      maxWidth="xs"
+      className="main-container"
+    >
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
+        <Box marginBottom={4}>
+          <img className="top" src={Football} height={75} width={75} />
+        </Box>
+                
         <Typography component="h1" variant="h5">
             Confirm SignUp
         </Typography>
@@ -62,6 +70,9 @@ export default function ConfirmSignUp() {
             </Grid>
           
           </Grid>
+
+          {error && <div className='error'>{error}</div>} 
+          <Divider sx={{ width: 1, marginTop: 3, fontWeight: 200 }}></Divider>
           <Button
             type="submit"
             fullWidth
@@ -75,6 +86,8 @@ export default function ConfirmSignUp() {
       </Box>
     </Container>
   </ThemeProvider>
+
+  </div>
     
     );
 }
